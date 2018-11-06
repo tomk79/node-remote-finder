@@ -1,3 +1,7 @@
 body{
-    font-size: medium;
+	font-size: medium;
+}
+#finder1{
+	width: 300px;
+	height: 400px;
 }
