@@ -18,6 +18,11 @@ module.exports = function(path, options, callback){
 			}else if(utils79.is_file(realpath+'/'+item.name)){
 				item.type = 'file';
 			}
+			item.ext = null;
+			if(item.name.match(/\.([a-zA-Z0-9\-\_]+)$/)){
+				item.ext = RegExp.$1;
+				item.ext = item.ext.toLowerCase();
+			}
 			rtn.push(item);
 		}
 		callback(rtn);
