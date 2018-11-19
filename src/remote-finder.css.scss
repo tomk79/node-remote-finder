@@ -16,6 +16,7 @@
 			}
 			>a{
 				display: block;
+				position: relative;
 				background-color: #fff;
 				color: #333;
 				padding: 0.3em 0.5em;
@@ -23,4 +24,34 @@
 			}
 		}
 	}
+
+	&__file-list-submenu{
+		margin: 0;
+		padding: 0;
+		position: absolute;
+		top: 0;
+		right: 0;
+		display: none;
+		>li{
+			display: block;
+			margin: 0;
+			padding: 0;
+			list-style-type: none;
+			border-bottom: 1px solid #999;
+			&:last-child{
+				border-bottom: none;
+			}
+			>a{
+				display: block;
+				background-color: #f9f9f9;
+				color: #333;
+				padding: 0.3em 0.5em;
+				width: auto; height: 100%;
+			}
+		}
+	}
+	&__file-list a:hover &__file-list-submenu{
+		display: block;
+	}
+
 }

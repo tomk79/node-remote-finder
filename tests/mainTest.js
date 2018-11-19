@@ -53,7 +53,43 @@ describe('Initialize Instance', function() {
 				assert.equal(result.message, 'OK');
 				assert.ok(utils79.is_file(__dirname+'/data/root1/create_test/create_test.txt'));
 
-				fsX.removeSync(__dirname+'/data/root1/create_test/');
+				remoteFinder.gpi({
+					'path': '/create_test/create_test_2.txt',
+					'api': 'createNewFile'
+				}, function(result){
+					// console.log(result);
+
+					assert.ok(result.result);
+					assert.equal(result.message, 'OK');
+					assert.ok(utils79.is_file(__dirname+'/data/root1/create_test/create_test_2.txt'));
+
+					done();
+				});
+			});
+		});
+
+	});
+
+	it("Remove Folder And Files", function(done) {
+		this.timeout(60*1000);
+
+		remoteFinder.gpi({
+			'path': '/create_test/create_test.txt',
+			'api': 'remove'
+		}, function(result){
+			// console.log(result);
+			assert.ok(result.result);
+			assert.equal(result.message, 'OK');
+
+			remoteFinder.gpi({
+				'path': '/create_test/',
+				'api': 'remove'
+			}, function(result){
+				// console.log(result);
+
+				assert.ok(result.result);
+				assert.equal(result.message, 'OK');
+				assert.ok(!utils79.is_file(__dirname+'/data/root1/create_test/create_test.txt'));
 
 				done();
 			});

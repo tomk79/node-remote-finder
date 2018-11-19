@@ -54,8 +54,7 @@ window.RemoteFinder = function($elm, options){
 					gpiBridge(
 						{
 							'api': 'createNewFolder',
-							'path': path+foldername,
-							'options': {}
+							'path': path+foldername
 						},
 						function(result){
 							if(!result.result){
@@ -78,8 +77,7 @@ window.RemoteFinder = function($elm, options){
 					gpiBridge(
 						{
 							'api': 'createNewFile',
-							'path': path+filename,
-							'options': {}
+							'path': path+filename
 						},
 						function(result){
 							if(!result.result){
@@ -99,17 +97,46 @@ window.RemoteFinder = function($elm, options){
 					$a.textContent = result[idx].name;
 					$a.href = 'javascript:;';
 					$a.setAttribute('data-filename', result[idx].name);
+					$submenu = document.createElement('ul');
+					$submenu.classList.add('remote-finder__file-list-submenu');
 					if(result[idx].type == 'dir'){
 						$a.textContent += '/';
 						$a.addEventListener('click', function(){
 							var filename = this.getAttribute('data-filename');
 							_this.init( path+filename+'/' );
 						});
+
 					}else if(result[idx].type == 'file'){
 						$a.addEventListener('click', function(){
 							alert('開発中');
 						});
 					}
+
+					$menu = document.createElement('a');
+					$menu.textContent = 'delete';
+					$menu.href = 'javascript:;';
+					$menu.setAttribute('data-filename', result[idx].name);
+					$menu.addEventListener('click', function(e){
+						e.stopPropagation();
+						var filename = this.getAttribute('data-filename');
+						gpiBridge(
+							{
+								'api': 'remove',
+								'path': path+filename
+							},
+							function(result){
+								if(!result.result){
+									alert(result.message);
+								}
+								_this.init( path );
+							}
+						);
+					});
+					$submenuLi = document.createElement('li');
+					$submenuLi.append($menu);
+					$submenu.append($submenuLi);
+
+					$a.append($submenu);
 					$li.append($a);
 					$ul.append($li);
 				}
