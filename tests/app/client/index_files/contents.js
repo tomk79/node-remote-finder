@@ -28,6 +28,11 @@
 					console.log(response); // => "TypeError: ~"
 					callback(response);
 				});
+			},
+			"open": function(fileinfo, callback){
+				console.log(fileinfo);
+				alert('ファイル ' + fileinfo.path + ' を開きました。');
+				callback(true);
 			}
 		}
 	);

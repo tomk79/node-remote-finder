@@ -6,10 +6,39 @@ window.RemoteFinder = function($elm, options){
 	var _this = this;
 	options = options || {};
 	options.gpiBridge = options.gpiBridge || function(){};
+	options.open = options.open || function(pathinfo, callback){
+		callback();
+	};
 	$elm.classList.add('remote-finder');
 
+	/**
+	 * サーバーサイドスクリプトに問い合わせる
+	 */
 	function gpiBridge(input, callback){
 		options.gpiBridge(input, callback);
+	}
+
+	/**
+	 * ファイルを開く
+	 */
+	function open(path, callback){
+		var ext = null;
+		try{
+			if( path.match(/^[\s\S]*\.([\s\S]+?)$/) ){
+				ext = RegExp.$1.toLowerCase();
+			}
+		}catch(e){}
+
+		var pathinfo = {
+			'path': path,
+			'ext': ext
+		};
+		options.open(pathinfo, function(isCompeted){
+			if( isCompeted ){
+				return;
+			}
+			callback(isCompeted);
+		});
 	}
 
 	/**
@@ -98,18 +127,20 @@ window.RemoteFinder = function($elm, options){
 					$a.textContent = result[idx].name;
 					$a.href = 'javascript:;';
 					$a.setAttribute('data-filename', result[idx].name);
+					$a.setAttribute('data-path', path + result[idx].name);
 					$submenu = document.createElement('ul');
 					$submenu.classList.add('remote-finder__file-list-submenu');
 					if(result[idx].type == 'dir'){
 						$a.textContent += '/';
-						$a.addEventListener('click', function(){
+						$a.addEventListener('click', function(e){
 							var filename = this.getAttribute('data-filename');
 							_this.init( path+filename+'/' );
 						});
 
 					}else if(result[idx].type == 'file'){
-						$a.addEventListener('click', function(){
-							alert('開発中');
+						$a.addEventListener('click', function(e){
+							var path = this.getAttribute('data-path');
+							open( path, function(res){} );
 						});
 					}
 
