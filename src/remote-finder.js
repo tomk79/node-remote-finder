@@ -21,6 +21,11 @@ window.RemoteFinder = function($elm, options){
 		callback( filename );
 		return;
 	};
+	options.rename = options.rename || function(renameFrom, callback){
+		var renameTo = prompt('Rename from '+renameFrom+' to:', renameFrom);
+		callback( renameFrom, renameTo );
+		return;
+	};
 	options.remove = options.remove || function(path_target, callback){
 		callback();
 		return;
@@ -79,6 +84,32 @@ window.RemoteFinder = function($elm, options){
 				return;
 			}
 			callback(filename);
+			return;
+		});
+	}
+
+	/**
+	 * ファイルやフォルダの名前を変更する
+	 */
+	this.rename = function(renameFrom, callback){
+		options.rename(renameFrom, function(renameFrom, renameTo){
+			if( !renameTo ){ return; }
+			if( renameTo == renameFrom ){ return; }
+			gpiBridge(
+				{
+					'api': 'rename',
+					'path': renameFrom,
+					'options': {
+						'to': renameTo
+					}
+				},
+				function(result){
+					if(!result.result){
+						alert(result.message);
+					}
+					callback();
+				}
+			);
 			return;
 		});
 	}
@@ -207,6 +238,20 @@ window.RemoteFinder = function($elm, options){
 							_this.open( path, function(res){} );
 						});
 					}
+
+					$menu = document.createElement('button');
+					$menu.textContent = 'rename';
+					$menu.setAttribute('data-filename', result[idx].name);
+					$menu.addEventListener('click', function(e){
+						e.stopPropagation();
+						var filename = this.getAttribute('data-filename');
+						_this.rename(path+filename, function(){
+							_this.init( path );
+						});
+					});
+					$submenuLi = document.createElement('li');
+					$submenuLi.append($menu);
+					$submenu.append($submenuLi);
 
 					$menu = document.createElement('button');
 					$menu.textContent = 'delete';
