@@ -70,7 +70,18 @@ window.RemoteFinder = function($elm, options){
 			if( !foldername ){
 				return;
 			}
-			callback(foldername);
+			gpiBridge(
+				{
+					'api': 'createNewFolder',
+					'path': current_dir+foldername
+				},
+				function(result){
+					if(!result.result){
+						alert(result.message);
+					}
+					callback();
+				}
+			);
 			return;
 		});
 	}
@@ -83,7 +94,18 @@ window.RemoteFinder = function($elm, options){
 			if( !filename ){
 				return;
 			}
-			callback(filename);
+			gpiBridge(
+				{
+					'api': 'createNewFile',
+					'path': current_dir+filename
+				},
+				function(result){
+					if(!result.result){
+						alert(result.message);
+					}
+					callback();
+				}
+			);
 			return;
 		});
 	}
@@ -119,7 +141,18 @@ window.RemoteFinder = function($elm, options){
 	 */
 	this.remove = function(path_target, callback){
 		options.remove(path_target, function(){
-			callback();
+			gpiBridge(
+				{
+					'api': 'remove',
+					'path': path_target
+				},
+				function(result){
+					if(!result.result){
+						alert(result.message);
+					}
+					callback();
+				}
+			);
 			return;
 		});
 	}
@@ -155,20 +188,8 @@ window.RemoteFinder = function($elm, options){
 				$a.textContent = 'new Folder';
 				$a.href = 'javascript:;';
 				$a.addEventListener('click', function(){
-					_this.mkdir(path, function(foldername){
-						if( !foldername ){ return; }
-						gpiBridge(
-							{
-								'api': 'createNewFolder',
-								'path': path+foldername
-							},
-							function(result){
-								if(!result.result){
-									alert(result.message);
-								}
-								_this.init( path );
-							}
-						);
+					_this.mkdir(path, function(){
+						_this.init( path );
 					});
 				});
 				$li.append($a);
@@ -179,20 +200,8 @@ window.RemoteFinder = function($elm, options){
 				$a.textContent = 'new File';
 				$a.href = 'javascript:;';
 				$a.addEventListener('click', function(){
-					_this.mkfile(path, function(filename){
-						if( !filename ){ return; }
-						gpiBridge(
-							{
-								'api': 'createNewFile',
-								'path': path+filename
-							},
-							function(result){
-								if(!result.result){
-									alert(result.message);
-								}
-								_this.init( path );
-							}
-						);
+					_this.mkfile(path, function(){
+						_this.init( path );
 					});
 				});
 				$li.append($a);
@@ -260,18 +269,7 @@ window.RemoteFinder = function($elm, options){
 						e.stopPropagation();
 						var filename = this.getAttribute('data-filename');
 						_this.remove(path+filename, function(){
-							gpiBridge(
-								{
-									'api': 'remove',
-									'path': path+filename
-								},
-								function(result){
-									if(!result.result){
-										alert(result.message);
-									}
-									_this.init( path );
-								}
-							);
+							_this.init( path );
 						});
 					});
 					$submenuLi = document.createElement('li');
