@@ -4,6 +4,7 @@
  */
 window.RemoteFinder = function($elm, options){
 	var _this = this;
+	var current_dir = '/';
 	options = options || {};
 	options.gpiBridge = options.gpiBridge || function(){};
 	options.open = options.open || function(pathinfo, callback){
@@ -94,9 +95,17 @@ window.RemoteFinder = function($elm, options){
 	}
 
 	/**
+	 * カレントディレクトリを得る
+	 */
+	this.getCurrentDir = function(){
+		return current_dir;
+	}
+
+	/**
 	 * Finderを初期化します。
 	 */
 	this.init = function( path, options, callback ){
+		current_dir = path;
 		callback = callback || function(){};
 		gpiBridge(
 			{

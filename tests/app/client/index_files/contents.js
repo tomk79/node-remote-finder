@@ -1,5 +1,5 @@
 (function(){
-	var remoteFinder = new RemoteFinder(
+	var remoteFinder = window.remoteFinder = new RemoteFinder(
 		document.getElementById('finder1'),
 		{
 			"gpiBridge": function(input, callback){
