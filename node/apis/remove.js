@@ -19,7 +19,7 @@ module.exports = function(path, options, callback){
 	fsX.remove(realpath, function(err){
 		callback({
 			result: !err,
-			message: (err ? err : 'OK')
+			message: (err ? 'Failed to remove file or directory. ' + path : 'OK')
 		});
 	});
 	return;

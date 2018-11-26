@@ -19,7 +19,7 @@ module.exports = function(path, options, callback){
 	fs.mkdir(realpath, function(err){
 		callback({
 			result: !err,
-			message: (err ? err : 'OK')
+			message: (err ? 'Failed to mkdir. ' + path : 'OK')
 		});
 	});
 

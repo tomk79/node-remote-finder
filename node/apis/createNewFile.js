@@ -19,7 +19,7 @@ module.exports = function(path, options, callback){
 	fs.writeFile(realpath, '', function(err){
 		callback({
 			result: !err,
-			message: (err ? err : 'OK')
+			message: (err ? 'Failed to write file. ' + path : 'OK')
 		});
 	});
 	return;

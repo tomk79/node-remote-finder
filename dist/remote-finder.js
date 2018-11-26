@@ -9,6 +9,22 @@ window.RemoteFinder = function($elm, options){
 	options.open = options.open || function(pathinfo, callback){
 		callback();
 	};
+	options.mkdir = options.mkdir || function(current_dir, callback){
+		var foldername = prompt('Folder name:');
+		if( !foldername ){ return; }
+		callback( foldername );
+		return;
+	};
+	options.mkfile = options.mkfile || function(current_dir, callback){
+		var filename = prompt('File name:');
+		if( !filename ){ return; }
+		callback( filename );
+		return;
+	};
+	options.remove = options.remove || function(path_target, callback){
+		callback();
+		return;
+	};
 	$elm.classList.add('remote-finder');
 
 	/**
@@ -21,7 +37,7 @@ window.RemoteFinder = function($elm, options){
 	/**
 	 * ファイルを開く
 	 */
-	function open(path, callback){
+	this.open = function(path, callback){
 		var ext = null;
 		try{
 			if( path.match(/^[\s\S]*\.([\s\S]+?)$/) ){
@@ -42,6 +58,42 @@ window.RemoteFinder = function($elm, options){
 	}
 
 	/**
+	 * フォルダを作成する
+	 */
+	this.mkdir = function(current_dir, callback){
+		options.mkdir(current_dir, function(foldername){
+			if( !foldername ){
+				return;
+			}
+			callback(foldername);
+			return;
+		});
+	}
+
+	/**
+	 * ファイルを作成する
+	 */
+	this.mkfile = function(current_dir, callback){
+		options.mkfile(current_dir, function(filename){
+			if( !filename ){
+				return;
+			}
+			callback(filename);
+			return;
+		});
+	}
+
+	/**
+	 * ファイルやフォルダを削除する
+	 */
+	this.remove = function(path_target, callback){
+		options.remove(path_target, function(){
+			callback();
+			return;
+		});
+	}
+
+	/**
 	 * Finderを初期化します。
 	 */
 	this.init = function( path, options, callback ){
@@ -58,6 +110,56 @@ window.RemoteFinder = function($elm, options){
 				var $ul = document.createElement('ul');
 				$ul.classList.add('remote-finder__file-list');
 
+				// create new file or folder
+				var $li = document.createElement('li');
+				var $a = document.createElement('a');
+				$a.textContent = 'new Folder';
+				$a.href = 'javascript:;';
+				$a.addEventListener('click', function(){
+					_this.mkdir(path, function(foldername){
+						if( !foldername ){ return; }
+						gpiBridge(
+							{
+								'api': 'createNewFolder',
+								'path': path+foldername
+							},
+							function(result){
+								if(!result.result){
+									alert(result.message);
+								}
+								_this.init( path );
+							}
+						);
+					});
+				});
+				$li.append($a);
+				$ul.append($li);
+
+				var $li = document.createElement('li');
+				var $a = document.createElement('a');
+				$a.textContent = 'new File';
+				$a.href = 'javascript:;';
+				$a.addEventListener('click', function(){
+					_this.mkfile(path, function(filename){
+						if( !filename ){ return; }
+						gpiBridge(
+							{
+								'api': 'createNewFile',
+								'path': path+filename
+							},
+							function(result){
+								if(!result.result){
+									alert(result.message);
+								}
+								_this.init( path );
+							}
+						);
+					});
+				});
+				$li.append($a);
+				$ul.append($li);
+
+
 				// parent directory
 				if(path != '/' && path){
 					var $li = document.createElement('li');
@@ -73,52 +175,6 @@ window.RemoteFinder = function($elm, options){
 					$ul.append($li);
 				}
 
-				// create new file or folder
-				var $li = document.createElement('li');
-				var $a = document.createElement('a');
-				$a.textContent = 'new Folder';
-				$a.href = 'javascript:;';
-				$a.addEventListener('click', function(){
-					var foldername = prompt('Folder name:');
-					if( !foldername ){ return; }
-					gpiBridge(
-						{
-							'api': 'createNewFolder',
-							'path': path+foldername
-						},
-						function(result){
-							if(!result.result){
-								alert(result.message);
-							}
-							_this.init( path );
-						}
-					);
-				});
-				$li.append($a);
-				$ul.append($li);
-
-				var $li = document.createElement('li');
-				var $a = document.createElement('a');
-				$a.textContent = 'new File';
-				$a.href = 'javascript:;';
-				$a.addEventListener('click', function(){
-					var filename = prompt('File name:');
-					if( !filename ){ return; }
-					gpiBridge(
-						{
-							'api': 'createNewFile',
-							'path': path+filename
-						},
-						function(result){
-							if(!result.result){
-								alert(result.message);
-							}
-							_this.init( path );
-						}
-					);
-				});
-				$li.append($a);
-				$ul.append($li);
 
 				// contained file and folders
 				for( var idx in result ){
@@ -140,29 +196,30 @@ window.RemoteFinder = function($elm, options){
 					}else if(result[idx].type == 'file'){
 						$a.addEventListener('click', function(e){
 							var path = this.getAttribute('data-path');
-							open( path, function(res){} );
+							_this.open( path, function(res){} );
 						});
 					}
 
-					$menu = document.createElement('a');
+					$menu = document.createElement('button');
 					$menu.textContent = 'delete';
-					$menu.href = 'javascript:;';
 					$menu.setAttribute('data-filename', result[idx].name);
 					$menu.addEventListener('click', function(e){
 						e.stopPropagation();
 						var filename = this.getAttribute('data-filename');
-						gpiBridge(
-							{
-								'api': 'remove',
-								'path': path+filename
-							},
-							function(result){
-								if(!result.result){
-									alert(result.message);
+						_this.remove(path+filename, function(){
+							gpiBridge(
+								{
+									'api': 'remove',
+									'path': path+filename
+								},
+								function(result){
+									if(!result.result){
+										alert(result.message);
+									}
+									_this.init( path );
 								}
-								_this.init( path );
-							}
-						);
+							);
+						});
 					});
 					$submenuLi = document.createElement('li');
 					$submenuLi.append($menu);
