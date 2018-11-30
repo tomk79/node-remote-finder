@@ -27,6 +27,9 @@ window.RemoteFinder = function($elm, options){
 		return;
 	};
 	options.remove = options.remove || function(path_target, callback){
+		if( !confirm('Really?') ){
+			return;
+		}
 		callback();
 		return;
 	};
