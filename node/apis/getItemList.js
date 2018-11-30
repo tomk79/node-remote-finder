@@ -8,8 +8,18 @@ module.exports = function(path, options, callback){
 	var rootDir = this.paths_root_dir.default;
 	var realpath = require('path').resolve(rootDir, './'+path);
 	// console.log(rootDir);
+	var rtn = {
+		result: true,
+		message: "OK",
+		list: []
+	};
 	fs.readdir(realpath, {}, function(err, list){
-		var rtn = [];
+		if(err){
+			rtn.result = false;
+			rtn.message = 'Failed to read directory.';
+			callback(rtn);
+			return;
+		}
 		for(var idx in list){
 			var item = {};
 			item.name = list[idx];
@@ -23,7 +33,7 @@ module.exports = function(path, options, callback){
 				item.ext = RegExp.$1;
 				item.ext = item.ext.toLowerCase();
 			}
-			rtn.push(item);
+			rtn.list.push(item);
 		}
 		callback(rtn);
 	});
