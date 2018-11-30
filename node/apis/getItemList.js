@@ -19,6 +19,9 @@ module.exports = function(path, options, callback){
 			callback(rtn);
 			return;
 		}
+
+		list.sort();
+
 		for(var idx in list){
 			var item = {};
 			item.name = list[idx];
@@ -27,6 +30,11 @@ module.exports = function(path, options, callback){
 			}else if(utils79.is_file(realpath+'/'+item.name)){
 				item.type = 'file';
 			}
+			item.visible = _this.isVisiblePath(path+'/'+item.name);
+			if(!item.visible){
+				continue;
+			}
+			item.writable = _this.isWritablePath(path+'/'+item.name);
 			item.ext = null;
 			if(item.name.match(/\.([a-zA-Z0-9\-\_]+)$/)){
 				item.ext = RegExp.$1;

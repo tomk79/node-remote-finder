@@ -67,8 +67,9 @@ describe('Initialize Instance', function() {
 
 			assert.ok(result.result);
 			assert.equal(result.message, 'OK');
-			assert.equal(result.list.length, 2);
-			assert.equal(result.list[0].name, 'subdir1');
+			assert.equal(result.list.length, 3);
+			assert.equal(result.list[0].name, 'readonly');
+			assert.equal(result.list[1].name, 'subdir1');
 
 			done();
 		});

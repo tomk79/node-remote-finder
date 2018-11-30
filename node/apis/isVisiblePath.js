@@ -2,6 +2,7 @@
  * isVisiblePath.js (Sync)
  */
 module.exports = function(path){
+	path = this.getResolvedPath(path);
 	var blackList = this.options.paths_invisible;
 	var escp = [
 		'(', ')', '[', ']', '{', '}',
@@ -15,6 +16,9 @@ module.exports = function(path){
 		ptn = ptn.split(/\*/).join('[\\s\\S]*');
 		ptn = '^'+ptn+'$';
 		if( path.match( new RegExp(ptn) ) ){
+			return false;
+		}
+		if( (path+'/').match( new RegExp(ptn) ) ){
 			return false;
 		}
 	}

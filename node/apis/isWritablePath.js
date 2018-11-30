@@ -6,6 +6,7 @@ module.exports = function(path){
 		// 見えないパスは書き込みもできないべき。
 		return false;
 	}
+	path = this.getResolvedPath(path);
 	var blackList = this.options.paths_readonly;
 	var escp = [
 		'(', ')', '[', ']', '{', '}',
@@ -19,6 +20,9 @@ module.exports = function(path){
 		ptn = ptn.split(/\*/).join('[\\s\\S]*');
 		ptn = '^'+ptn+'$';
 		if( path.match( new RegExp(ptn) ) ){
+			return false;
+		}
+		if( (path+'/').match( new RegExp(ptn) ) ){
 			return false;
 		}
 	}

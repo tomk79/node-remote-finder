@@ -5,6 +5,14 @@ var urlParse = require('url-parse');
 var RemoteFinder = require('../../../node/main.js'),
 	remoteFinder = new RemoteFinder({
 		"default": require('path').resolve(__dirname, '../../data/root1/')
+	}, {
+		'paths_invisible': [
+			'/invisibles/*',
+			'*.hide'
+		],
+		'paths_readonly': [
+			'/readonly/*',
+		]
 	});
 
 var fs = require('fs');
