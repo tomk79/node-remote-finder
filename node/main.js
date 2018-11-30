@@ -3,7 +3,10 @@
  */
 module.exports = function(paths_root_dir, options){
 	var _this = this;
-	_this.options = options || {};
+	options = options || {};
+	options.paths_readonly = options.paths_readonly || [];
+	options.paths_invisible = options.paths_invisible || [];
+	_this.options = options;
 	this.paths_root_dir = paths_root_dir;
 }
 module.exports.prototype.getItemList = require('./apis/getItemList.js');
@@ -13,6 +16,8 @@ module.exports.prototype.rename = require('./apis/rename.js');
 module.exports.prototype.remove = require('./apis/remove.js');
 module.exports.prototype.getRealpath = require('./apis/getRealpath.js');
 module.exports.prototype.getResolvedPath = require('./apis/getResolvedPath.js');
+module.exports.prototype.isVisiblePath = require('./apis/isVisiblePath.js');
+module.exports.prototype.isWritablePath = require('./apis/isWritablePath.js');
 
 module.exports.prototype.gpi = function(input, callback){
 	callback = callback || function(){};

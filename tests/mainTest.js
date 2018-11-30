@@ -4,6 +4,14 @@ var fsX = require('fs-extra');
 var RemoteFinder = require('../node/main.js');
 var remoteFinder = new RemoteFinder({
 	"default": require('path').resolve(__dirname, 'data/root1/')
+},{
+	'paths_invisible': [
+		'/invisibles/*',
+		'*.hide'
+	],
+	'paths_readonly': [
+		'/readonly/*'
+	]
 });
 
 describe('Initialize Instance', function() {
@@ -22,6 +30,28 @@ describe('Initialize Instance', function() {
 		assert.equal(remoteFinder.getResolvedPath('C:\\test\\test\\test.txt'), '/test/test/test.txt');
 		assert.equal(remoteFinder.getResolvedPath('C:\\test\\..\\test.txt'), '/test.txt');
 		assert.equal(remoteFinder.getResolvedPath('test.txt'), '/test.txt');
+
+		done();
+	});
+
+	it("Invisibles", function(done) {
+		this.timeout(60*1000);
+
+		assert.strictEqual(true, remoteFinder.isVisiblePath('/visible/test.txt'));
+		assert.strictEqual(false, remoteFinder.isVisiblePath('/invisibles/test.txt'));
+		assert.strictEqual(false, remoteFinder.isVisiblePath('/visible/test.hide'));
+
+		done();
+	});
+
+	it("Read only", function(done) {
+		this.timeout(60*1000);
+
+		assert.strictEqual(true, remoteFinder.isWritablePath('/visible/test.txt'));
+		assert.strictEqual(true, remoteFinder.isWritablePath('/writable/test.txt'));
+		assert.strictEqual(false, remoteFinder.isWritablePath('/invisibles/test.txt')); // Invisible なパスは 自動的に ReadOnly になる
+		assert.strictEqual(false, remoteFinder.isWritablePath('/visible/test.hide')); // Invisible なパスは 自動的に ReadOnly になる
+		assert.strictEqual(false, remoteFinder.isWritablePath('/readonly/test.txt'));
 
 		done();
 	});

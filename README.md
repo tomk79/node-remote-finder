@@ -9,6 +9,16 @@ Finder や Explorer のように、サーバー上のファイルとフォルダ
 var RemoteFinder = require('remote-finder'),
     remoteFinder = new RemoteFinder({
         "default": '/path/to/root_dir/'
+    }, {
+        'paths_readonly': [
+            '/readonly/*',
+            '/write_protected/*'
+        ],
+        'paths_invisible': [
+            '/hidefiles/*',
+            '/invisibles/*',
+            '*.hide'
+        ]
     });
 
 var express = require('express'),
