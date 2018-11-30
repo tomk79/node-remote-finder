@@ -10,6 +10,22 @@ module.exports = function(pathFrom, options, callback){
 	var realpathTo = this.getRealpath(pathTo);
 	// console.log(realpathTo);
 
+	if( !this.isWritablePath( pathFrom ) ){
+		callback({
+			result: false,
+			message: "NOT writable path."
+		});
+		return;
+	}
+
+	if( !this.isWritablePath( pathTo ) ){
+		callback({
+			result: false,
+			message: "NOT writable path."
+		});
+		return;
+	}
+
 	if( !fs.existsSync(realpathFrom) ){
 		callback({
 			result: false,

@@ -3,6 +3,15 @@
  */
 module.exports = function(path, options, callback){
 	var fsX = require('fs-extra');
+
+	if( !this.isWritablePath( path ) ){
+		callback({
+			result: false,
+			message: "NOT writable path."
+		});
+		return;
+	}
+
 	var realpath = this.getRealpath(path);
 	// console.log(realpath);
 
