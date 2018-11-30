@@ -11,6 +11,8 @@ module.exports.prototype.createNewFile = require('./apis/createNewFile.js');
 module.exports.prototype.createNewFolder = require('./apis/createNewFolder.js');
 module.exports.prototype.rename = require('./apis/rename.js');
 module.exports.prototype.remove = require('./apis/remove.js');
+module.exports.prototype.getRealpath = require('./apis/getRealpath.js');
+module.exports.prototype.getResolvedPath = require('./apis/getResolvedPath.js');
 
 module.exports.prototype.gpi = function(input, callback){
 	callback = callback || function(){};

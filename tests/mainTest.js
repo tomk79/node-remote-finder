@@ -15,6 +15,17 @@ describe('Initialize Instance', function() {
 		done();
 	});
 
+	it("Resolve Path", function(done) {
+		this.timeout(60*1000);
+
+		assert.equal(remoteFinder.getResolvedPath('\\test\\test\\test.txt'), '/test/test/test.txt');
+		assert.equal(remoteFinder.getResolvedPath('C:\\test\\test\\test.txt'), '/test/test/test.txt');
+		assert.equal(remoteFinder.getResolvedPath('C:\\test\\..\\test.txt'), '/test.txt');
+		assert.equal(remoteFinder.getResolvedPath('test.txt'), '/test.txt');
+
+		done();
+	});
+
 	it("Getting List", function(done) {
 		this.timeout(60*1000);
 
@@ -24,8 +35,10 @@ describe('Initialize Instance', function() {
 		}, function(result){
 			// console.log(result);
 
-			assert.equal(result.length, 2);
-			assert.equal(result[0].name, 'subdir1');
+			assert.ok(result.result);
+			assert.equal(result.message, 'OK');
+			assert.equal(result.list.length, 2);
+			assert.equal(result.list[0].name, 'subdir1');
 
 			done();
 		});

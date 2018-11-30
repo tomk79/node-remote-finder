@@ -5,9 +5,9 @@ module.exports = function(pathFrom, options, callback){
 	var fs = require('fs');
 	var pathTo = options.to;
 	var rootDir = this.paths_root_dir.default;
-	var realpathFrom = require('path').resolve(rootDir, './'+pathFrom);
+	var realpathFrom = this.getRealpath(pathFrom);
 	// console.log(realpathFrom);
-	var realpathTo = require('path').resolve(rootDir, './'+pathTo);
+	var realpathTo = this.getRealpath(pathTo);
 	// console.log(realpathTo);
 
 	if( !fs.existsSync(realpathFrom) ){

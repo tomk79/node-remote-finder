@@ -3,8 +3,7 @@
  */
 module.exports = function(path, options, callback){
 	var fs = require('fs');
-	var rootDir = this.paths_root_dir.default;
-	var realpath = require('path').resolve(rootDir, './'+path);
+	var realpath = this.getRealpath(path);
 	// console.log(realpath);
 
 	if( fs.existsSync(realpath) ){
