@@ -1,10 +1,57 @@
 .remote-finder{
-	display: block;
+	display: flex;
+	flex-direction: column;
 	background-color: #f9f9f9;
+
+	a{
+		background-color: #fff;
+		color: #333;
+		&:hover{
+			background-color: #eee;
+			color: #000;
+		}
+	}
+	button{
+		background-color: #fff;
+		color: #333;
+		border: 1px solid #666;
+		cursor: pointer;
+		&:hover{
+			background-color: #eee;
+			color: #000;
+		}
+	}
+
+	&__menu{
+		margin: 0;
+		padding: 0;
+		display: flex;
+		border-bottom: 1px solid #666;
+		>li{
+			margin: 0;
+			padding: 0;
+			list-style-type: none;
+			border-right: 1px solid #999;
+			&:last-child{
+				border-right: none;
+			}
+			>a{
+				display: block;
+				position: relative;
+				padding: 0.3em 0.5em;
+				box-sizing: border-box;
+				width: 100%; height: 100%;
+				text-overflow: ellipsis;
+				overflow: hidden;
+				white-space: nowrap;
+			}
+		}
+	}
 
 	&__file-list{
 		margin: 0;
 		padding: 0;
+		flex-grow: 1;
 		>li{
 			display: block;
 			margin: 0;
@@ -17,10 +64,12 @@
 			>a{
 				display: block;
 				position: relative;
-				background-color: #fff;
-				color: #333;
 				padding: 0.3em 0.5em;
-				width: auto; height: 100%;
+				box-sizing: border-box;
+				width: 100%; height: 100%;
+				text-overflow: ellipsis;
+				overflow: hidden;
+				white-space: nowrap;
 			}
 		}
 	}
@@ -32,6 +81,7 @@
 		top: 0;
 		right: 0;
 		display: none;
+		overflow: auto;
 		>li{
 			display: inline-block;
 			margin: 0;
@@ -43,10 +93,12 @@
 			}
 			>a{
 				display: block;
-				background-color: #f9f9f9;
-				color: #333;
 				padding: 0.3em 0.5em;
-				width: auto; height: 100%;
+				box-sizing: border-box;
+				width: 100%; height: 100%;
+				text-overflow: ellipsis;
+				overflow: hidden;
+				white-space: nowrap;
 			}
 		}
 	}
@@ -54,4 +106,31 @@
 		display: block;
 	}
 
+	@mixin icons($image: url("images/file.png")) {
+		content: '';
+		display: inline-block;
+		width: 1em;
+		height: 1em;
+		background-image: $image;
+		background-size: contain;
+		vertical-align: middle;
+		margin-right: 0.5em;
+	}
+	&__ico-new-folder::before{
+		@include icons(url("images/new_folder.png"));
+	}
+	&__ico-new-file::before{
+		@include icons(url("images/new_file.png"));
+	}
+	&__ico-folder::before{
+		@include icons(url("images/folder.png"));
+	}
+	&__ico-file::before{
+		@include icons(url("images/file.png"));
+	}
+	&__ico-readonly::after{
+		@include icons(url("images/readonly.png"));
+		margin-right: 0;
+		margin-left: 0.5em;
+	}
 }
