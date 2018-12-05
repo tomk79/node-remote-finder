@@ -264,7 +264,6 @@ window.RemoteFinder = function($elm, options){
 						});
 					}
 
-console.log('=-=-=-=-=', result.list[idx]);
 					if( !result.list[idx].writable ){
 						$a.classList.add('remote-finder__ico-readonly');
 					}
