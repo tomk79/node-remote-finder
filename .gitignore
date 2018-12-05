@@ -39,3 +39,7 @@ package-lock.json
 
 # Optional REPL history
 .node_repl_history
+
+# composer
+composer.lock
+vendor
