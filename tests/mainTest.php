@@ -23,140 +23,127 @@ class mainTest extends PHPUnit_Framework_TestCase{
 
 
 	/**
-	 * 普通にインスタンス化してみるテスト
+	 * Initialize Instance
 	 */
-	public function testStandard(){
+	public function testInitializeInstance(){
 		$this->assertTrue( is_object($this->remoteFinder) );
 	}
 
 
-	// describe('Initialize Instance', function() {
+	/**
+	 * Resolve Path
+	 */
+	public function testResolvePath(){
+		$this->assertSame($this->remoteFinder->getResolvedPath('\\test\\test\\test.txt'), '/test/test/test.txt');
+		$this->assertSame($this->remoteFinder->getResolvedPath('C:\\test\\test\\test.txt'), '/test/test/test.txt');
+		$this->assertSame($this->remoteFinder->getResolvedPath('C:\\test\\..\\test.txt'), '/test.txt');
+		$this->assertSame($this->remoteFinder->getResolvedPath('test.txt'), '/test.txt');
 
-	// 	it("Initialize Instance", function(done) {
-	// 		this.timeout(60*1000);
+	}
 
-	// 		assert.equal(typeof(remoteFinder), typeof({}));
-	// 		done();
-	// 	});
+	/**
+	 * Invisibles
+	 */
+	public function testInvisibles(){
+		$this->assertSame(true, $this->remoteFinder->isVisiblePath('/visible/test.txt'));
+		$this->assertSame(false, $this->remoteFinder->isVisiblePath('/invisibles/test.txt'));
+		$this->assertSame(false, $this->remoteFinder->isVisiblePath('/visible/test.hide'));
+	}
 
-	// 	it("Resolve Path", function(done) {
-	// 		this.timeout(60*1000);
+	/**
+	 * Read only
+	 */
+	public function testReadonly(){
 
-	// 		assert.equal(remoteFinder.getResolvedPath('\\test\\test\\test.txt'), '/test/test/test.txt');
-	// 		assert.equal(remoteFinder.getResolvedPath('C:\\test\\test\\test.txt'), '/test/test/test.txt');
-	// 		assert.equal(remoteFinder.getResolvedPath('C:\\test\\..\\test.txt'), '/test.txt');
-	// 		assert.equal(remoteFinder.getResolvedPath('test.txt'), '/test.txt');
+		$this->assertSame(true, $this->remoteFinder->isWritablePath('/visible/test.txt'));
+		$this->assertSame(true, $this->remoteFinder->isWritablePath('/writable/test.txt'));
+		$this->assertSame(false, $this->remoteFinder->isWritablePath('/invisibles/test.txt')); // Invisible なパスは 自動的に ReadOnly になる
+		$this->assertSame(false, $this->remoteFinder->isWritablePath('/visible/test.hide')); // Invisible なパスは 自動的に ReadOnly になる
+		$this->assertSame(false, $this->remoteFinder->isWritablePath('/readonly/test.txt'));
+	}
 
-	// 		done();
-	// 	});
 
-	// 	it("Invisibles", function(done) {
-	// 		this.timeout(60*1000);
+	/**
+	 * Getting List
+	 */
+	public function testGettingList(){
 
-	// 		assert.strictEqual(true, remoteFinder.isVisiblePath('/visible/test.txt'));
-	// 		assert.strictEqual(false, remoteFinder.isVisiblePath('/invisibles/test.txt'));
-	// 		assert.strictEqual(false, remoteFinder.isVisiblePath('/visible/test.hide'));
+		$this->assertSame(true, $this->remoteFinder->isWritablePath('/visible/test.txt'));
+		$this->assertSame(true, $this->remoteFinder->isWritablePath('/writable/test.txt'));
+		$this->assertSame(false, $this->remoteFinder->isWritablePath('/invisibles/test.txt')); // Invisible なパスは 自動的に ReadOnly になる
+		$this->assertSame(false, $this->remoteFinder->isWritablePath('/visible/test.hide')); // Invisible なパスは 自動的に ReadOnly になる
+		$this->assertSame(false, $this->remoteFinder->isWritablePath('/readonly/test.txt'));
 
-	// 		done();
-	// 	});
+		$result = $this->remoteFinder->gpi(json_decode(json_encode(array(
+			'path' => '/',
+			'api' => 'getItemList'
+		))));
 
-	// 	it("Read only", function(done) {
-	// 		this.timeout(60*1000);
+		$this->assertTrue($result->result);
+		$this->assertSame($result->message, 'OK');
+		$this->assertSame(count($result->list), 3);
+		$this->assertSame($result->list[0]->name, 'readonly');
+		$this->assertSame($result->list[1]->name, 'subdir1');
 
-	// 		assert.strictEqual(true, remoteFinder.isWritablePath('/visible/test.txt'));
-	// 		assert.strictEqual(true, remoteFinder.isWritablePath('/writable/test.txt'));
-	// 		assert.strictEqual(false, remoteFinder.isWritablePath('/invisibles/test.txt')); // Invisible なパスは 自動的に ReadOnly になる
-	// 		assert.strictEqual(false, remoteFinder.isWritablePath('/visible/test.hide')); // Invisible なパスは 自動的に ReadOnly になる
-	// 		assert.strictEqual(false, remoteFinder.isWritablePath('/readonly/test.txt'));
+	}
 
-	// 		done();
-	// 	});
 
-	// 	it("Getting List", function(done) {
-	// 		this.timeout(60*1000);
+	/**
+	 * Creating Folder And Files
+	 */
+	public function testCreatingFolderAndFiles(){
 
-	// 		remoteFinder.gpi({
-	// 			'path': '/',
-	// 			'api': 'getItemList'
-	// 		}, function(result){
-	// 			// console.log(result);
+		$result = $this->remoteFinder->gpi(json_decode(json_encode(array(
+			'path' => '/create_test/',
+			'api' => 'createNewFolder'
+		))));
 
-	// 			assert.ok(result.result);
-	// 			assert.equal(result.message, 'OK');
-	// 			assert.equal(result.list.length, 3);
-	// 			assert.equal(result.list[0].name, 'readonly');
-	// 			assert.equal(result.list[1].name, 'subdir1');
+		// var_dump($result);
+		$this->assertTrue($result->result);
+		$this->assertSame($result->message, 'OK');
 
-	// 			done();
-	// 		});
+		$result = $this->remoteFinder->gpi(json_decode(json_encode(array(
+			'path' => '/create_test/create_test.txt',
+			'api' => 'createNewFile'
+		))));
 
-	// 	});
+		$this->assertTrue($result->result);
+		$this->assertSame($result->message, 'OK');
+		$this->assertTrue(is_file(__DIR__.'/data/root1/create_test/create_test.txt'));
 
-	// 	it("Creating Folder And Files", function(done) {
-	// 		this.timeout(60*1000);
+		$result = $this->remoteFinder->gpi(json_decode(json_encode(array(
+			'path' => '/create_test/create_test_2.txt',
+			'api' => 'createNewFile'
+		))));
 
-	// 		remoteFinder.gpi({
-	// 			'path': '/create_test/',
-	// 			'api': 'createNewFolder'
-	// 		}, function(result){
-	// 			// console.log(result);
-	// 			assert.ok(result.result);
-	// 			assert.equal(result.message, 'OK');
+		$this->assertTrue($result->result);
+		$this->assertSame($result->message, 'OK');
+		$this->assertTrue(is_file(__DIR__.'/data/root1/create_test/create_test_2.txt'));
 
-	// 			remoteFinder.gpi({
-	// 				'path': '/create_test/create_test.txt',
-	// 				'api': 'createNewFile'
-	// 			}, function(result){
-	// 				// console.log(result);
+	}
 
-	// 				assert.ok(result.result);
-	// 				assert.equal(result.message, 'OK');
-	// 				assert.ok(utils79.is_file(__dirname+'/data/root1/create_test/create_test.txt'));
 
-	// 				remoteFinder.gpi({
-	// 					'path': '/create_test/create_test_2.txt',
-	// 					'api': 'createNewFile'
-	// 				}, function(result){
-	// 					// console.log(result);
 
-	// 					assert.ok(result.result);
-	// 					assert.equal(result.message, 'OK');
-	// 					assert.ok(utils79.is_file(__dirname+'/data/root1/create_test/create_test_2.txt'));
+	/**
+	 * Remove Folder And Files
+	 */
+	public function testRemoveFolderAndFiles(){
+		$result = $this->remoteFinder->gpi(json_decode(json_encode(array(
+			'path' => '/create_test/create_test.txt',
+			'api' => 'remove'
+		))));
 
-	// 					done();
-	// 				});
-	// 			});
-	// 		});
+		$this->assertTrue($result->result);
+		$this->assertSame($result->message, 'OK');
 
-	// 	});
+		$result = $this->remoteFinder->gpi(json_decode(json_encode(array(
+			'path' => '/create_test/',
+			'api' => 'remove'
+		))));
 
-	// 	it("Remove Folder And Files", function(done) {
-	// 		this.timeout(60*1000);
-
-	// 		remoteFinder.gpi({
-	// 			'path': '/create_test/create_test.txt',
-	// 			'api': 'remove'
-	// 		}, function(result){
-	// 			// console.log(result);
-	// 			assert.ok(result.result);
-	// 			assert.equal(result.message, 'OK');
-
-	// 			remoteFinder.gpi({
-	// 				'path': '/create_test/',
-	// 				'api': 'remove'
-	// 			}, function(result){
-	// 				// console.log(result);
-
-	// 				assert.ok(result.result);
-	// 				assert.equal(result.message, 'OK');
-	// 				assert.ok(!utils79.is_file(__dirname+'/data/root1/create_test/create_test.txt'));
-
-	// 				done();
-	// 			});
-	// 		});
-
-	// 	});
-
-	// });
+		$this->assertTrue($result->result);
+		$this->assertSame($result->message, 'OK');
+		$this->assertTrue(!is_file(__DIR__.'/data/root1/create_test/create_test.txt'));
+	}
 
 }

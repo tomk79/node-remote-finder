@@ -96,7 +96,7 @@ class main{
 		$result = $this->fs->save_file($realpath, '');
 		return array(
 			'result' => !!$result,
-			'message' => ($result ? 'Failed to write file. ' . $path : 'OK')
+			'message' => (!$result ? 'Failed to write file. ' . $path : 'OK')
 		);
 	}
 
@@ -124,7 +124,7 @@ class main{
 		$result = $this->fs->mkdir($realpath);
 		return array(
 			'result' => !!$result,
-			'message' => ($result ? 'Failed to mkdir. ' . $path : 'OK')
+			'message' => (!$result ? 'Failed to mkdir. ' . $path : 'OK')
 		);
 	}
 
@@ -168,7 +168,7 @@ class main{
 		$result = $this->fs->rename($realpathFrom, $realpathTo);
 		return array(
 			'result' => !!$result,
-			'message' => ($result ? 'Failed to rename file or directory. from ' . $pathFrom . ' to ' . $pathTo : 'OK')
+			'message' => (!$result ? 'Failed to rename file or directory. from ' . $pathFrom . ' to ' . $pathTo : 'OK')
 		);
 	}
 
@@ -195,14 +195,14 @@ class main{
 		$result = $this->fs->rm($realpath);
 		return array(
 			'result' => !!$result,
-			'message' => ($result ? 'Failed to remove file or directory. ' . $path : 'OK')
+			'message' => (!$result ? 'Failed to remove file or directory. ' . $path : 'OK')
 		);
 	}
 
 	/**
 	 * 絶対パスを取得する
 	 */
-	private function getRealpath($path){
+	public function getRealpath($path){
 		$rootDir = $this->paths_root_dir['default'];
 		$resolvedPath = $this->getResolvedPath($path);
 		$realpath = $this->fs->get_realpath('.'.$resolvedPath, $rootDir);
@@ -212,7 +212,7 @@ class main{
 	/**
 	 * パスを解決する
 	 */
-	private function getResolvedPath($path){
+	public function getResolvedPath($path){
 		$resolvedPath = $path;
 		$resolvedPath = preg_replace('/[\\/\\\\]/', '/', $resolvedPath);
 		$resolvedPath = preg_replace('/^[A-Z]\:+/i', '/', $resolvedPath);
@@ -225,7 +225,7 @@ class main{
 	/**
 	 * パスが表示可能か調べる
 	 */
-	private function isVisiblePath($path){
+	public function isVisiblePath($path){
 		$path = $this->getResolvedPath($path);
 		$blackList = $this->paths_invisible;
 		foreach($blackList as $i=>$ptn){
@@ -244,7 +244,7 @@ class main{
 	/**
 	 * パスが書き込み可能か調べる
 	 */
-	private function isWritablePath($path){
+	public function isWritablePath($path){
 		if( !$this->isVisiblePath($path) ){
 			// 見えないパスは書き込みもできないべき。
 			return false;
@@ -274,6 +274,7 @@ class main{
 				$options = $input->options;
 			}
 			$result = $this->{$input->api}($input->path, $options);
+			$result = json_decode( json_encode($result) );
 			return $result;
 		}
 		return false;
