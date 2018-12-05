@@ -77,12 +77,56 @@ class main{
 	 * 新しいファイルを作成する
 	 */
 	private function createNewFile($path, $options){
+		if( !$this->isWritablePath( $path ) ){
+			return array(
+				'result' => false,
+				'message' => "NOT writable path."
+			);
+		}
+
+		$realpath = $this->getRealpath($path);
+
+		if( file_exists($realpath) ){
+			return array(
+				'result' => false,
+				'message' => "Already exists."
+			);
+		}
+
+		$result = $this->fs->save_file($realpath, '');
+		return array(
+			'result' => !!$result,
+			'message' => ($result ? 'Failed to write file. ' . $path : 'OK')
+		);
 	}
 
 	/**
 	 * 新しいフォルダを作成する
 	 */
 	private function createNewFolder($path, $options){
+
+		if( !$this->isWritablePath( $path ) ){
+			return array(
+				'result' => false,
+				'message' => "NOT writable path."
+			);
+		}
+
+		$realpath = $this->getRealpath($path);
+
+		if( file_exists($realpath) ){
+			return array(
+				'result' => false,
+				'message' => "Already exists."
+			);
+		}
+
+		$result = $this->fs->mkdir($realpath);
+		return array(
+			'result' => !!$result,
+			'message' => ($result ? 'Failed to mkdir. ' . $path : 'OK')
+		);
+		return;
 	}
 
 	/**
