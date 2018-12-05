@@ -126,18 +126,78 @@ class main{
 			'result' => !!$result,
 			'message' => ($result ? 'Failed to mkdir. ' . $path : 'OK')
 		);
-		return;
 	}
 
 	/**
 	 * ファイルやフォルダを移動する
 	 */
-	private function rename($pathFrom, $options){}
+	private function rename($pathFrom, $options){
+		$pathTo = $options->to;
+		$rootDir = $this->paths_root_dir['default'];
+		$realpathFrom = $this->getRealpath($pathFrom);
+		$realpathTo = $this->getRealpath($pathTo);
+
+		if( !$this->isWritablePath( $pathFrom ) ){
+			return array(
+				'result' => false,
+				'message' => "NOT writable path."
+			);
+		}
+
+		if( !$this->isWritablePath( $pathTo ) ){
+			return array(
+				'result' => false,
+				'message' => "NOT writable path."
+			);
+		}
+
+		if( !file_exists($realpathFrom) ){
+			return array(
+				'result' => false,
+				'message' => "File or directory NOT exists." . $pathFrom
+			);
+		}
+
+		if( file_exists($realpathTo) ){
+			return array(
+				'result' => false,
+				'message' => "Already exists." . $pathTo
+			);
+		}
+
+		$result = $this->fs->rename($realpathFrom, $realpathTo);
+		return array(
+			'result' => !!$result,
+			'message' => ($result ? 'Failed to rename file or directory. from ' . $pathFrom . ' to ' . $pathTo : 'OK')
+		);
+	}
 
 	/**
 	 * ファイルやフォルダを削除する
 	 */
-	private function remove($path, $options){}
+	private function remove($path, $options){
+		if( !$this->isWritablePath( $path ) ){
+			return array(
+				'result' => false,
+				'message' => "NOT writable path."
+			);
+		}
+
+		$realpath = $this->getRealpath($path);
+
+		if( !file_exists($realpath) ){
+			return array(
+				'result' => false,
+				'message' => "Item NOT exists."
+			);
+		}
+
+		$result = $this->fs->rm($realpath);
+		return array(
+			'result' => !!$result,
+			'message' => ($result ? 'Failed to remove file or directory. ' . $path : 'OK')
+		);
+	}
 
 	/**
 	 * 絶対パスを取得する
