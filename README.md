@@ -3,7 +3,9 @@ Finder や Explorer のように、サーバー上のファイルとフォルダ
 
 ## Usage
 
-### Server Side (NodeJS)
+### Server Side
+
+#### NodeJS
 
 ```js
 var RemoteFinder = require('remote-finder'),
@@ -43,6 +45,28 @@ app.use( '/apis/remote-finder', function(req, res, next){
 server.listen( 3000, function(){
     console.log('server-standby');
 } );
+```
+
+#### PHP
+
+```php
+<?php
+require_once('/path/to/vendor/autoload.php');
+$remoteFinder = new tomk79\remoteFinder\main(array(
+    'default' => '/path/to/root_dir/'
+), array(
+    'paths_invisible' => array(
+        '/invisibles/*',
+        '*.hide'
+    ),
+    'paths_readonly' => array(
+        '/readonly/*',
+    ),
+));
+$value = $remoteFinder->gpi( json_decode( $_REQUEST['data'] ) );
+header('Content-type: text/json');
+echo json_encode($value);
+exit;
 ```
 
 ### Client Side
@@ -126,10 +150,10 @@ remoteFinder.init('/', {}, function(){
 </script>
 ```
 
+
 ## 更新履歴 - Change log
 
-
-### remote-finder v0.0.1 (リリース日未定)
+### remote-finder v0.0.1 (2018年12月5日)
 
 - 初回リリース
 
