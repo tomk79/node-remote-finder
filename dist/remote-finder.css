@@ -104,7 +104,7 @@
     display: inline-block;
     width: 1em;
     height: 1em;
-    background-image: url("images/new_folder.png");
+    background-image: url("images/new_folder.svg");
     background-size: contain;
     vertical-align: middle;
     margin-right: 0.5em; }
@@ -113,7 +113,7 @@
     display: inline-block;
     width: 1em;
     height: 1em;
-    background-image: url("images/new_file.png");
+    background-image: url("images/new_file.svg");
     background-size: contain;
     vertical-align: middle;
     margin-right: 0.5em; }
@@ -122,7 +122,7 @@
     display: inline-block;
     width: 1em;
     height: 1em;
-    background-image: url("images/folder.png");
+    background-image: url("images/folder.svg");
     background-size: contain;
     vertical-align: middle;
     margin-right: 0.5em; }
@@ -131,7 +131,7 @@
     display: inline-block;
     width: 1em;
     height: 1em;
-    background-image: url("images/file.png");
+    background-image: url("images/file.svg");
     background-size: contain;
     vertical-align: middle;
     margin-right: 0.5em; }
@@ -140,7 +140,7 @@
     display: inline-block;
     width: 1em;
     height: 1em;
-    background-image: url("images/readonly.png");
+    background-image: url("images/readonly.svg");
     background-size: contain;
     vertical-align: middle;
     margin-right: 0.5em;

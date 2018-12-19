@@ -113,7 +113,7 @@
 		display: block;
 	}
 
-	@mixin icons($image: url("images/file.png")) {
+	@mixin icons($image: url("images/file.svg")) {
 		content: '';
 		display: inline-block;
 		width: 1em;
@@ -124,19 +124,19 @@
 		margin-right: 0.5em;
 	}
 	&__ico-new-folder::before{
-		@include icons(url("images/new_folder.png"));
+		@include icons(url("images/new_folder.svg"));
 	}
 	&__ico-new-file::before{
-		@include icons(url("images/new_file.png"));
+		@include icons(url("images/new_file.svg"));
 	}
 	&__ico-folder::before{
-		@include icons(url("images/folder.png"));
+		@include icons(url("images/folder.svg"));
 	}
 	&__ico-file::before{
-		@include icons(url("images/file.png"));
+		@include icons(url("images/file.svg"));
 	}
 	&__ico-readonly::after{
-		@include icons(url("images/readonly.png"));
+		@include icons(url("images/readonly.svg"));
 		margin-right: 0;
 		margin-left: 0.5em;
 	}
