@@ -220,6 +220,42 @@ window.RemoteFinder = function($elm, options){
 
 				$elm.append($ulMenu);
 
+				// Breadcrumb
+				var $ulBreadcrumb = document.createElement('ul');
+				$ulBreadcrumb.classList.add('remote-finder__breadcrumb');
+				var breadcrumb = path.replace(/^\/+/, '').replace(/\/+$/, '').split('/');
+				var $li = document.createElement('li');
+				var $a = document.createElement('a');
+				$a.textContent = '/';
+				$a.href = 'javascript:;';
+				$a.addEventListener('click', function(){
+					_this.init( '/' );
+				});
+				$li.append($a);
+				$ulBreadcrumb.append($li);
+				var tmpCurrentPath = '';
+				for(var i = 0; i < breadcrumb.length; i ++){
+					if( !breadcrumb[i].length ){
+						continue;
+					}
+					var $li = document.createElement('li');
+					var $a = document.createElement('a');
+					$a.textContent = breadcrumb[i];
+					$a.href = 'javascript:;';
+					$a.setAttribute('data-filename', breadcrumb[i]);
+					$a.setAttribute('data-path', '/' + tmpCurrentPath + breadcrumb[i] + '/');
+					$a.addEventListener('click', function(){
+						var targetPath = this.getAttribute('data-path');
+						_this.init( targetPath );
+					});
+					$li.append($a);
+					$ulBreadcrumb.append($li);
+					tmpCurrentPath += breadcrumb[i] + '/';
+				}
+
+				$elm.append($ulBreadcrumb);
+
+				// File list
 				var $ul = document.createElement('ul');
 				$ul.classList.add('remote-finder__file-list');
 

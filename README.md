@@ -153,6 +153,11 @@ remoteFinder.init('/', {}, function(){
 
 ## 更新履歴 - Change log
 
+### remote-finder v0.0.2 (リリース日未定)
+
+- パンくずを表示するようになった。
+- アイコンを改善。
+
 ### remote-finder v0.0.1 (2018年12月5日)
 
 - 初回リリース

@@ -50,6 +50,37 @@
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap; }
+  .remote-finder__breadcrumb {
+    margin: 0 !important;
+    padding: 0 !important;
+    display: -ms-flexbox;
+    display: flex;
+    overflow: auto;
+    border-bottom: 1px solid #666;
+    max-width: 100%;
+    -ms-flex-negative: 0;
+        flex-shrink: 0;
+    -ms-flex-wrap: wrap;
+        flex-wrap: wrap; }
+    .remote-finder__breadcrumb > li {
+      display: block;
+      margin: 0;
+      padding: 0;
+      list-style-type: none;
+      border-right: 1px solid #999;
+      max-width: 100%; }
+      .remote-finder__breadcrumb > li:last-child {
+        border-right: none; }
+      .remote-finder__breadcrumb > li > a {
+        display: block;
+        position: relative;
+        padding: 0.3em 0.5em;
+        box-sizing: border-box;
+        width: 100%;
+        height: 100%;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap; }
   .remote-finder__file-list {
     margin: 0 !important;
     padding: 0 !important;
