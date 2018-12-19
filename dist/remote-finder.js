@@ -221,10 +221,13 @@ window.RemoteFinder = function($elm, options){
 				$elm.append($ulMenu);
 
 				// Breadcrumb
+				var tmpCurrentPath = '';
+				var tmpZIndex = 10000;
 				var $ulBreadcrumb = document.createElement('ul');
 				$ulBreadcrumb.classList.add('remote-finder__breadcrumb');
 				var breadcrumb = path.replace(/^\/+/, '').replace(/\/+$/, '').split('/');
 				var $li = document.createElement('li');
+				$li.style.zIndex = tmpZIndex;tmpZIndex --;
 				var $a = document.createElement('a');
 				$a.textContent = '/';
 				$a.href = 'javascript:;';
@@ -233,12 +236,12 @@ window.RemoteFinder = function($elm, options){
 				});
 				$li.append($a);
 				$ulBreadcrumb.append($li);
-				var tmpCurrentPath = '';
 				for(var i = 0; i < breadcrumb.length; i ++){
 					if( !breadcrumb[i].length ){
 						continue;
 					}
 					var $li = document.createElement('li');
+					$li.style.zIndex = tmpZIndex;tmpZIndex --;
 					var $a = document.createElement('a');
 					$a.textContent = breadcrumb[i];
 					$a.href = 'javascript:;';

@@ -9,7 +9,8 @@
   overflow: hidden; }
   .remote-finder a {
     background-color: #fff;
-    color: #333; }
+    color: #333;
+    text-decoration: none; }
     .remote-finder a:hover {
       background-color: #eee;
       color: #000; }
@@ -38,8 +39,6 @@
       list-style-type: none;
       border-right: 1px solid #999;
       max-width: 100%; }
-      .remote-finder__menu > li:last-child {
-        border-right: none; }
       .remote-finder__menu > li > a {
         display: block;
         position: relative;
@@ -56,6 +55,7 @@
     display: -ms-flexbox;
     display: flex;
     overflow: auto;
+    position: relative;
     border-bottom: 1px solid #666;
     max-width: 100%;
     -ms-flex-negative: 0;
@@ -67,20 +67,47 @@
       margin: 0;
       padding: 0;
       list-style-type: none;
-      border-right: 1px solid #999;
-      max-width: 100%; }
+      border-right: none;
+      max-width: 100%;
+      position: relative; }
       .remote-finder__breadcrumb > li:last-child {
         border-right: none; }
       .remote-finder__breadcrumb > li > a {
         display: block;
         position: relative;
-        padding: 0.3em 0.5em;
+        padding: 0.3em 0.5em 0.3em 1em;
         box-sizing: border-box;
         width: 100%;
         height: 100%;
         text-overflow: ellipsis;
-        overflow: hidden;
         white-space: nowrap; }
+        .remote-finder__breadcrumb > li > a::before {
+          content: " ";
+          display: block;
+          position: absolute;
+          right: -5px;
+          top: 0;
+          width: 15px;
+          height: 50%;
+          border-right: 1px solid #999;
+          background-color: #fff;
+          transform: skew(30deg); }
+        .remote-finder__breadcrumb > li > a::after {
+          content: " ";
+          display: block;
+          position: absolute;
+          right: -5px;
+          bottom: 0;
+          width: 15px;
+          height: 50%;
+          border-right: 1px solid #999;
+          background-color: #fff;
+          transform: skew(-30deg); }
+        .remote-finder__breadcrumb > li > a:hover::before, .remote-finder__breadcrumb > li > a:hover::after {
+          background-color: #eee;
+          color: #000; }
+      .remote-finder__breadcrumb > li:first-child > a {
+        padding-left: 0.3em; }
   .remote-finder__file-list {
     margin: 0 !important;
     padding: 0 !important;
