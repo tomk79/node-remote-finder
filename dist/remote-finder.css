@@ -31,8 +31,8 @@
     max-width: 100%;
     -ms-flex-negative: 0;
         flex-shrink: 0;
-    -ms-flex-wrap: wrap;
-        flex-wrap: wrap; }
+    -ms-flex-wrap: nowrap;
+        flex-wrap: nowrap; }
     .remote-finder__menu > li {
       margin: 0;
       padding: 0;
@@ -49,7 +49,16 @@
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap; }
-  .remote-finder__breadcrumb {
+      .remote-finder__menu > li > input[type=text] {
+        width: 100%;
+        height: 100%;
+        box-sizing: border-box;
+        border: 0;
+        margin: 0;
+        line-height: 1;
+        border-radius: 0;
+        outline: none; }
+  .remote-finder__path-bar {
     margin: 0 !important;
     padding: 0 !important;
     display: -ms-flexbox;
@@ -62,7 +71,7 @@
         flex-shrink: 0;
     -ms-flex-wrap: wrap;
         flex-wrap: wrap; }
-    .remote-finder__breadcrumb > li {
+    .remote-finder__path-bar > li {
       display: block;
       margin: 0;
       padding: 0;
@@ -70,9 +79,9 @@
       border-right: none;
       max-width: 100%;
       position: relative; }
-      .remote-finder__breadcrumb > li:last-child {
+      .remote-finder__path-bar > li:last-child {
         border-right: none; }
-      .remote-finder__breadcrumb > li > a {
+      .remote-finder__path-bar > li > a {
         display: block;
         position: relative;
         padding: 0.3em 0.5em 0.3em 1em;
@@ -81,7 +90,7 @@
         height: 100%;
         text-overflow: ellipsis;
         white-space: nowrap; }
-        .remote-finder__breadcrumb > li > a::before {
+        .remote-finder__path-bar > li > a::before {
           content: " ";
           display: block;
           position: absolute;
@@ -92,7 +101,7 @@
           border-right: 1px solid #999;
           background-color: #fff;
           transform: skew(30deg); }
-        .remote-finder__breadcrumb > li > a::after {
+        .remote-finder__path-bar > li > a::after {
           content: " ";
           display: block;
           position: absolute;
@@ -103,10 +112,10 @@
           border-right: 1px solid #999;
           background-color: #fff;
           transform: skew(-30deg); }
-        .remote-finder__breadcrumb > li > a:hover::before, .remote-finder__breadcrumb > li > a:hover::after {
+        .remote-finder__path-bar > li > a:hover::before, .remote-finder__path-bar > li > a:hover::after {
           background-color: #eee;
           color: #000; }
-      .remote-finder__breadcrumb > li:first-child > a {
+      .remote-finder__path-bar > li:first-child > a {
         padding-left: 0.3em; }
   .remote-finder__file-list {
     margin: 0 !important;

@@ -4,6 +4,7 @@
 window.RemoteFinder = function($elm, options){
 	var _this = this;
 	var current_dir = '/';
+	var filter = '';
 	options = options || {};
 	options.gpiBridge = options.gpiBridge || function(){};
 	options.open = options.open || function(pathinfo, callback){
@@ -187,43 +188,60 @@ window.RemoteFinder = function($elm, options){
 				$elm.innerHTML = '';
 				// callback(result);
 
+				// --------------------------------------
+				// MENU
 				var $ulMenu = document.createElement('ul');
 				$ulMenu.classList.add('remote-finder__menu');
 
-				// create new file or folder
+				// create new folder
 				var $li = document.createElement('li');
 				var $a = document.createElement('a');
 				$a.textContent = 'New Folder';
 				$a.classList.add('remote-finder__ico-new-folder');
 				$a.href = 'javascript:;';
 				$a.addEventListener('click', function(){
-					_this.mkdir(path, function(){
-						_this.init( path );
+					_this.mkdir(current_dir, function(){
+						_this.init( current_dir );
 					});
 				});
 				$li.append($a);
 				$ulMenu.append($li);
 
+				// create new file
 				var $li = document.createElement('li');
 				var $a = document.createElement('a');
 				$a.textContent = 'New File';
 				$a.classList.add('remote-finder__ico-new-file');
 				$a.href = 'javascript:;';
 				$a.addEventListener('click', function(){
-					_this.mkfile(path, function(){
-						_this.init( path );
+					_this.mkfile(current_dir, function(){
+						_this.init( current_dir );
 					});
 				});
 				$li.append($a);
 				$ulMenu.append($li);
 
+				// file name filter
+				var $li = document.createElement('li');
+				var $input = document.createElement('input');
+				$input.placeholder = 'Filter...';
+				$input.type = 'text';
+				$input.value = filter;
+				$input.addEventListener('change', function(){
+					filter = this.value;
+					_this.init( current_dir );
+				});
+				$li.append($input);
+				$ulMenu.append($li);
+
 				$elm.append($ulMenu);
 
-				// Breadcrumb
+				// --------------------------------------
+				// Path Bar
 				var tmpCurrentPath = '';
 				var tmpZIndex = 10000;
 				var $ulBreadcrumb = document.createElement('ul');
-				$ulBreadcrumb.classList.add('remote-finder__breadcrumb');
+				$ulBreadcrumb.classList.add('remote-finder__path-bar');
 				var breadcrumb = path.replace(/^\/+/, '').replace(/\/+$/, '').split('/');
 				var $li = document.createElement('li');
 				$li.style.zIndex = tmpZIndex;tmpZIndex --;
@@ -257,6 +275,7 @@ window.RemoteFinder = function($elm, options){
 
 				$elm.append($ulBreadcrumb);
 
+				// --------------------------------------
 				// File list
 				var $ul = document.createElement('ul');
 				$ul.classList.add('remote-finder__file-list');
@@ -279,6 +298,12 @@ window.RemoteFinder = function($elm, options){
 
 				// contained file and folders
 				for( var idx in result.list ){
+					if( filter.length ){
+						if( result.list[idx].name.split(filter).length < 2 ){
+							continue;
+						}
+					}
+
 					var $li = document.createElement('li');
 					var $a = document.createElement('a');
 					$a.textContent = result.list[idx].name;
