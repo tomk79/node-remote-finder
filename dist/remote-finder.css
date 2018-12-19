@@ -39,6 +39,8 @@
       list-style-type: none;
       border-right: 1px solid #999;
       max-width: 100%; }
+      .remote-finder__menu > li:last-child {
+        border-right: none; }
       .remote-finder__menu > li > a {
         display: block;
         position: relative;

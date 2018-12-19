@@ -40,6 +40,9 @@
 			list-style-type: none;
 			border-right: 1px solid #999;
 			max-width: 100%;
+			&:last-child{
+				border-right: none;
+			}
 			>a{
 				display: block;
 				position: relative;

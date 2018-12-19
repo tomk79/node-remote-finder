@@ -6,6 +6,8 @@ window.RemoteFinder = function($elm, options){
 	var _this = this;
 	var current_dir = '/';
 	var filter = '';
+	var $pathBar;
+	var $fileList;
 	options = options || {};
 	options.gpiBridge = options.gpiBridge || function(){};
 	options.open = options.open || function(pathinfo, callback){
@@ -170,9 +172,9 @@ window.RemoteFinder = function($elm, options){
 	}
 
 	/**
-	 * Finderを初期化します。
+	 * カレントディレクトリをセットする
 	 */
-	this.init = function( path, options, callback ){
+	this.setCurrentDir = function(path, callback){
 		current_dir = path;
 		callback = callback || function(){};
 		gpiBridge(
@@ -186,63 +188,12 @@ window.RemoteFinder = function($elm, options){
 					alert( result.message );
 					return;
 				}
-				$elm.innerHTML = '';
-				// callback(result);
-
-				// --------------------------------------
-				// MENU
-				var $ulMenu = document.createElement('ul');
-				$ulMenu.classList.add('remote-finder__menu');
-
-				// create new folder
-				var $li = document.createElement('li');
-				var $a = document.createElement('a');
-				$a.textContent = 'New Folder';
-				$a.classList.add('remote-finder__ico-new-folder');
-				$a.href = 'javascript:;';
-				$a.addEventListener('click', function(){
-					_this.mkdir(current_dir, function(){
-						_this.init( current_dir );
-					});
-				});
-				$li.append($a);
-				$ulMenu.append($li);
-
-				// create new file
-				var $li = document.createElement('li');
-				var $a = document.createElement('a');
-				$a.textContent = 'New File';
-				$a.classList.add('remote-finder__ico-new-file');
-				$a.href = 'javascript:;';
-				$a.addEventListener('click', function(){
-					_this.mkfile(current_dir, function(){
-						_this.init( current_dir );
-					});
-				});
-				$li.append($a);
-				$ulMenu.append($li);
-
-				// file name filter
-				var $li = document.createElement('li');
-				var $input = document.createElement('input');
-				$input.placeholder = 'Filter...';
-				$input.type = 'text';
-				$input.value = filter;
-				$input.addEventListener('change', function(){
-					filter = this.value;
-					_this.init( current_dir );
-				});
-				$li.append($input);
-				$ulMenu.append($li);
-
-				$elm.append($ulMenu);
 
 				// --------------------------------------
 				// Path Bar
+				$pathBar.innerHTML = '';
 				var tmpCurrentPath = '';
 				var tmpZIndex = 10000;
-				var $ulBreadcrumb = document.createElement('ul');
-				$ulBreadcrumb.classList.add('remote-finder__path-bar');
 				var breadcrumb = path.replace(/^\/+/, '').replace(/\/+$/, '').split('/');
 				var $li = document.createElement('li');
 				$li.style.zIndex = tmpZIndex;tmpZIndex --;
@@ -250,10 +201,10 @@ window.RemoteFinder = function($elm, options){
 				$a.textContent = '/';
 				$a.href = 'javascript:;';
 				$a.addEventListener('click', function(){
-					_this.init( '/' );
+					_this.setCurrentDir( '/' );
 				});
 				$li.append($a);
-				$ulBreadcrumb.append($li);
+				$pathBar.append($li);
 				for(var i = 0; i < breadcrumb.length; i ++){
 					if( !breadcrumb[i].length ){
 						continue;
@@ -267,19 +218,18 @@ window.RemoteFinder = function($elm, options){
 					$a.setAttribute('data-path', '/' + tmpCurrentPath + breadcrumb[i] + '/');
 					$a.addEventListener('click', function(){
 						var targetPath = this.getAttribute('data-path');
-						_this.init( targetPath );
+						_this.setCurrentDir( targetPath );
 					});
 					$li.append($a);
-					$ulBreadcrumb.append($li);
+					$pathBar.append($li);
 					tmpCurrentPath += breadcrumb[i] + '/';
 				}
 
-				$elm.append($ulBreadcrumb);
+				$elm.append($pathBar);
 
 				// --------------------------------------
 				// File list
-				var $ul = document.createElement('ul');
-				$ul.classList.add('remote-finder__file-list');
+				$fileList.innerHTML = '';
 
 				// parent directory
 				if(path != '/' && path){
@@ -290,10 +240,10 @@ window.RemoteFinder = function($elm, options){
 					$a.addEventListener('click', function(){
 						var tmp_path = path;
 						tmp_path = tmp_path.replace(/\/(?:[^\/]*\/?)$/, '/');
-						_this.init( tmp_path );
+						_this.setCurrentDir( tmp_path );
 					});
 					$li.append($a);
-					$ul.append($li);
+					$fileList.append($li);
 				}
 
 
@@ -318,7 +268,7 @@ window.RemoteFinder = function($elm, options){
 						$a.classList.add('remote-finder__ico-folder');
 						$a.addEventListener('click', function(e){
 							var filename = this.getAttribute('data-filename');
-							_this.init( path+filename+'/' );
+							_this.setCurrentDir( path+filename+'/' );
 						});
 
 					}else if(result.list[idx].type == 'file'){
@@ -340,7 +290,7 @@ window.RemoteFinder = function($elm, options){
 						e.stopPropagation();
 						var filename = this.getAttribute('data-filename');
 						_this.rename(path+filename, function(){
-							_this.init( path );
+							_this.setCurrentDir( path );
 						});
 					});
 					$submenuLi = document.createElement('li');
@@ -354,7 +304,7 @@ window.RemoteFinder = function($elm, options){
 						e.stopPropagation();
 						var filename = this.getAttribute('data-filename');
 						_this.remove(path+filename, function(){
-							_this.init( path );
+							_this.setCurrentDir( path );
 						});
 					});
 					$submenuLi = document.createElement('li');
@@ -363,12 +313,85 @@ window.RemoteFinder = function($elm, options){
 
 					$a.append($submenu);
 					$li.append($a);
-					$ul.append($li);
+					$fileList.append($li);
 				}
-				$elm.append($ul);
+				$elm.append($fileList);
 			}
 		);
 		return;
+	}
+
+	/**
+	 * Finderを初期化します。
+	 */
+	this.init = function( path, options, callback ){
+		current_dir = path;
+		callback = callback || function(){};
+
+
+		// --------------------------------------
+		// MENU
+		var $ulMenu = document.createElement('ul');
+		$ulMenu.classList.add('remote-finder__menu');
+
+		// create new folder
+		var $li = document.createElement('li');
+		var $a = document.createElement('a');
+		$a.textContent = 'New Folder';
+		$a.classList.add('remote-finder__ico-new-folder');
+		$a.href = 'javascript:;';
+		$a.addEventListener('click', function(){
+			_this.mkdir(current_dir, function(){
+				_this.setCurrentDir( current_dir );
+			});
+		});
+		$li.append($a);
+		$ulMenu.append($li);
+
+		// create new file
+		var $li = document.createElement('li');
+		var $a = document.createElement('a');
+		$a.textContent = 'New File';
+		$a.classList.add('remote-finder__ico-new-file');
+		$a.href = 'javascript:;';
+		$a.addEventListener('click', function(){
+			_this.mkfile(current_dir, function(){
+				_this.setCurrentDir( current_dir );
+			});
+		});
+		$li.append($a);
+		$ulMenu.append($li);
+
+		// file name filter
+		var $li = document.createElement('li');
+		var $input = document.createElement('input');
+		$input.placeholder = 'Filter...';
+		$input.type = 'text';
+		$input.value = filter;
+		$input.addEventListener('change', function(){
+			filter = this.value;
+			_this.setCurrentDir( current_dir );
+		});
+		$li.append($input);
+		$ulMenu.append($li);
+
+		$elm.append($ulMenu);
+
+		// --------------------------------------
+		// Path Bar
+		$pathBar = document.createElement('ul');
+		$pathBar.classList.add('remote-finder__path-bar');
+
+		$elm.append($pathBar);
+
+		// --------------------------------------
+		// File list
+		$fileList = document.createElement('ul');
+		$fileList.classList.add('remote-finder__file-list');
+
+		$elm.append($fileList);
+
+		this.setCurrentDir(path, callback);
 	}
 }
 
