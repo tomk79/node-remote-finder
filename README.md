@@ -153,7 +153,7 @@ remoteFinder.init('/', {}, function(){
 
 ## 更新履歴 - Change log
 
-### remote-finder v0.0.2 (リリース日未定)
+### remote-finder v0.0.2 (2018年12月19日)
 
 - パンくずを表示するようになった。
 - ファイルやフォルダのコピー機能を追加。
