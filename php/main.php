@@ -32,7 +32,7 @@ class main{
 	/**
 	 * ファイルとフォルダの一覧を取得する
 	 */
-	private function getItemList($path, $options){
+	private function gpi_getItemList($path, $options){
 		$realpath = $this->getRealpath($path);
 		// var_dump($realpath);
 		$rtn = array(
@@ -76,7 +76,7 @@ class main{
 	/**
 	 * 新しいファイルを作成する
 	 */
-	private function createNewFile($path, $options){
+	private function gpi_createNewFile($path, $options){
 		if( !$this->isWritablePath( $path ) ){
 			return array(
 				'result' => false,
@@ -103,7 +103,7 @@ class main{
 	/**
 	 * 新しいフォルダを作成する
 	 */
-	private function createNewFolder($path, $options){
+	private function gpi_createNewFolder($path, $options){
 
 		if( !$this->isWritablePath( $path ) ){
 			return array(
@@ -129,9 +129,46 @@ class main{
 	}
 
 	/**
+	 * ファイルやフォルダを複製する
+	 */
+	private function gpi_copy($pathFrom, $options){
+		$pathTo = $options->to;
+		$rootDir = $this->paths_root_dir['default'];
+		$realpathFrom = $this->getRealpath($pathFrom);
+		$realpathTo = $this->getRealpath($pathTo);
+
+		if( !$this->isWritablePath( $pathTo ) ){
+			return array(
+				'result' => false,
+				'message' => "NOT writable path."
+			);
+		}
+
+		if( !file_exists($realpathFrom) ){
+			return array(
+				'result' => false,
+				'message' => "File or directory NOT exists." . $pathFrom
+			);
+		}
+
+		if( file_exists($realpathTo) ){
+			return array(
+				'result' => false,
+				'message' => "Already exists." . $pathTo
+			);
+		}
+
+		$result = $this->fs->copy_r($realpathFrom, $realpathTo);
+		return array(
+			'result' => !!$result,
+			'message' => (!$result ? 'Failed to copy file or directory. from ' . $pathFrom . ' to ' . $pathTo : 'OK')
+		);
+	}
+
+	/**
 	 * ファイルやフォルダを移動する
 	 */
-	private function rename($pathFrom, $options){
+	private function gpi_rename($pathFrom, $options){
 		$pathTo = $options->to;
 		$rootDir = $this->paths_root_dir['default'];
 		$realpathFrom = $this->getRealpath($pathFrom);
@@ -175,7 +212,7 @@ class main{
 	/**
 	 * ファイルやフォルダを削除する
 	 */
-	private function remove($path, $options){
+	private function gpi_remove($path, $options){
 		if( !$this->isWritablePath( $path ) ){
 			return array(
 				'result' => false,
@@ -268,12 +305,15 @@ class main{
 	 * General Purpose Interface
 	 */
 	public function gpi($input){
-		if( is_callable( array($this, $input->api) ) ){
+		if( preg_match('/[^a-zA-Z0-9]/', $input->api) ){
+			return false;
+		}
+		if( is_callable( array($this, 'gpi_'.$input->api) ) ){
 			$options = json_decode('{}');
 			if( property_exists($input, 'options') ){
 				$options = $input->options;
 			}
-			$result = $this->{$input->api}($input->path, $options);
+			$result = $this->{'gpi_'.$input->api}($input->path, $options);
 			$result = json_decode( json_encode($result) );
 			return $result;
 		}

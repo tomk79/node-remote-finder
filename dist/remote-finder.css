@@ -204,6 +204,33 @@
     background-size: contain;
     vertical-align: middle;
     margin-right: 0.5em; }
+  .remote-finder__ico-copy::before {
+    content: '';
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    background-image: url("images/copy.svg");
+    background-size: contain;
+    vertical-align: middle;
+    margin-right: 0.5em; }
+  .remote-finder__ico-rename::before {
+    content: '';
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    background-image: url("images/rename.svg");
+    background-size: contain;
+    vertical-align: middle;
+    margin-right: 0.5em; }
+  .remote-finder__ico-delete::before {
+    content: '';
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    background-image: url("images/delete.svg");
+    background-size: contain;
+    vertical-align: middle;
+    margin-right: 0.5em; }
   .remote-finder__ico-readonly::after {
     content: '';
     display: inline-block;

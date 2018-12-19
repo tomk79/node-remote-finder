@@ -216,6 +216,15 @@
 	&__ico-file::before{
 		@include icons(url("images/file.svg"));
 	}
+	&__ico-copy::before{
+		@include icons(url("images/copy.svg"));
+	}
+	&__ico-rename::before{
+		@include icons(url("images/rename.svg"));
+	}
+	&__ico-delete::before{
+		@include icons(url("images/delete.svg"));
+	}
 	&__ico-readonly::after{
 		@include icons(url("images/readonly.svg"));
 		margin-right: 0;

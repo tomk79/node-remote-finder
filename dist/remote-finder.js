@@ -25,6 +25,11 @@ window.RemoteFinder = function($elm, options){
 		callback( filename );
 		return;
 	};
+	options.copy = options.copy || function(copyFrom, callback){
+		var copyTo = prompt('Copy from '+copyFrom+' to:', copyFrom);
+		callback( copyFrom, copyTo );
+		return;
+	};
 	options.rename = options.rename || function(renameFrom, callback){
 		var renameTo = prompt('Rename from '+renameFrom+' to:', renameFrom);
 		callback( renameFrom, renameTo );
@@ -105,6 +110,32 @@ window.RemoteFinder = function($elm, options){
 				{
 					'api': 'createNewFile',
 					'path': current_dir+filename
+				},
+				function(result){
+					if(!result.result){
+						alert(result.message);
+					}
+					callback();
+				}
+			);
+			return;
+		});
+	}
+
+	/**
+	 * ファイルやフォルダを複製する
+	 */
+	this.copy = function(copyFrom, callback){
+		options.copy(copyFrom, function(copyFrom, copyTo){
+			if( !copyTo ){ return; }
+			if( copyTo == copyFrom ){ return; }
+			gpiBridge(
+				{
+					'api': 'copy',
+					'path': copyFrom,
+					'options': {
+						'to': copyTo
+					}
 				},
 				function(result){
 					if(!result.result){
@@ -283,8 +314,26 @@ window.RemoteFinder = function($elm, options){
 						$a.classList.add('remote-finder__ico-readonly');
 					}
 
+					// copy
+					$menu = document.createElement('button');
+					$menu.textContent = 'copy';
+					$menu.classList.add('remote-finder__ico-copy');
+					$menu.setAttribute('data-filename', result.list[idx].name);
+					$menu.addEventListener('click', function(e){
+						e.stopPropagation();
+						var filename = this.getAttribute('data-filename');
+						_this.copy(path+filename, function(){
+							_this.setCurrentDir( path );
+						});
+					});
+					$submenuLi = document.createElement('li');
+					$submenuLi.append($menu);
+					$submenu.append($submenuLi);
+
+					// rename
 					$menu = document.createElement('button');
 					$menu.textContent = 'rename';
+					$menu.classList.add('remote-finder__ico-rename');
 					$menu.setAttribute('data-filename', result.list[idx].name);
 					$menu.addEventListener('click', function(e){
 						e.stopPropagation();
@@ -297,8 +346,10 @@ window.RemoteFinder = function($elm, options){
 					$submenuLi.append($menu);
 					$submenu.append($submenuLi);
 
+					// delete
 					$menu = document.createElement('button');
 					$menu.textContent = 'delete';
+					$menu.classList.add('remote-finder__ico-delete');
 					$menu.setAttribute('data-filename', result.list[idx].name);
 					$menu.addEventListener('click', function(e){
 						e.stopPropagation();
