@@ -23,12 +23,34 @@ module.exports.prototype.isWritablePath = require('./apis/isWritablePath.js');
 module.exports.prototype.gpi = function(input, callback){
 	callback = callback || function(){};
 	input = input || {};
-	if( this['gpi_'+input.api] ){
-		this['gpi_'+input.api](input.path, input.options, function(result){
-			callback(result);
+
+	try{
+		if( input.api.match(/[^a-zA-Z0-9]/g) ){
+			callback({
+				result: false,
+				message: '"'+input.api+'" is an invalid API name.'
+			});
+			return;
+		}
+
+		if( this['gpi_'+input.api] ){
+			this['gpi_'+input.api](input.path, input.options, function(result){
+				callback(result);
+			});
+			return;
+		}
+
+		callback({
+			result: false,
+			message: 'An API "'+input.api+'" is undefined, or not callable.'
 		});
-	}else{
-		callback(false);
+		return;
+	}catch(e){
+		callback({
+			result: false,
+			message: 'Unknown Error.'
+		});
+		return;
 	}
 	return;
 }

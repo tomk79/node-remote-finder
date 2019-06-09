@@ -305,18 +305,31 @@ class main{
 	 * General Purpose Interface
 	 */
 	public function gpi($input){
-		if( preg_match('/[^a-zA-Z0-9]/', $input->api) ){
-			return false;
-		}
-		if( is_callable( array($this, 'gpi_'.$input->api) ) ){
-			$options = json_decode('{}');
-			if( property_exists($input, 'options') ){
-				$options = $input->options;
+		try{
+			if( preg_match('/[^a-zA-Z0-9]/s', $input->api) ){
+				return array(
+					'result' => false,
+					'message' => '"'.$input->api.'" is an invalid API name.',
+				);
 			}
-			$result = $this->{'gpi_'.$input->api}($input->path, $options);
-			$result = json_decode( json_encode($result) );
-			return $result;
+			if( is_callable( array($this, 'gpi_'.$input->api) ) ){
+				$options = json_decode('{}');
+				if( property_exists($input, 'options') ){
+					$options = $input->options;
+				}
+				$result = $this->{'gpi_'.$input->api}($input->path, $options);
+				$result = json_decode( json_encode($result) );
+				return $result;
+			}
+			return array(
+				'result' => false,
+				'message' => 'An API "'.$input->api.'" is undefined, or not callable.',
+			);
+		}catch(\Exception $ex){
+			return array(
+				'result' => false,
+				'Unknown Error.',
+			);
 		}
-		return false;
 	}
 }
