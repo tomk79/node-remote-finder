@@ -232,6 +232,24 @@
 		margin-left: 0.5em;
 	}
 
+	&__preview{
+		pre{
+			code{
+				display: block;
+				overflow: auto;
+				border:1px solid #ddd;
+				background-color: #f7f7f7;
+				color: #d66;
+				padding: 1em;
+				height: 5em;
+			}
+		}
+		img{
+			max-width: 100%;
+			max-height: 300px;
+		}
+	}
+
 	&__modal{
 		position: absolute;
 		left: 0;
@@ -245,6 +263,63 @@
 		&-inner{
 			background-color: #fff;
 			margin: 1em;
+		}
+		&-title{
+			padding: 0.5em 2em;
+			border-bottom: 1px solid #eee;
+			text-overflow: ellipsis;
+			overflow: hidden;
+			white-space: nowrap;
+			font-weight: bold;
+		}
+		&-body{
+			padding: 0.5em 2em;
+		}
+		&-btns{
+			padding: 0.5em 2em;
+			border-top: 1px solid #eee;
+		}
+		table{
+			border-top: 1px solid #ddd;
+			width: 100%;
+			th, td{
+				border-bottom: 1px solid #ddd;
+			}
+			td{
+				white-space: wrap;
+				word-wrap: break-word;
+				word-break: break-all;
+			}
+		}
+	}
+
+	// Button
+	&__btn{
+		padding: 0.5em 1em;
+		border: 1px solid #999;
+		background-color: #fff;
+		color: #333;
+		&:active{
+			background-color: #000;
+			color: #ddd;
+		}
+		&:hover{
+			background-color: #333;
+			color: #fff;
+		}
+	}
+	&__btn-primary{
+		padding: 0.5em 2em;
+		border: 1px solid #999;
+		background-color: #666;
+		color: #fff;
+		&:hover{
+			background-color: #333;
+			color: #fff;
+		}
+		&:active{
+			background-color: #000;
+			color: #999;
 		}
 	}
 }

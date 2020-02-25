@@ -32,6 +32,48 @@ class main{
 	/**
 	 * ファイルとフォルダの一覧を取得する
 	 */
+	private function gpi_getItemInfo($path, $options){
+		$realpath = $this->getRealpath($path);
+		// var_dump($realpath);
+		$rtn = array(
+			'result' => true,
+			'message' => "OK",
+			'itemInfo' => array(),
+		);
+
+		$item = array();
+		$item['name'] = basename($path);
+		if(is_dir($realpath.'/'.$item['name'])){
+			$item['type'] = 'dir';
+		}elseif(is_file($realpath.'/'.$item['name'])){
+			$item['type'] = 'file';
+		}
+		$item['visible'] = $this->isVisiblePath($path.'/'.$item['name']);
+		if(!$item['visible']){
+			return array(
+				'result' => false,
+				'message' => "Item Not Found",
+				'itemInfo' => false,
+			);
+		}
+		$item['writable'] = $this->isWritablePath($path.'/'.$item['name']);
+		$item['ext'] = null;
+		if( preg_match('/\.([a-zA-Z0-9\-\_]+)$/', $item['name'], $matched) ){
+			$item['ext'] = $matched[1];
+			$item['ext'] = strtolower($item['ext']);
+		}
+		$item['size'] = filesize($realpath);
+		$item['md5'] = md5_file($realpath);
+		$item['base64'] = base64_encode(file_get_contents($realpath));
+		$item['mime'] = mime_content_type($realpath);
+
+		$rtn['itemInfo'] = $item;
+		return $rtn;
+	}
+
+	/**
+	 * ファイルとフォルダの一覧を取得する
+	 */
 	private function gpi_getItemList($path, $options){
 		$realpath = $this->getRealpath($path);
 		// var_dump($realpath);

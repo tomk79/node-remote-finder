@@ -313,28 +313,80 @@ window.RemoteFinder = function($elm, options){
 						$a.classList.add('remote-finder__ico-file');
 						$a.addEventListener('click', function(e){
 							var path = this.getAttribute('data-path');
+							var filename = this.getAttribute('data-filename');
 							var $body = $('<div>');
 							_this.modal.open({
-								'title': path,
+								'title': filename,
 								'body': $body,
 								'btns': [
 									{
 										'label': 'Open this file',
-										'class': 'btn btn-primary',
+										'class': 'remote-finder__btn remote-finder__btn-primary',
 										'click': function(){
 											_this.open( path, function(res){} );
 										}
 									},
 									{
 										'label': 'OK',
-										'class': 'btn btn-primary',
+										'class': 'remote-finder__btn',
 										'click': function(){
 											_this.modal.close();
 										}
 									}
 								]
 							});
-							$body.append('<div>aaaa</div>');
+							gpiBridge(
+								{
+									'api': 'getItemInfo',
+									'path': path,
+									'options': {}
+								},
+								function(result){
+									var item = result.itemInfo;
+									console.log(result);
+									var $preview = $('<div class="remote-finder__preview">');
+									switch(item.ext){
+										case 'html': case 'htm':
+										case 'js': case 'json':
+										case 'css': case 'scss':
+										case 'md':
+										case 'mm':
+										case 'txt':
+											$preview.append( $('<pre>').append( $('<code>').text(atob(item.base64)) ) );
+											break;
+										case 'jpg': case 'jpeg': case 'jpe':
+										case 'png': case 'gif': case 'svg':
+											$preview.append( $('<img>').attr({
+												'src': 'data:'+item.mime+';base64,'+item.base64
+											}) );
+											break;
+										default:
+											$preview.append( $('<p>プレビューできない形式です</p>') );
+											break;
+									}
+									$body.append($preview);
+									var $table = $('<table>');
+									$table
+										.append( $('<tr>')
+											.append( $('<th>').text('Filename') )
+											.append( $('<td>').text(item.name) )
+										)
+										.append( $('<tr>')
+											.append( $('<th>').text('Extension') )
+											.append( $('<td>').text(item.ext) )
+										)
+										.append( $('<tr>')
+											.append( $('<th>').text('File Size') )
+											.append( $('<td>').text(item.size + ' byte(s)') )
+										)
+										.append( $('<tr>')
+											.append( $('<th>').text('MD5') )
+											.append( $('<td>').text(item.md5) )
+										)
+									;
+									$body.append($table);
+								}
+							);
 						});
 					}
 

@@ -243,6 +243,17 @@
     margin-right: 0.5em;
     margin-right: 0;
     margin-left: 0.5em; }
+  .remote-finder__preview pre code {
+    display: block;
+    overflow: auto;
+    border: 1px solid #ddd;
+    background-color: #f7f7f7;
+    color: #d66;
+    padding: 1em;
+    height: 5em; }
+  .remote-finder__preview img {
+    max-width: 100%;
+    max-height: 300px; }
   .remote-finder__modal {
     position: absolute;
     left: 0;
@@ -255,3 +266,46 @@
     .remote-finder__modal-inner {
       background-color: #fff;
       margin: 1em; }
+    .remote-finder__modal-title {
+      padding: 0.5em 2em;
+      border-bottom: 1px solid #eee;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      font-weight: bold; }
+    .remote-finder__modal-body {
+      padding: 0.5em 2em; }
+    .remote-finder__modal-btns {
+      padding: 0.5em 2em;
+      border-top: 1px solid #eee; }
+    .remote-finder__modal table {
+      border-top: 1px solid #ddd;
+      width: 100%; }
+      .remote-finder__modal table th, .remote-finder__modal table td {
+        border-bottom: 1px solid #ddd; }
+      .remote-finder__modal table td {
+        white-space: wrap;
+        word-wrap: break-word;
+        word-break: break-all; }
+  .remote-finder__btn {
+    padding: 0.5em 1em;
+    border: 1px solid #999;
+    background-color: #fff;
+    color: #333; }
+    .remote-finder__btn:active {
+      background-color: #000;
+      color: #ddd; }
+    .remote-finder__btn:hover {
+      background-color: #333;
+      color: #fff; }
+  .remote-finder__btn-primary {
+    padding: 0.5em 2em;
+    border: 1px solid #999;
+    background-color: #666;
+    color: #fff; }
+    .remote-finder__btn-primary:hover {
+      background-color: #333;
+      color: #fff; }
+    .remote-finder__btn-primary:active {
+      background-color: #000;
+      color: #999; }

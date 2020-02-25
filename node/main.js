@@ -9,6 +9,7 @@ module.exports = function(paths_root_dir, options){
 	_this.options = options;
 	this.paths_root_dir = paths_root_dir;
 }
+module.exports.prototype.gpi_getItemInfo = require('./apis/getItemInfo.js');
 module.exports.prototype.gpi_getItemList = require('./apis/getItemList.js');
 module.exports.prototype.gpi_createNewFile = require('./apis/createNewFile.js');
 module.exports.prototype.gpi_createNewFolder = require('./apis/createNewFolder.js');
@@ -46,6 +47,7 @@ module.exports.prototype.gpi = function(input, callback){
 		});
 		return;
 	}catch(e){
+		console.error(e);
 		callback({
 			result: false,
 			message: 'Unknown Error.'
