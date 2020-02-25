@@ -352,10 +352,11 @@ window.RemoteFinder = function($elm, options){
 										case 'md':
 										case 'mm':
 										case 'txt':
-											$preview.append( $('<pre>').append( $('<code>').text(atob(item.base64)) ) );
+										case 'svg':
+											$preview.append( $('<pre>').append( $('<code>').text( decodeURIComponent(escape(atob(item.base64))) ) ) );
 											break;
 										case 'jpg': case 'jpeg': case 'jpe':
-										case 'png': case 'gif': case 'svg':
+										case 'png': case 'gif':
 											$preview.append( $('<img>').attr({
 												'src': 'data:'+item.mime+';base64,'+item.base64
 											}) );
@@ -374,6 +375,10 @@ window.RemoteFinder = function($elm, options){
 										.append( $('<tr>')
 											.append( $('<th>').text('Extension') )
 											.append( $('<td>').text(item.ext) )
+										)
+										.append( $('<tr>')
+											.append( $('<th>').text('mime-type') )
+											.append( $('<td>').text(item.mime) )
 										)
 										.append( $('<tr>')
 											.append( $('<th>').text('File Size') )
