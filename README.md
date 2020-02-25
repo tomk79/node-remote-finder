@@ -153,6 +153,10 @@ remoteFinder.init('/', {}, function(){
 
 ## 更新履歴 - Change log
 
+### remote-finder v0.0.4 (リリース日未定)
+
+- ファイルとフォルダのアイコンが区別しやすくなった。
+
 ### remote-finder v0.0.3 (2019年6月9日)
 
 - nodeJs版バックエンドで、GPIがアクセスできる機能の制限を増やした。
