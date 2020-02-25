@@ -279,7 +279,7 @@ window.RemoteFinder = function($elm, options){
 
 				// contained file and folders
 				for( var idx in result.list ){
-					if( filter.length ){
+					if( filter.length && result.list[idx].type == 'file' ){
 						if( result.list[idx].name.split(filter).length < 2 ){
 							continue;
 						}
