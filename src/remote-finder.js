@@ -3,10 +3,18 @@
  */
 window.RemoteFinder = function($elm, options){
 	var _this = this;
+	var $ = require('jquery')
 	var current_dir = '/';
 	var filter = '';
 	var $pathBar;
 	var $fileList;
+
+	var templates = {
+		'modal': require('./templates.ignore/modal.html')
+	};
+	var Modal = require('./funcs.ignore/modal.js');
+	this.modal = new Modal(this, $elm, templates.modal);
+
 	options = options || {};
 	options.gpiBridge = options.gpiBridge || function(){};
 	options.open = options.open || function(pathinfo, callback){
@@ -305,7 +313,28 @@ window.RemoteFinder = function($elm, options){
 						$a.classList.add('remote-finder__ico-file');
 						$a.addEventListener('click', function(e){
 							var path = this.getAttribute('data-path');
-							_this.open( path, function(res){} );
+							var $body = $('<div>');
+							_this.modal.open({
+								'title': path,
+								'body': $body,
+								'btns': [
+									{
+										'label': 'Open this file',
+										'class': 'btn btn-primary',
+										'click': function(){
+											_this.open( path, function(res){} );
+										}
+									},
+									{
+										'label': 'OK',
+										'class': 'btn btn-primary',
+										'click': function(){
+											_this.modal.close();
+										}
+									}
+								]
+							});
+							$body.append('<div>aaaa</div>');
 						});
 					}
 
