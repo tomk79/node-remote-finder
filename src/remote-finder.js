@@ -77,6 +77,7 @@ window.RemoteFinder = function($elm, options){
 			if( isCompeted ){
 				return;
 			}
+			_this.refresh();
 			callback(isCompeted);
 		});
 	}
@@ -98,6 +99,7 @@ window.RemoteFinder = function($elm, options){
 					if(!result.result){
 						alert(result.message);
 					}
+					_this.refresh();
 					callback();
 				}
 			);
@@ -122,6 +124,7 @@ window.RemoteFinder = function($elm, options){
 					if(!result.result){
 						alert(result.message);
 					}
+					_this.refresh();
 					callback();
 				}
 			);
@@ -148,6 +151,7 @@ window.RemoteFinder = function($elm, options){
 					if(!result.result){
 						alert(result.message);
 					}
+					_this.refresh();
 					callback();
 				}
 			);
@@ -174,6 +178,7 @@ window.RemoteFinder = function($elm, options){
 					if(!result.result){
 						alert(result.message);
 					}
+					_this.refresh();
 					callback();
 				}
 			);
@@ -195,6 +200,7 @@ window.RemoteFinder = function($elm, options){
 					if(!result.result){
 						alert(result.message);
 					}
+					_this.refresh();
 					callback();
 				}
 			);
@@ -452,9 +458,26 @@ window.RemoteFinder = function($elm, options){
 					$fileList.append($li);
 				}
 				$elm.append($fileList);
+				setTimeout(function(){
+					callback();
+				},10);
 			}
 		);
 		return;
+	}
+
+	/**
+	 * リスト表示を更新する
+	 */
+	this.refresh = function(){
+		var currentDir = this.getCurrentDir();
+		var $list = $('.remote-finder__file-list');
+		var memoScrollTop = $list.scrollTop();
+		_this.setCurrentDir(currentDir, function(){
+			setTimeout(function(){
+				$('.remote-finder__file-list').scrollTop(memoScrollTop);
+			},20);
+		});
 	}
 
 	/**
