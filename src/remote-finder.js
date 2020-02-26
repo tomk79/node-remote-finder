@@ -321,14 +321,14 @@ window.RemoteFinder = function($elm, options){
 								'btns': [
 									{
 										'label': 'Open this file',
-										'class': 'remote-finder__btn remote-finder__btn-primary',
+										'class': '',
 										'click': function(){
 											_this.open( path, function(res){} );
 										}
 									},
 									{
 										'label': 'OK',
-										'class': 'remote-finder__btn',
+										'class': '',
 										'click': function(){
 											_this.modal.close();
 										}

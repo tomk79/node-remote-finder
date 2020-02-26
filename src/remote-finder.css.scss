@@ -20,6 +20,8 @@
 		color: #333;
 		border: 1px solid #666;
 		cursor: pointer;
+		padding: 0.5em 1em;
+		font-size: medium;
 		&:hover{
 			background-color: #eee;
 			color: #000;
@@ -190,6 +192,10 @@
 				white-space: nowrap;
 			}
 		}
+		button{
+			font-size: small;
+			padding: 0.2em 0.5em;
+		}
 	}
 	&__file-list a:hover &__file-list-submenu{
 		display: block;
@@ -247,6 +253,8 @@
 		img{
 			max-width: 100%;
 			max-height: 300px;
+			display: block;
+			margin: 5px auto;
 		}
 	}
 
@@ -259,24 +267,41 @@
 		overflow: auto;
 		background-color: rgba(0,0,0,0.1);
 		z-index: 100000;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
 
 		&-inner{
 			background-color: #fff;
-			margin: 1em;
+			width: calc(100% - 20px);
+			max-height: calc(100% - 20px);
+			margin: 10px auto;
+			max-width: 400px;
+			flex-shrink: 1;
+			display: flex;
+			flex-direction: column;
+			flex-wrap: nowrap;
 		}
 		&-title{
-			padding: 0.5em 2em;
+			padding: 0.5em 15px;
+			font-weight: bold;
+			font-size: 110%;
 			border-bottom: 1px solid #eee;
 			text-overflow: ellipsis;
 			overflow: hidden;
 			white-space: nowrap;
-			font-weight: bold;
 		}
 		&-body{
-			padding: 0.5em 2em;
+			padding: 0.5em 15px;
+			overflow: auto;
+			flex-grow: 1;
 		}
 		&-btns{
-			padding: 0.5em 2em;
+			display: flex;
+			flex-direction: row;
+			justify-content: flex-end;
+			padding: 0.5em 15px;
 			border-top: 1px solid #eee;
 		}
 		table{
@@ -294,32 +319,32 @@
 	}
 
 	// Button
-	&__btn{
-		padding: 0.5em 1em;
-		border: 1px solid #999;
-		background-color: #fff;
-		color: #333;
-		&:active{
-			background-color: #000;
-			color: #ddd;
-		}
-		&:hover{
-			background-color: #333;
-			color: #fff;
-		}
-	}
-	&__btn-primary{
-		padding: 0.5em 2em;
-		border: 1px solid #999;
-		background-color: #666;
-		color: #fff;
-		&:hover{
-			background-color: #333;
-			color: #fff;
-		}
-		&:active{
-			background-color: #000;
-			color: #999;
-		}
-	}
+	// &__btn{
+	// 	padding: 0.5em 1em;
+	// 	border: 1px solid #999;
+	// 	background-color: #fff;
+	// 	color: #333;
+	// 	&:active{
+	// 		background-color: #000;
+	// 		color: #ddd;
+	// 	}
+	// 	&:hover{
+	// 		background-color: #333;
+	// 		color: #fff;
+	// 	}
+	// }
+	// &__btn-primary{
+	// 	padding: 0.5em 2em;
+	// 	border: 1px solid #999;
+	// 	background-color: #666;
+	// 	color: #fff;
+	// 	&:hover{
+	// 		background-color: #333;
+	// 		color: #fff;
+	// 	}
+	// 	&:active{
+	// 		background-color: #000;
+	// 		color: #999;
+	// 	}
+	// }
 }
