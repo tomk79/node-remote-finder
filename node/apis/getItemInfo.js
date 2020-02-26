@@ -3,7 +3,7 @@
  */
 module.exports = function(path, options, callback){
 	var fs = require('fs');
-	var fileType = require('file-type');
+	var mimeTypes = require('mime-types');
 	var utils79 = require('utils79');
 	var _this = this;
 	var realpath = this.getRealpath(path);
@@ -39,9 +39,7 @@ module.exports = function(path, options, callback){
 	item.size = fs.statSync(realpath).size;
 	item.md5 = utils79.md5(bin);
 	item.base64 = utils79.base64_encode(bin);
-	var fileTypeResult = fileType.fromFile(realpath);
-	item.mime = fileTypeResult.mime;
-
+	item.mime = mimeTypes.lookup(realpath);
 
 	rtn.itemInfo = item;
 	callback(rtn);
