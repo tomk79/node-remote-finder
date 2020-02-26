@@ -352,13 +352,18 @@ window.RemoteFinder = function($elm, options){
 									console.log(result);
 									var $preview = $('<div class="remote-finder__preview">');
 									switch(item.ext){
-										case 'html': case 'htm':
+										case 'html': case 'htm': case 'xhtml': case 'xml':
+										case 'php': case 'inc':
+										case 'rb':
+										case 'jsp':
 										case 'js': case 'json':
 										case 'css': case 'scss':
 										case 'md':
 										case 'mm':
 										case 'txt':
 										case 'svg':
+										case 'htaccess':
+										case 'gitkeep': case 'gitignore':
 											$preview.append( $('<pre>').append( $('<code>').text( decodeURIComponent(escape(atob(item.base64))) ) ) );
 											break;
 										case 'jpg': case 'jpeg': case 'jpe':
@@ -368,7 +373,7 @@ window.RemoteFinder = function($elm, options){
 											}) );
 											break;
 										default:
-											$preview.append( $('<p>プレビューできない形式です</p>') );
+											$preview.append( $('<div class="remote-finder__preview-disabled">プレビューできない形式です</div>') );
 											break;
 									}
 									$body.append($preview);

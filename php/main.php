@@ -109,6 +109,7 @@ class main{
 				$item['ext'] = $matched[1];
 				$item['ext'] = strtolower($item['ext']);
 			}
+			$item['size'] = filesize($realpath.'/'.$item['name']);
 			array_push($rtn['list'], $item);
 		}
 

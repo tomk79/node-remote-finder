@@ -40,6 +40,7 @@ module.exports = function(path, options, callback){
 				item.ext = RegExp.$1;
 				item.ext = item.ext.toLowerCase();
 			}
+			item.size = fs.statSync(realpath+'/'+item.name).size;
 			rtn.list.push(item);
 		}
 		callback(rtn);

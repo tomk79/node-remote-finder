@@ -240,14 +240,18 @@
 
 	&__preview{
 		pre{
+			border: 1px solid #999;
+			border-radius: 5px;
+			overflow: auto;
+			padding: 1em;
+			height: 5em;
+			border:1px solid #ddd;
+			background-color: #f7f7f7;
 			code{
 				display: block;
-				overflow: auto;
-				border:1px solid #ddd;
-				background-color: #f7f7f7;
+				padding: 0;
+				margin: 0;
 				color: #d66;
-				padding: 1em;
-				height: 5em;
 			}
 		}
 		img{
@@ -309,6 +313,8 @@
 			width: 100%;
 			th, td{
 				border-bottom: 1px solid #ddd;
+				text-align: left;
+				padding: 0.2em 0.5em;
 			}
 			td{
 				white-space: wrap;
@@ -316,6 +322,11 @@
 				word-break: break-all;
 			}
 		}
+	}
+
+	&__preview-disabled{
+		text-align: center;
+		padding: 4em 1em;
 	}
 
 	// Button
