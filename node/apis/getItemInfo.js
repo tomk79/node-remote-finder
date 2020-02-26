@@ -35,7 +35,7 @@ module.exports = function(path, options, callback){
 		item.ext = RegExp.$1;
 		item.ext = item.ext.toLowerCase();
 	}
-	var bin = fs.readFileSync(realpath).toString();
+	var bin = fs.readFileSync(realpath);
 	item.size = fs.statSync(realpath).size;
 	item.md5 = utils79.md5(bin);
 	item.base64 = utils79.base64_encode(bin);
