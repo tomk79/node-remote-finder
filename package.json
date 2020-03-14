@@ -1,6 +1,6 @@
 {
   "name": "remote-finder",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "private": false,
   "description": "Finder や Explorer のように、サーバー上のファイルとフォルダを操作するUIを提供します。",
   "main": "node/main.js",

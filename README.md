@@ -153,7 +153,7 @@ remoteFinder.init('/', {}, function(){
 
 ## 更新履歴 - Change log
 
-### remote-finder v0.0.5 (リリース日未定)
+### remote-finder v0.0.5 (2020年3月14日)
 
 - NodeJS版のサーバーサイドスクリプトで、 `md5`、 `base64`、 `mime-type` の計算が正しく行われない不具合を修正。
 - プレビューできる拡張子をいくつか追加した。
