@@ -2,18 +2,18 @@
  * Remote Finder
  */
 window.RemoteFinder = function($elm, options){
-	var _this = this;
-	var $ = require('jquery')
-	var current_dir = '/';
-	var filter = '';
-	var $pathBar;
-	var $fileList;
+	let _this = this;
+	let $ = require('jquery');
+	let px2style = new (require('px2style'))();
+	this.px2style = px2style;
+	this.px2style.setConfig('additionalClassName', 'remote-finder');
+	let current_dir = '/';
+	let filter = '';
+	let $pathBar;
+	let $fileList;
 
-	var templates = {
-		'modal': require('./templates.ignore/modal.html')
+	let templates = {
 	};
-	var Modal = require('./funcs.ignore/modal.js');
-	this.modal = new Modal(this, $elm, templates.modal);
 
 	options = options || {};
 	options.gpiBridge = options.gpiBridge || function(){};
@@ -321,7 +321,7 @@ window.RemoteFinder = function($elm, options){
 							var path = this.getAttribute('data-path');
 							var filename = this.getAttribute('data-filename');
 							var $body = $('<div>');
-							_this.modal.open({
+							_this.px2style.modal({
 								'title': filename,
 								'body': $body,
 								'btns': [
@@ -336,7 +336,7 @@ window.RemoteFinder = function($elm, options){
 										'label': 'OK',
 										'class': '',
 										'click': function(){
-											_this.modal.close();
+											_this.px2style.closeModal();
 										}
 									}
 								]

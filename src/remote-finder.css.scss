@@ -2,9 +2,10 @@
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-start;
-	background-color: #f9f9f9;
 	overflow: hidden;
 	position: relative;
+
+	@import "../node_modules/px2style/src/px2style.css.scss";
 
 	a{
 		background-color: #fff;

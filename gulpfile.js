@@ -58,7 +58,7 @@ gulp.task("remote-finder.js", function() {
 		.pipe(plumber())
 		.pipe(gulp.dest( './dist/' ))
 		.pipe(concat('remote-finder.min.js'))
-		.pipe(uglify())
+		// .pipe(uglify())
 		.pipe(gulp.dest( './dist/' ))
 	;
 });

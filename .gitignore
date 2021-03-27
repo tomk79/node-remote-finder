@@ -26,6 +26,9 @@ coverage
 # node-waf configuration
 .lock-wscript
 
+# VSCode Settings
+.vscode
+
 # Compiled binary addons (http://nodejs.org/api/addons.html)
 build/Release
 
