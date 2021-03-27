@@ -1,9 +1,10 @@
 /**
  * Remote Finder
  */
-window.RemoteFinder = function($elm, options){
+window.RemoteFinder = function(elm, options){
 	let _this = this;
 	let $ = require('jquery');
+	this.jQuery = $;
 	let px2style = new (require('px2style'))();
 	this.px2style = px2style;
 	this.px2style.setConfig('additionalClassName', 'remote-finder');
@@ -11,8 +12,11 @@ window.RemoteFinder = function($elm, options){
 	let filter = '';
 	let $pathBar;
 	let $fileList;
+	let $elm = $(elm);
+	let dropzone = new (require('./inc/dropfiles/dropfiles.js'))($elm, this);
 
 	let templates = {
+		// 'dropzone': require('./templates/dropzone.twig'),
 	};
 
 	options = options || {};
@@ -49,7 +53,9 @@ window.RemoteFinder = function($elm, options){
 		callback();
 		return;
 	};
-	$elm.classList.add('remote-finder');
+
+	$elm.addClass('remote-finder');
+
 
 	/**
 	 * サーバーサイドスクリプトに問い合わせる
@@ -324,21 +330,14 @@ window.RemoteFinder = function($elm, options){
 							_this.px2style.modal({
 								'title': filename,
 								'body': $body,
-								'btns': [
-									{
-										'label': 'Open this file',
-										'class': '',
-										'click': function(){
+								'buttons': [
+									$('<button>')
+										.text('Open')
+										.addClass('px2-btn')
+										.addClass('px2-btn--primary')
+										.on('click', function(){
 											_this.open( path, function(res){} );
-										}
-									},
-									{
-										'label': 'OK',
-										'class': '',
-										'click': function(){
-											_this.px2style.closeModal();
-										}
-									}
+										})
 								]
 							});
 							gpiBridge(
@@ -486,12 +485,20 @@ window.RemoteFinder = function($elm, options){
 	}
 
 	/**
+	 * テンプレートにデータを適用して返す
+	 */
+	this.bindTemplate = function(templateName, data){
+		return templates[templateName](data);
+	}
+
+	/**
 	 * Finderを初期化します。
 	 */
 	this.init = function( path, options, callback ){
 		current_dir = path;
 		callback = callback || function(){};
 
+		$elm.html('');
 
 		// --------------------------------------
 		// MENU
@@ -556,5 +563,20 @@ window.RemoteFinder = function($elm, options){
 		$elm.append($fileList);
 
 		this.setCurrentDir(path, callback);
+
+		$elm
+			.on('dragenter', dropzone.onDragEnter)
+			.on('dragover', function(e){
+				let event = e.originalEvent;
+				event.preventDefault();
+				event.stopPropagation();
+			})
+			.on('drop', function(e){
+				let event = e.originalEvent;
+				event.preventDefault();
+				event.stopPropagation();
+			})
+		;
+
 	}
 }
