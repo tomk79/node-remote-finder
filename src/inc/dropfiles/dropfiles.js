@@ -62,7 +62,8 @@ module.exports = function($elm, main){
 						.addClass('px2-btn')
 						.addClass('px2-btn--primary')
 						.on('click', function(){
-							uploadFiles(files, function(){
+							let allow_overwrite = $body.find('input[name=allow_overwrite]:checked').val();
+							uploadFiles(files, allow_overwrite, function(){
 								main.px2style.closeModal();
 								main.refresh();
 							});
@@ -85,13 +86,17 @@ module.exports = function($elm, main){
 	/**
 	 * ファイルをアップロードする
 	 */
-	function uploadFiles(files, callback){
+	function uploadFiles(files, allow_overwrite, callback){
 		// console.log(files);
 		callback = callback || function(){};
 
 		function readSelectedLocalFile(fileInfo, callback){
 			try {
-				if( !fileInfo.size && fileInfo.type === "" ){
+				if( typeof(fileInfo) !== typeof({}) ){
+					// オブジェクト以外
+					// console.error('fileInfo is not an Object:', fileInfo);
+					callback(false);
+				}else if( !fileInfo.size && fileInfo.type === "" ){
 					// ディレクトリ
 					callback(false);
 				}else{
@@ -114,9 +119,10 @@ module.exports = function($elm, main){
 			function(itAry1, row, idx){
 
 				readSelectedLocalFile(row, function(loadedFileInfo){
-					console.log('=-=-=-= loadedFileInfo:', loadedFileInfo);
+					// console.log('=-=-=-= loadedFileInfo:', loadedFileInfo);
 					if( loadedFileInfo === false ){
 						// 読み込みに失敗
+						// console.log('Failed to load file:', idx, row);
 						itAry1.next();
 						return;
 					}
@@ -127,6 +133,7 @@ module.exports = function($elm, main){
 							'api': 'saveFile',
 							'path': main.getCurrentDir()+row.name,
 							'options': {
+								'allow_overwrite': allow_overwrite,
 								'base64': base64
 							}
 						},

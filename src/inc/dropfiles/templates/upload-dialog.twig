@@ -1,5 +1,8 @@
 <div class="remote-finder__upload-dialog">
     <p>ファイルをアップロードします。</p>
+    <ul class="px2-vertical-list">
+        <li><label><input type="checkbox" name="allow_overwrite" value="1" /> 同名のファイルがすでに存在する場合に上書きする</label></li>
+    </ul>
     <ul>
     {% for file in files %}
         <li>{{ file.name }}</li>
