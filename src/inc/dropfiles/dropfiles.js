@@ -41,13 +41,14 @@ module.exports = function($elm, main){
 			// console.log('Dropped');
 			$('.remote-finder__dropzone').remove();
 
+			var modalObj;
 			var event = e.originalEvent;
 			var files = event.dataTransfer.files;
 			if( !files.length ){
 				return;
 			}
 
-			console.log( files );
+			// console.log( files );
 
 			let $body = $(templates.uploadDialog({
 				'files': files,
@@ -62,9 +63,16 @@ module.exports = function($elm, main){
 						.addClass('px2-btn')
 						.addClass('px2-btn--primary')
 						.on('click', function(){
+							let $formElms = $('input, button');
+							$formElms.attr('disabled', true);
+							modalObj.closable(false);
+
 							let allow_overwrite = $body.find('input[name=allow_overwrite]:checked').val();
-							uploadFiles(files, allow_overwrite, function(){
-								main.px2style.closeModal();
+
+							uploadFiles(files, allow_overwrite, $body, function(){
+								modalObj.closable(true);
+								$formElms.removeAttr('disabled');
+								// main.px2style.closeModal();
 								main.refresh();
 							});
 						})
@@ -76,6 +84,8 @@ module.exports = function($elm, main){
 							main.px2style.closeModal();
 						})
 				]
+			}, function( _modalObj ){
+				modalObj = _modalObj;
 			});
 
 			return;
@@ -86,9 +96,11 @@ module.exports = function($elm, main){
 	/**
 	 * ファイルをアップロードする
 	 */
-	function uploadFiles(files, allow_overwrite, callback){
+	function uploadFiles(files, allow_overwrite, $body, callback){
 		// console.log(files);
 		callback = callback || function(){};
+
+		$body.find('.remote-finder__upload-dialog-result').text('');
 
 		function readSelectedLocalFile(fileInfo, callback){
 			try {
@@ -117,13 +129,18 @@ module.exports = function($elm, main){
 		it79.ary(
 			files,
 			function(itAry1, row, idx){
+				var $reportTd = $body.find('[data-filename="'+(row.name)+'"] .remote-finder__upload-dialog-result');
 
 				readSelectedLocalFile(row, function(loadedFileInfo){
 					// console.log('=-=-=-= loadedFileInfo:', loadedFileInfo);
+
 					if( loadedFileInfo === false ){
 						// 読み込みに失敗
 						// console.log('Failed to load file:', idx, row);
-						itAry1.next();
+						$reportTd.text( 'NG' );
+						setTimeout(function(){
+							itAry1.next();
+						}, 200);
 						return;
 					}
 					var base64 = loadedFileInfo.target.result.replace(new RegExp('^data\\:[^\\;]*\\;base64\\,'), '');
@@ -141,10 +158,14 @@ module.exports = function($elm, main){
 							if(!result.result){
 								console.error(result.message);
 							}
-							itAry1.next();
+							$reportTd.text( (result.result ? 'OK' : 'NG') );
+							setTimeout(function(){
+								itAry1.next();
+							}, 200);
 						}
 					);
 				});
+				return;
 			},
 			function(){
 				callback();
