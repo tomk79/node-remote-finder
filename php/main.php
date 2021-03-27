@@ -172,6 +172,43 @@ class main{
 	}
 
 	/**
+	 * ファイルを保存する
+	 */
+	private function gpi_saveFile($path, $options){
+		if( !$this->isWritablePath( $path ) ){
+			return array(
+				'result' => false,
+				'message' => "NOT writable path."
+			);
+		}
+
+		$realpath = $this->getRealpath($path);
+
+		$allow_overwrite = false;
+		if( property_exists($options, 'allow_overwrite') && $options->allow_overwrite ){
+			$allow_overwrite = true;
+		}
+
+		if( !$allow_overwrite && file_exists($realpath) ){
+			return array(
+				'result' => false,
+				'message' => "Already exists."
+			);
+		}
+
+		$bin = '';
+		if( property_exists($options, 'base64') && $options->base64 ){
+			$bin = base64_decode($options->base64);
+		}
+
+		$result = $this->fs->save_file($realpath, $bin);
+		return array(
+			'result' => !!$result,
+			'message' => (!$result ? 'Failed to write file. ' . $path : 'OK')
+		);
+	}
+
+	/**
 	 * ファイルやフォルダを複製する
 	 */
 	private function gpi_copy($pathFrom, $options){

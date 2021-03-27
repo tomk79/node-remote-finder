@@ -1482,7 +1482,9 @@
     -ms-flex-negative: 0;
         flex-shrink: 0;
     -ms-flex-wrap: nowrap;
-        flex-wrap: nowrap; }
+        flex-wrap: nowrap;
+    position: relative;
+    z-index: 1000; }
     .remote-finder__menu > li {
       margin: 0;
       padding: 0;
@@ -1522,7 +1524,9 @@
     -ms-flex-negative: 0;
         flex-shrink: 0;
     -ms-flex-wrap: wrap;
-        flex-wrap: wrap; }
+        flex-wrap: wrap;
+    position: relative;
+    z-index: 1000; }
     .remote-finder__path-bar > li {
       display: block;
       margin: 0;
@@ -1572,7 +1576,12 @@
   .remote-finder__file-list {
     margin: 0 !important;
     padding: 0 !important;
-    overflow: auto; }
+    overflow: auto;
+    position: relative;
+    z-index: 1000;
+    background-color: #eee;
+    -ms-flex-positive: 10;
+        flex-grow: 10; }
     .remote-finder__file-list > li {
       display: block;
       margin: 0;
@@ -1713,70 +1722,6 @@
     max-height: 300px;
     display: block;
     margin: 5px auto; }
-  .remote-finder__modal {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.1);
-    z-index: 100000;
-    display: -ms-flexbox;
-    display: flex;
-    -ms-flex-direction: column;
-        flex-direction: column;
-    -ms-flex-pack: center;
-        justify-content: center;
-    -ms-flex-align: center;
-        align-items: center; }
-    .remote-finder__modal-inner {
-      background-color: #fff;
-      width: calc(100% - 20px);
-      max-height: calc(100% - 20px);
-      margin: 10px auto;
-      max-width: 400px;
-      -ms-flex-negative: 1;
-          flex-shrink: 1;
-      display: -ms-flexbox;
-      display: flex;
-      -ms-flex-direction: column;
-          flex-direction: column;
-      -ms-flex-wrap: nowrap;
-          flex-wrap: nowrap; }
-    .remote-finder__modal-title {
-      padding: 0.5em 15px;
-      font-weight: bold;
-      font-size: 110%;
-      border-bottom: 1px solid #eee;
-      text-overflow: ellipsis;
-      overflow: hidden;
-      white-space: nowrap; }
-    .remote-finder__modal-body {
-      padding: 0.5em 15px;
-      overflow: auto;
-      -ms-flex-positive: 1;
-          flex-grow: 1; }
-    .remote-finder__modal-btns {
-      display: -ms-flexbox;
-      display: flex;
-      -ms-flex-direction: row;
-          flex-direction: row;
-      -ms-flex-pack: end;
-          justify-content: flex-end;
-      padding: 0.5em 15px;
-      border-top: 1px solid #eee; }
-    .remote-finder__modal table {
-      border-top: 1px solid #ddd;
-      width: 100%; }
-      .remote-finder__modal table th, .remote-finder__modal table td {
-        border-bottom: 1px solid #ddd;
-        text-align: left;
-        padding: 0.2em 0.5em; }
-      .remote-finder__modal table td {
-        white-space: wrap;
-        word-wrap: break-word;
-        word-break: break-all; }
   .remote-finder__preview-disabled {
     text-align: center;
     padding: 4em 1em; }
@@ -1790,7 +1735,7 @@
     position: absolute;
     width: 100%;
     height: 100%;
-    z-index: 999;
+    z-index: 1001;
     background-color: #eee9;
     box-sizing: border-box;
     padding: 3%; }

@@ -1,0 +1,8 @@
+<div class="remote-finder__upload-dialog">
+    <p>ファイルをアップロードします。</p>
+    <ul>
+    {% for file in files %}
+        <li>{{ file.name }}</li>
+    {% endfor %}
+    </ul>
+</div>

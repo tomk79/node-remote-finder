@@ -13,6 +13,7 @@ module.exports.prototype.gpi_getItemInfo = require('./apis/getItemInfo.js');
 module.exports.prototype.gpi_getItemList = require('./apis/getItemList.js');
 module.exports.prototype.gpi_createNewFile = require('./apis/createNewFile.js');
 module.exports.prototype.gpi_createNewFolder = require('./apis/createNewFolder.js');
+module.exports.prototype.gpi_saveFile = require('./apis/saveFile.js');
 module.exports.prototype.gpi_copy = require('./apis/copy.js');
 module.exports.prototype.gpi_rename = require('./apis/rename.js');
 module.exports.prototype.gpi_remove = require('./apis/remove.js');

@@ -63,6 +63,7 @@ window.RemoteFinder = function(elm, options){
 	function gpiBridge(input, callback){
 		options.gpiBridge(input, callback);
 	}
+	this.gpiBridge = gpiBridge;
 
 	/**
 	 * ファイルを開く
