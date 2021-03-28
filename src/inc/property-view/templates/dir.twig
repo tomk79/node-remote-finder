@@ -2,6 +2,16 @@
 	<p class="remote-finder__property-view-current-dir">{{ currentDir }}</p>
 	<p class="remote-finder__property-view-item-name">{{ itemName }}</p>
 </div>
+
+<div class="px2-p">
+	<ul class="px2-vertical-list">
+		<li><button
+			class="px2-btn px2-btn--primary px2-btn--block remote-finder__property-view-btn-open"
+			data-current-dir="{{ currentDir }}"
+			data-filename="{{ itemName }}"
+			>開く</button></li>
+	</ul>
+</div>
 <div class="px2-p">
 	<ul class="px2-vertical-list">
 		<li><button
@@ -16,6 +26,10 @@
 			>改名する</button></li>
 	</ul>
 </div>
+
+<div class="remote-finder__property-view-main">
+</div>
+
 <div class="px2-p">
 	<ul class="px2-vertical-list">
 		<li><button

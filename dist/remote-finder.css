@@ -1582,14 +1582,14 @@
         flex-grow: 10;
     -ms-flex-negative: 10;
         flex-shrink: 10;
-    height: calc(100% - 100px); }
+    height: calc(100% - 100px);
+    background-color: #6662; }
   .remote-finder__file-list {
     margin: 0 !important;
     padding: 0 !important;
     overflow: auto;
     position: relative;
     z-index: 1000;
-    background-color: #eee;
     -ms-flex-positive: 10;
         flex-grow: 10; }
     .remote-finder__file-list > li {
@@ -1641,13 +1641,15 @@
   .remote-finder__file-list a:hover .remote-finder__file-list-submenu {
     display: block; }
   .remote-finder__property-view {
-    width: 280px;
+    width: 360px;
     max-width: 70%;
     height: 100%;
     overflow: auto;
     padding: 12px 15px;
     box-sizing: border-box;
-    border-left: 1px solid #ddd; }
+    border-left: 1px solid #ddd;
+    background-color: #fefefe;
+    word-break: break-all; }
     .remote-finder__property-view-current-dir {
       font-size: 14px;
       font-weight: normal;
@@ -1658,6 +1660,20 @@
       font-weight: bold;
       margin: 3px 0;
       word-break: break-all; }
+    .remote-finder__property-view table {
+      border: none;
+      border-bottom: 1px solid #ddd; }
+      .remote-finder__property-view table tr th,
+      .remote-finder__property-view table tr td {
+        border-top: 1px solid #ddd;
+        text-align: left;
+        vertical-align: top;
+        margin: 0;
+        padding: 4px 5px 4px 0; }
+      .remote-finder__property-view table tr th {
+        width: 45%; }
+      .remote-finder__property-view table tr td {
+        width: 55%; }
   .remote-finder__ico-new-folder::before {
     content: '';
     display: inline-block;
