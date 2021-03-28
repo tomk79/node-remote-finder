@@ -228,7 +228,18 @@
 		box-sizing: border-box;
 		border-left: 1px solid #ddd;
 		&-inner {
-
+		}
+		&-current-dir {
+			font-size: 14px;
+			font-weight: normal;
+			margin: 3px 0;
+			word-break : break-all;
+		}
+		&-item-name {
+			font-size: 18px;
+			font-weight: bold;
+			margin: 3px 0;
+			word-break : break-all;
 		}
 	}
 

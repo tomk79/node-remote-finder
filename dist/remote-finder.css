@@ -1648,6 +1648,16 @@
     padding: 12px 15px;
     box-sizing: border-box;
     border-left: 1px solid #ddd; }
+    .remote-finder__property-view-current-dir {
+      font-size: 14px;
+      font-weight: normal;
+      margin: 3px 0;
+      word-break: break-all; }
+    .remote-finder__property-view-item-name {
+      font-size: 18px;
+      font-weight: bold;
+      margin: 3px 0;
+      word-break: break-all; }
   .remote-finder__ico-new-folder::before {
     content: '';
     display: inline-block;

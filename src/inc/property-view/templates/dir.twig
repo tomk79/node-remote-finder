@@ -1,4 +1,27 @@
-<div>
-<p>{{ currentDir }}</p>
-<p>{{ itemName }}</p>
+<div class="px2-p">
+	<p class="remote-finder__property-view-current-dir">{{ currentDir }}</p>
+	<p class="remote-finder__property-view-item-name">{{ itemName }}</p>
+</div>
+<div class="px2-p">
+	<ul class="px2-vertical-list">
+		<li><button
+			class="px2-btn px2-btn--block remote-finder__ico-copy remote-finder__property-view-btn-copy"
+			data-current-dir="{{ currentDir }}"
+			data-filename="{{ itemName }}"
+			>複製する</button></li>
+		<li><button
+			class="px2-btn px2-btn--block remote-finder__ico-rename remote-finder__property-view-btn-rename"
+			data-current-dir="{{ currentDir }}"
+			data-filename="{{ itemName }}"
+			>改名する</button></li>
+	</ul>
+</div>
+<div class="px2-p">
+	<ul class="px2-vertical-list">
+		<li><button
+			class="px2-btn px2-btn--block px2-btn--danger remote-finder__ico-delete remote-finder__property-view-btn-delete"
+			data-current-dir="{{ currentDir }}"
+			data-filename="{{ itemName }}"
+			>削除する</button></li>
+	</ul>
 </div>

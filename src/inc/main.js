@@ -382,6 +382,9 @@ module.exports = function(elm, options){
 					$a.textContent = '../';
 					$a.href = 'javascript:;';
 					$a.setAttribute('data-path', path);
+					$a.addEventListener('click', function(){
+						_this.clearSelectedItems();
+					});
 					$a.addEventListener('dblclick', function(){
 						var tmp_path = this.getAttribute('data-path');
 						tmp_path = tmp_path.replace(/\/(?:[^\/]*\/?)$/, '/');
@@ -517,55 +520,6 @@ module.exports = function(elm, options){
 						$a.classList.add('remote-finder__ico-readonly');
 					}
 
-					// copy
-					$menu = document.createElement('button');
-					$menu.textContent = 'copy';
-					$menu.classList.add('remote-finder__ico-copy');
-					$menu.setAttribute('data-filename', result.list[idx].name);
-					$menu.addEventListener('click', function(e){
-						e.stopPropagation();
-						var filename = this.getAttribute('data-filename');
-						_this.copy(path+filename, function(){
-							_this.setCurrentDir( path );
-						});
-					});
-					$submenuLi = document.createElement('li');
-					$submenuLi.append($menu);
-					$submenu.append($submenuLi);
-
-					// rename
-					$menu = document.createElement('button');
-					$menu.textContent = 'rename';
-					$menu.classList.add('remote-finder__ico-rename');
-					$menu.setAttribute('data-filename', result.list[idx].name);
-					$menu.addEventListener('click', function(e){
-						e.stopPropagation();
-						var filename = this.getAttribute('data-filename');
-						_this.rename(path+filename, function(){
-							_this.setCurrentDir( path );
-						});
-					});
-					$submenuLi = document.createElement('li');
-					$submenuLi.append($menu);
-					$submenu.append($submenuLi);
-
-					// delete
-					$menu = document.createElement('button');
-					$menu.textContent = 'delete';
-					$menu.classList.add('remote-finder__ico-delete');
-					$menu.setAttribute('data-filename', result.list[idx].name);
-					$menu.addEventListener('click', function(e){
-						e.stopPropagation();
-						var filename = this.getAttribute('data-filename');
-						_this.remove(path+filename, function(){
-							_this.setCurrentDir( path );
-						});
-					});
-					$submenuLi = document.createElement('li');
-					$submenuLi.append($menu);
-					$submenu.append($submenuLi);
-
-					$a.append($submenu);
 					$li.append($a);
 					$fileList.append($li);
 				}
