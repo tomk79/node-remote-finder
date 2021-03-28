@@ -1,5 +1,3 @@
-const px2style = require('px2style');
-
 module.exports = function($elm, main){
 	const $ = main.jQuery;
 	const it79 = require('iterate79');

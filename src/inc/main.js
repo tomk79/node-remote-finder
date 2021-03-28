@@ -12,11 +12,13 @@ module.exports = function(elm, options){
 	let filter = '';
 	let $pathBar;
 	let $fileList;
+	let selectedItems = [];
 	let $elm = $(elm);
-	let dropzone = new (require('./dropfiles/dropfiles.js'))($elm, this);
+	const dropzone = new (require('./dropfiles/dropfiles.js'))($elm, this);
+	const propertyView = new (require('./property-view/property-view.js'))($elm, this);
 
 	let templates = {
-		// 'dropzone': require('./templates/dropzone.twig'),
+		'main': require('./templates/main.twig'),
 	};
 
 	options = options || {};
@@ -56,6 +58,92 @@ module.exports = function(elm, options){
 
 	$elm.addClass('remote-finder');
 
+
+	/**
+	 * Finderを初期化します。
+	 */
+	this.init = function( path, options, callback ){
+		current_dir = path;
+		callback = callback || function(){};
+
+		$elm.html( templates.main({}) );
+
+		// --------------------------------------
+		// MENU
+		var $ulMenu = $elm.find('ul.remote-finder__menu');
+
+		// create new folder
+		var $li = document.createElement('li');
+		var $a = document.createElement('a');
+		$a.textContent = 'New Folder';
+		$a.classList.add('remote-finder__ico-new-folder');
+		$a.href = 'javascript:;';
+		$a.addEventListener('click', function(){
+			_this.mkdir(current_dir, function(){
+				_this.setCurrentDir( current_dir );
+			});
+		});
+		$li.append($a);
+		$ulMenu.append($li);
+
+		// create new file
+		var $li = document.createElement('li');
+		var $a = document.createElement('a');
+		$a.textContent = 'New File';
+		$a.classList.add('remote-finder__ico-new-file');
+		$a.href = 'javascript:;';
+		$a.addEventListener('click', function(){
+			_this.mkfile(current_dir, function(){
+				_this.setCurrentDir( current_dir );
+			});
+		});
+		$li.append($a);
+		$ulMenu.append($li);
+
+		// file name filter
+		var $li = document.createElement('li');
+		var $input = document.createElement('input');
+		$input.placeholder = 'Filter...';
+		$input.type = 'text';
+		$input.value = filter;
+		$input.addEventListener('change', function(){
+			filter = this.value;
+			_this.setCurrentDir( current_dir );
+		});
+		$li.append($input);
+		$ulMenu.append($li);
+
+		// $elm.append($ulMenu);
+
+		// --------------------------------------
+		// Path Bar
+		$pathBar = $elm.find('ul.remote-finder__path-bar');
+
+		// $elm.append($pathBar);
+
+		// --------------------------------------
+		// File list
+		$fileList = $elm.find('ul.remote-finder__file-list');
+
+		// $elm.append($fileList);
+
+		this.setCurrentDir(path, callback);
+
+		$elm
+			.on('dragenter', dropzone.onDragEnter)
+			.on('dragover', function(e){
+				let event = e.originalEvent;
+				event.preventDefault();
+				event.stopPropagation();
+			})
+			.on('drop', function(e){
+				let event = e.originalEvent;
+				event.preventDefault();
+				event.stopPropagation();
+			})
+		;
+
+	}
 
 	/**
 	 * サーバーサイドスクリプトに問い合わせる
@@ -226,8 +314,13 @@ module.exports = function(elm, options){
 	 * カレントディレクトリをセットする
 	 */
 	this.setCurrentDir = function(path, callback){
+		path = path.replace(/\/+$/, '/');
+
 		current_dir = path;
 		callback = callback || function(){};
+
+		this.clearSelectedItems();
+
 		gpiBridge(
 			{
 				'api': 'getItemList',
@@ -242,7 +335,7 @@ module.exports = function(elm, options){
 
 				// --------------------------------------
 				// Path Bar
-				$pathBar.innerHTML = '';
+				$pathBar.html('');
 				var tmpCurrentPath = '';
 				var tmpZIndex = 10000;
 				var breadcrumb = path.replace(/^\/+/, '').replace(/\/+$/, '').split('/');
@@ -276,11 +369,11 @@ module.exports = function(elm, options){
 					tmpCurrentPath += breadcrumb[i] + '/';
 				}
 
-				$elm.append($pathBar);
+				// $elm.append($pathBar);
 
 				// --------------------------------------
 				// File list
-				$fileList.innerHTML = '';
+				$fileList.html('');
 
 				// parent directory
 				if(path != '/' && path){
@@ -288,8 +381,9 @@ module.exports = function(elm, options){
 					var $a = document.createElement('a');
 					$a.textContent = '../';
 					$a.href = 'javascript:;';
-					$a.addEventListener('click', function(){
-						var tmp_path = path;
+					$a.setAttribute('data-path', path);
+					$a.addEventListener('dblclick', function(){
+						var tmp_path = this.getAttribute('data-path');
 						tmp_path = tmp_path.replace(/\/(?:[^\/]*\/?)$/, '/');
 						_this.setCurrentDir( tmp_path );
 					});
@@ -315,16 +409,29 @@ module.exports = function(elm, options){
 					$submenu = document.createElement('ul');
 					$submenu.classList.add('remote-finder__file-list-submenu');
 					if(result.list[idx].type == 'dir'){
+						// ディレクトリ
 						$a.textContent += '/';
+						$a.setAttribute('data-filename', $a.getAttribute('data-filename')+'/');
 						$a.classList.add('remote-finder__ico-folder');
-						$a.addEventListener('click', function(e){
+						$a.addEventListener('click', function(){
+							_this.clearSelectedItems();
+							var filename = this.getAttribute('data-filename');
+							_this.addSelectedItem(filename);
+						});
+						$a.addEventListener('dblclick', function(e){
 							var filename = this.getAttribute('data-filename');
 							_this.setCurrentDir( path+filename+'/' );
 						});
 
 					}else if(result.list[idx].type == 'file'){
+						// ファイル
 						$a.classList.add('remote-finder__ico-file');
-						$a.addEventListener('click', function(e){
+						$a.addEventListener('click', function(){
+							_this.clearSelectedItems();
+							var filename = this.getAttribute('data-filename');
+							_this.addSelectedItem(filename);
+						});
+						$a.addEventListener('dblclick', function(e){
 							var path = this.getAttribute('data-path');
 							var filename = this.getAttribute('data-filename');
 							var $body = $('<div>');
@@ -462,7 +569,7 @@ module.exports = function(elm, options){
 					$li.append($a);
 					$fileList.append($li);
 				}
-				$elm.append($fileList);
+
 				setTimeout(function(){
 					callback();
 				},10);
@@ -470,6 +577,40 @@ module.exports = function(elm, options){
 		);
 		return;
 	}
+
+	/**
+	 * 選択ファイルを追加する
+	 */
+	this.addSelectedItem = function(itemName){
+		selectedItems.push(itemName);
+		propertyView.update(selectedItems);
+		return;
+	}
+
+	/**
+	 * 選択状態を解除する
+	 */
+	this.deleteSelectedItem = function(itemName){
+		for( let i = 0; selectedItems.length > i; i ++ ){
+			if( selectedItems[i] == itemName ){
+				selectedItems[i] = undefined;
+				delete(selectedItems[i]);
+				break;
+			}
+		}
+		propertyView.update(selectedItems);
+		return;
+	}
+
+	/**
+	 * 全てのファイルの選択状態を解除する
+	 */
+	this.clearSelectedItems = function(){
+		selectedItems = [];
+		propertyView.update(selectedItems);
+		return;
+	}
+
 
 	/**
 	 * リスト表示を更新する
@@ -490,95 +631,6 @@ module.exports = function(elm, options){
 	 */
 	this.bindTemplate = function(templateName, data){
 		return templates[templateName](data);
-	}
-
-	/**
-	 * Finderを初期化します。
-	 */
-	this.init = function( path, options, callback ){
-		current_dir = path;
-		callback = callback || function(){};
-
-		$elm.html('');
-
-		// --------------------------------------
-		// MENU
-		var $ulMenu = document.createElement('ul');
-		$ulMenu.classList.add('remote-finder__menu');
-
-		// create new folder
-		var $li = document.createElement('li');
-		var $a = document.createElement('a');
-		$a.textContent = 'New Folder';
-		$a.classList.add('remote-finder__ico-new-folder');
-		$a.href = 'javascript:;';
-		$a.addEventListener('click', function(){
-			_this.mkdir(current_dir, function(){
-				_this.setCurrentDir( current_dir );
-			});
-		});
-		$li.append($a);
-		$ulMenu.append($li);
-
-		// create new file
-		var $li = document.createElement('li');
-		var $a = document.createElement('a');
-		$a.textContent = 'New File';
-		$a.classList.add('remote-finder__ico-new-file');
-		$a.href = 'javascript:;';
-		$a.addEventListener('click', function(){
-			_this.mkfile(current_dir, function(){
-				_this.setCurrentDir( current_dir );
-			});
-		});
-		$li.append($a);
-		$ulMenu.append($li);
-
-		// file name filter
-		var $li = document.createElement('li');
-		var $input = document.createElement('input');
-		$input.placeholder = 'Filter...';
-		$input.type = 'text';
-		$input.value = filter;
-		$input.addEventListener('change', function(){
-			filter = this.value;
-			_this.setCurrentDir( current_dir );
-		});
-		$li.append($input);
-		$ulMenu.append($li);
-
-		$elm.append($ulMenu);
-
-		// --------------------------------------
-		// Path Bar
-		$pathBar = document.createElement('ul');
-		$pathBar.classList.add('remote-finder__path-bar');
-
-		$elm.append($pathBar);
-
-		// --------------------------------------
-		// File list
-		$fileList = document.createElement('ul');
-		$fileList.classList.add('remote-finder__file-list');
-
-		$elm.append($fileList);
-
-		this.setCurrentDir(path, callback);
-
-		$elm
-			.on('dragenter', dropzone.onDragEnter)
-			.on('dragover', function(e){
-				let event = e.originalEvent;
-				event.preventDefault();
-				event.stopPropagation();
-			})
-			.on('drop', function(e){
-				let event = e.originalEvent;
-				event.preventDefault();
-				event.stopPropagation();
-			})
-		;
-
 	}
 
 }

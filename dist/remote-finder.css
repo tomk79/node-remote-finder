@@ -6,6 +6,8 @@
       flex-direction: column;
   -ms-flex-pack: start;
       justify-content: flex-start;
+  -ms-flex-wrap: nowrap;
+      flex-wrap: nowrap;
   overflow: hidden;
   position: relative; }
   .remote-finder :root {
@@ -1573,6 +1575,14 @@
           color: #000; }
       .remote-finder__path-bar > li:first-child > a {
         padding-left: 0.3em; }
+  .remote-finder__main {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-positive: 10;
+        flex-grow: 10;
+    -ms-flex-negative: 10;
+        flex-shrink: 10;
+    height: calc(100% - 100px); }
   .remote-finder__file-list {
     margin: 0 !important;
     padding: 0 !important;
@@ -1630,6 +1640,14 @@
       padding: 0.2em 0.5em; }
   .remote-finder__file-list a:hover .remote-finder__file-list-submenu {
     display: block; }
+  .remote-finder__property-view {
+    width: 280px;
+    max-width: 70%;
+    height: 100%;
+    overflow: auto;
+    padding: 12px 15px;
+    box-sizing: border-box;
+    border-left: 1px solid #ddd; }
   .remote-finder__ico-new-folder::before {
     content: '';
     display: inline-block;
