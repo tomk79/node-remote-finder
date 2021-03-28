@@ -409,8 +409,6 @@ module.exports = function(elm, options){
 					$a.href = 'javascript:;';
 					$a.setAttribute('data-filename', result.list[idx].name);
 					$a.setAttribute('data-path', path + result.list[idx].name);
-					$submenu = document.createElement('ul');
-					$submenu.classList.add('remote-finder__file-list-submenu');
 					if(result.list[idx].type == 'dir'){
 						// ディレクトリ
 						$a.textContent += '/';
@@ -463,6 +461,8 @@ module.exports = function(elm, options){
 	this.addSelectedItem = function(itemName){
 		selectedItems.push(itemName);
 		propertyView.update(selectedItems);
+		let $a = $elm.find('.remote-finder__file-list [data-filename="'+itemName+'"]');
+		$a.addClass('remote-finder__selected');
 		return;
 	}
 
@@ -478,6 +478,8 @@ module.exports = function(elm, options){
 			}
 		}
 		propertyView.update(selectedItems);
+		let $a = $elm.find('.remote-finder__file-list [data-filename="'+itemName+'"]');
+		$a.removeClass('remote-finder__selected');
 		return;
 	}
 
@@ -487,6 +489,7 @@ module.exports = function(elm, options){
 	this.clearSelectedItems = function(){
 		selectedItems = [];
 		propertyView.update(selectedItems);
+		$elm.find('.remote-finder__selected').removeClass('remote-finder__selected');
 		return;
 	}
 
