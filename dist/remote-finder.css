@@ -1752,3 +1752,21 @@
       height: 100%;
       box-sizing: border-box;
       text-align: center; }
+  .remote-finder__upload-dialog .px2-table {
+    width: 100%; }
+  .remote-finder__result-ok {
+    display: inline-block;
+    border: 1px solid #393;
+    background-color: #292;
+    color: #fff;
+    padding: 3px;
+    font-size: 11px;
+    border-radius: 3px; }
+  .remote-finder__result-ng {
+    display: inline-block;
+    border: 1px solid #d33;
+    background-color: #922;
+    color: #fff;
+    padding: 3px;
+    font-size: 11px;
+    border-radius: 3px; }

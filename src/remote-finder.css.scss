@@ -302,4 +302,29 @@
 			text-align: center;
 		}
 	}
+
+	&__upload-dialog {
+		.px2-table {
+			width: 100%;
+		}
+	}
+
+	&__result-ok {
+		display: inline-block;
+		border: 1px solid #393;
+		background-color: #292;
+		color: #fff;
+		padding: 3px;
+		font-size: 11px;
+		border-radius: 3px;
+	}
+	&__result-ng {
+		display: inline-block;
+		border: 1px solid #d33;
+		background-color: #922;
+		color: #fff;
+		padding: 3px;
+		font-size: 11px;
+		border-radius: 3px;
+	}
 }

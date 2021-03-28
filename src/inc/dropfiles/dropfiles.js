@@ -6,6 +6,8 @@ module.exports = function($elm, main){
 	let templates = {
 		'uploadDialog': require('./templates/upload-dialog.twig'),
 		'dropzone': require('./templates/dropzone.twig'),
+		'resultOk': require('./templates/result-ok.twig'),
+		'resultNg': require('./templates/result-ng.twig'),
 	};
 
 	this.onDragEnter = function(e){
@@ -53,12 +55,14 @@ module.exports = function($elm, main){
 			let $body = $(templates.uploadDialog({
 				'files': files,
 			}));
+			let $btnUpload = $('<button>');
+			let $btnCancel = $('<button>');
 
 			main.px2style.modal({
 				'title': 'ファイルをアップロード',
 				'body': $body,
 				'buttons': [
-					$('<button>')
+					$btnUpload
 						.text('アップロードする')
 						.addClass('px2-btn')
 						.addClass('px2-btn--primary')
@@ -71,6 +75,8 @@ module.exports = function($elm, main){
 
 							uploadFiles(files, allow_overwrite, $body, function(){
 								modalObj.closable(true);
+								$btnUpload.text('再アップロード');
+								$btnCancel.text('閉じる');
 								$formElms.removeAttr('disabled');
 								// main.px2style.closeModal();
 								main.refresh();
@@ -78,7 +84,7 @@ module.exports = function($elm, main){
 						})
 				],
 				'buttonsSecondary': [
-					$('<button>')
+					$btnCancel
 						.text('キャンセル')
 						.on('click', function(){
 							main.px2style.closeModal();
@@ -137,7 +143,7 @@ module.exports = function($elm, main){
 					if( loadedFileInfo === false ){
 						// 読み込みに失敗
 						// console.log('Failed to load file:', idx, row);
-						$reportTd.text( 'NG' );
+						$reportTd.html( templates.resultNg({}) );
 						setTimeout(function(){
 							itAry1.next();
 						}, 200);
@@ -158,7 +164,7 @@ module.exports = function($elm, main){
 							if(!result.result){
 								console.error(result.message);
 							}
-							$reportTd.text( (result.result ? 'OK' : 'NG') );
+							$reportTd.html( (result.result ? templates.resultOk({}) : templates.resultNg({})) );
 							setTimeout(function(){
 								itAry1.next();
 							}, 200);
