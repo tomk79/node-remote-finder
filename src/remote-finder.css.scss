@@ -287,12 +287,13 @@
 	}
 
 	&__preview{
+		margin: 1em 0;
 		pre{
 			border: 1px solid #999;
 			border-radius: 5px;
 			overflow: auto;
 			padding: 1em;
-			height: 5em;
+			height: 8em;
 			border:1px solid #ddd;
 			background-color: #f7f7f7;
 			code{
@@ -316,6 +317,8 @@
 	&__preview-disabled {
 		text-align: center;
 		padding: 4em 1em;
+		border: 3px dashed #ddd;
+		border-radius: 10px;
 	}
 
 	// --------------------------------------

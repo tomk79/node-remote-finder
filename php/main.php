@@ -66,8 +66,29 @@ class main{
 			}
 			$item['size'] = filesize($realpath);
 			$item['md5'] = md5_file($realpath);
-			$item['base64'] = base64_encode(file_get_contents($realpath));
 			$item['mime'] = mime_content_type($realpath);
+
+			// プレビューに使う情報を整理
+			$item['preview'] = array(
+				'mime' => null,
+				'ext' => null,
+				'base64' => null,
+			);
+			if( $item['size'] < 1000000 && $item['mime'] && preg_match('/^image\//i', $item['mime']) ){
+				// 軽量な画像ファイルの場合
+				$item['preview'] = array(
+					'mime' => $item['mime'],
+					'ext' => $item['ext'],
+					'base64' => base64_encode(file_get_contents($realpath)),
+				);
+			}elseif( $item['size'] < 1000000 && $item['mime'] && preg_match('/^text\//i', $item['mime']) ){
+				// 軽量なテキストファイルの場合
+				$item['preview'] = array(
+					'mime' => $item['mime'],
+					'ext' => $item['ext'],
+					'base64' => base64_encode(file_get_contents($realpath)),
+				);
+			}
 		}
 
 		$rtn['itemInfo'] = $item;

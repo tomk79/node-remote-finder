@@ -116,32 +116,9 @@ module.exports = function($elm, main){
 				var item = result.itemInfo;
 				// console.log(result);
 				var $preview = $('<div class="remote-finder__preview">');
-				switch(item.ext){
-					case 'html': case 'htm': case 'xhtml': case 'xml':
-					case 'php': case 'inc':
-					case 'rb':
-					case 'jsp':
-					case 'js': case 'json':
-					case 'css': case 'scss':
-					case 'md':
-					case 'mm':
-					case 'txt':
-					case 'svg':
-					case 'htaccess':
-					case 'gitkeep': case 'gitignore':
-						$preview.append( $('<pre>').append( $('<code>').text( decodeURIComponent(escape(atob(item.base64))) ) ) );
-						break;
-					case 'jpg': case 'jpeg': case 'jpe':
-					case 'png': case 'gif':
-						$preview.append( $('<img>').attr({
-							'src': 'data:'+item.mime+';base64,'+item.base64
-						}) );
-						break;
-					default:
-						$preview.append( $('<div class="remote-finder__preview-disabled">プレビューできない形式です</div>') );
-						break;
-				}
+				drawPreview($preview, item.preview);
 				$body.append($preview);
+
 				var $table = $('<table>');
 				$table
 					.append( $('<tr>')
@@ -169,6 +146,44 @@ module.exports = function($elm, main){
 			}
 		);
 	} // drawFileProperties()
+
+
+	/**
+	 * プレビューを描画する
+	 */
+	function drawPreview($previewElm, preview){
+		if( !preview || !preview.mime ){
+			$previewElm.append( $('<div class="remote-finder__preview-disabled">プレビューできない形式か、ファイルサイズが大きすぎるため、プレビューを中止しました。</div>') );
+			return;
+		}
+
+		switch(preview.ext){
+			case 'html': case 'htm': case 'xhtml': case 'xml':
+			case 'php': case 'inc':
+			case 'rb':
+			case 'jsp':
+			case 'js': case 'json':
+			case 'css': case 'scss':
+			case 'md':
+			case 'mm':
+			case 'txt':
+			case 'svg':
+			case 'htaccess':
+			case 'gitkeep': case 'gitignore':
+				$previewElm.append( $('<pre>').append( $('<code>').text( decodeURIComponent(escape(atob(preview.base64))) ) ) );
+				break;
+			case 'jpg': case 'jpeg': case 'jpe':
+			case 'png': case 'gif':
+				$previewElm.append( $('<img>').attr({
+					'src': 'data:'+preview.mime+';base64,'+preview.base64
+				}) );
+				break;
+			default:
+				$previewElm.append( $('<div class="remote-finder__preview-disabled">プレビューできない形式か、ファイルサイズが大きすぎるため、プレビューを中止しました。</div>') );
+				break;
+		}
+		return;
+	}
 
 
 	/**

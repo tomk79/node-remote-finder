@@ -41,8 +41,29 @@ module.exports = function(path, options, callback){
 		var bin = fs.readFileSync(realpath);
 		item.size = fs.statSync(realpath).size;
 		item.md5 = utils79.md5(bin);
-		item.base64 = utils79.base64_encode(bin);
 		item.mime = mimeTypes.lookup(realpath);
+
+		// プレビューに使う情報を整理
+		item.preview = {
+			'mime': null,
+			'ext': null,
+			'base64': null,
+		};
+		if( item.size < 1000000 && item.mime && item.mime.match(/^image\//i) ){
+			// 軽量な画像ファイルの場合
+			item.preview = {
+				'mime': item.mime,
+				'ext': item.ext,
+				'base64': utils79.base64_encode(bin),
+			};
+		}else if( item.size < 1000000 && item.mime && item.mime.match(/^text\//i) ){
+			// 軽量なテキストファイルの場合
+			item.preview = {
+				'mime': item.mime,
+				'ext': item.ext,
+				'base64': utils79.base64_encode(bin),
+			};
+		}
 	}
 
 	rtn.itemInfo = item;
