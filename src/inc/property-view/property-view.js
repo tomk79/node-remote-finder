@@ -181,25 +181,22 @@ module.exports = function($elm, main){
 
 		main.px2style.loading();
 
-		new Promise(function(rlv, rjt){
-			main.gpiBridge(
-				{
-					'api': 'getItemInfo',
-					'path': main.getCurrentDir() + itemName,
-					'options': {}
-				},
-				function(result){
-					// console.log('itemInfo:', result);
-					var item = result.itemInfo;
-					a.href = 'data:'+item.mime+';base64,'+item.base64;
-					setTimeout(function(){
-						main.px2style.closeLoading();
-						$(a).trigger('click');
-						rlv();
-					}, 100);
-				}
-			);
-		});
+		main.gpiBridge(
+			{
+				'api': 'getItemInfo',
+				'path': main.getCurrentDir() + itemName,
+				'options': {}
+			},
+			function(result){
+				// console.log('itemInfo:', result);
+				var item = result.itemInfo;
+				a.href = 'data:'+item.mime+';base64,'+item.base64;
+				a.click();
+
+				main.px2style.closeLoading();
+			}
+		);
+
 		return false;
 	}
 
