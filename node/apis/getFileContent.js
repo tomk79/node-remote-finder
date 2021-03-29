@@ -11,7 +11,7 @@ module.exports = function(path, options, callback){
 	var rtn = {
 		result: true,
 		message: "OK",
-		itemInfo: {}
+		content: {}
 	};
 
 	var item = {};
@@ -21,8 +21,8 @@ module.exports = function(path, options, callback){
 	}else if(utils79.is_file(realpath)){
 		item.type = 'file';
 	}
-	item.visible = _this.isVisiblePath(path);
-	if(!item.visible){
+
+	if( !_this.isVisiblePath(path) ){
 		callback({
 			result: false,
 			message: "Item not found",
@@ -30,22 +30,26 @@ module.exports = function(path, options, callback){
 		});
 		return;
 	}
-	item.writable = _this.isWritablePath(path);
-
-	if( item.type == 'file' ){
-		item.ext = null;
-		if(item.name.match(/\.([a-zA-Z0-9\-\_]+)$/)){
-			item.ext = RegExp.$1;
-			item.ext = item.ext.toLowerCase();
-		}
-		var bin = fs.readFileSync(realpath);
-		item.size = fs.statSync(realpath).size;
-		item.md5 = utils79.md5(bin);
-		item.base64 = utils79.base64_encode(bin);
-		item.mime = mimeTypes.lookup(realpath);
+	if(item.type != 'file'){
+		callback({
+			result: false,
+			message: "Item is not a file",
+			content: false
+		});
+		return;
 	}
+	item.ext = null;
+	if(item.name.match(/\.([a-zA-Z0-9\-\_]+)$/)){
+		item.ext = RegExp.$1;
+		item.ext = item.ext.toLowerCase();
+	}
+	var bin = fs.readFileSync(realpath);
+	item.size = fs.statSync(realpath).size;
+	item.md5 = utils79.md5(bin);
+	item.base64 = utils79.base64_encode(bin);
+	item.mime = mimeTypes.lookup(realpath);
 
-	rtn.itemInfo = item;
+	rtn.content = item;
 	callback(rtn);
 
 	return;

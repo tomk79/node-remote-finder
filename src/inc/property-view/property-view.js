@@ -183,17 +183,24 @@ module.exports = function($elm, main){
 
 		main.gpiBridge(
 			{
-				'api': 'getItemInfo',
+				'api': 'getFileContent',
 				'path': main.getCurrentDir() + itemName,
 				'options': {}
 			},
 			function(result){
-				// console.log('itemInfo:', result);
-				var item = result.itemInfo;
+				// console.log('content:', result);
+				if( !result.result ){
+					console.error('Failed to get file content:', result);
+					main.px2style.closeLoading();
+					alert('ファイルの取得に失敗しました。');
+					return;
+				}
+				var item = result.content;
 				a.href = 'data:'+item.mime+';base64,'+item.base64;
 				a.click();
 
 				main.px2style.closeLoading();
+				return;
 			}
 		);
 

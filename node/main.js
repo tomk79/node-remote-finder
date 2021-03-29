@@ -10,6 +10,7 @@ module.exports = function(paths_root_dir, options){
 	this.paths_root_dir = paths_root_dir;
 }
 module.exports.prototype.gpi_getItemInfo = require('./apis/getItemInfo.js');
+module.exports.prototype.gpi_getFileContent = require('./apis/getFileContent.js');
 module.exports.prototype.gpi_getItemList = require('./apis/getItemList.js');
 module.exports.prototype.gpi_createNewFile = require('./apis/createNewFile.js');
 module.exports.prototype.gpi_createNewFolder = require('./apis/createNewFolder.js');

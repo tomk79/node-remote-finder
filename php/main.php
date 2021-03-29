@@ -43,20 +43,71 @@ class main{
 
 		$item = array();
 		$item['name'] = basename($path);
-		if(is_dir($realpath.'/'.$item['name'])){
+		if(is_dir($realpath)){
 			$item['type'] = 'dir';
-		}elseif(is_file($realpath.'/'.$item['name'])){
+		}elseif(is_file($realpath)){
 			$item['type'] = 'file';
 		}
-		$item['visible'] = $this->isVisiblePath($path.'/'.$item['name']);
+		$item['visible'] = $this->isVisiblePath($path);
 		if(!$item['visible']){
 			return array(
 				'result' => false,
-				'message' => "Item Not Found",
+				'message' => "Item not found",
 				'itemInfo' => false,
 			);
 		}
-		$item['writable'] = $this->isWritablePath($path.'/'.$item['name']);
+		$item['writable'] = $this->isWritablePath($path);
+
+		if($item['type'] == 'file'){
+			$item['ext'] = null;
+			if( preg_match('/\.([a-zA-Z0-9\-\_]+)$/', $item['name'], $matched) ){
+				$item['ext'] = $matched[1];
+				$item['ext'] = strtolower($item['ext']);
+			}
+			$item['size'] = filesize($realpath);
+			$item['md5'] = md5_file($realpath);
+			$item['base64'] = base64_encode(file_get_contents($realpath));
+			$item['mime'] = mime_content_type($realpath);
+		}
+
+		$rtn['itemInfo'] = $item;
+		return $rtn;
+	}
+
+	/**
+	 * ファイルの内容を取得する
+	 */
+	private function gpi_getFileContent($path, $options){
+		$realpath = $this->getRealpath($path);
+		// var_dump($realpath);
+		$rtn = array(
+			'result' => true,
+			'message' => "OK",
+			'content' => array(),
+		);
+
+		$item = array();
+		$item['name'] = basename($path);
+		if(is_dir($realpath)){
+			$item['type'] = 'dir';
+		}elseif(is_file($realpath)){
+			$item['type'] = 'file';
+		}
+
+		if( !$this->isVisiblePath($path) ){
+			return array(
+				'result' => false,
+				'message' => "Item not found",
+				'content' => false,
+			);
+		}
+		if($item['type'] != 'file'){
+			return array(
+				'result' => false,
+				'message' => "Item is not a file",
+				'content' => false,
+			);
+		}
 		$item['ext'] = null;
 		if( preg_match('/\.([a-zA-Z0-9\-\_]+)$/', $item['name'], $matched) ){
 			$item['ext'] = $matched[1];
@@ -67,7 +118,7 @@ class main{
 		$item['base64'] = base64_encode(file_get_contents($realpath));
 		$item['mime'] = mime_content_type($realpath);
 
-		$rtn['itemInfo'] = $item;
+		$rtn['content'] = $item;
 		return $rtn;
 	}
 
