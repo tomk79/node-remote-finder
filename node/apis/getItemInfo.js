@@ -49,7 +49,14 @@ module.exports = function(path, options, callback){
 			'ext': null,
 			'base64': null,
 		};
-		if( item.size < 1000000 && item.mime && item.mime.match(/^image\//i) ){
+		if( item.size == 0 ){
+			// 内容がからっぽの場合
+			item.preview = {
+				'mime': 'text/plain',
+				'ext': 'txt',
+				'base64': utils79.base64_encode(''),
+			};
+		}else if( item.size < 1000000 && item.mime && item.mime.match(/^image\//i) ){
 			// 軽量な画像ファイルの場合
 			item.preview = {
 				'mime': item.mime,

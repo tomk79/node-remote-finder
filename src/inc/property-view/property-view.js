@@ -127,11 +127,11 @@ module.exports = function($elm, main){
 					)
 					.append( $('<tr>')
 						.append( $('<th>').text('Extension') )
-						.append( $('<td>').text(item.ext) )
+						.append( $('<td>').text(item.ext || '') )
 					)
 					.append( $('<tr>')
 						.append( $('<th>').text('mime-type') )
-						.append( $('<td>').text(item.mime) )
+						.append( $('<td>').text(item.mime || '') )
 					)
 					.append( $('<tr>')
 						.append( $('<th>').text('File Size') )
@@ -139,7 +139,7 @@ module.exports = function($elm, main){
 					)
 					.append( $('<tr>')
 						.append( $('<th>').text('MD5') )
-						.append( $('<td>').text(item.md5) )
+						.append( $('<td>').text(item.md5 || '') )
 					)
 				;
 				$body.append($table);

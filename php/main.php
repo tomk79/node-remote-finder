@@ -74,7 +74,14 @@ class main{
 				'ext' => null,
 				'base64' => null,
 			);
-			if( $item['size'] < 1000000 && $item['mime'] && preg_match('/^image\//i', $item['mime']) ){
+			if( $item['size'] == 0 ){
+				// 内容がからっぽの場合
+				$item['preview'] = array(
+					'mime' => 'text/plain',
+					'ext' => 'txt',
+					'base64' => base64_encode(''),
+				);
+			}elseif( $item['size'] < 1000000 && $item['mime'] && preg_match('/^image\//i', $item['mime']) ){
 				// 軽量な画像ファイルの場合
 				$item['preview'] = array(
 					'mime' => $item['mime'],
