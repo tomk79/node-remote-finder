@@ -41,69 +41,7 @@ module.exports = function($elm, main){
 					'itemName': selectedItems[0],
 				}) );
 
-				main.gpiBridge(
-					{
-						'api': 'getItemInfo',
-						'path': main.getCurrentDir()+selectedItems[0],
-						'options': {}
-					},
-					function(result){
-						var $body = $propertyView.find('.remote-finder__property-view-main');
-						var item = result.itemInfo;
-						console.log(result);
-						var $preview = $('<div class="remote-finder__preview">');
-						switch(item.ext){
-							case 'html': case 'htm': case 'xhtml': case 'xml':
-							case 'php': case 'inc':
-							case 'rb':
-							case 'jsp':
-							case 'js': case 'json':
-							case 'css': case 'scss':
-							case 'md':
-							case 'mm':
-							case 'txt':
-							case 'svg':
-							case 'htaccess':
-							case 'gitkeep': case 'gitignore':
-								$preview.append( $('<pre>').append( $('<code>').text( decodeURIComponent(escape(atob(item.base64))) ) ) );
-								break;
-							case 'jpg': case 'jpeg': case 'jpe':
-							case 'png': case 'gif':
-								$preview.append( $('<img>').attr({
-									'src': 'data:'+item.mime+';base64,'+item.base64
-								}) );
-								break;
-							default:
-								$preview.append( $('<div class="remote-finder__preview-disabled">プレビューできない形式です</div>') );
-								break;
-						}
-						$body.append($preview);
-						var $table = $('<table>');
-						$table
-							.append( $('<tr>')
-								.append( $('<th>').text('Filename') )
-								.append( $('<td>').text(item.name) )
-							)
-							.append( $('<tr>')
-								.append( $('<th>').text('Extension') )
-								.append( $('<td>').text(item.ext) )
-							)
-							.append( $('<tr>')
-								.append( $('<th>').text('mime-type') )
-								.append( $('<td>').text(item.mime) )
-							)
-							.append( $('<tr>')
-								.append( $('<th>').text('File Size') )
-								.append( $('<td>').text(item.size + ' byte(s)') )
-							)
-							.append( $('<tr>')
-								.append( $('<th>').text('MD5') )
-								.append( $('<td>').text(item.md5) )
-							)
-						;
-						$body.append($table);
-					}
-				);
+				drawFileProperties( selectedItems[0], $propertyView.find('.remote-finder__property-view-main') );
 
 				// 開く
 				$propertyView.find('.remote-finder__property-view-btn-open').on('click', function(e){
@@ -111,6 +49,14 @@ module.exports = function($elm, main){
 					var path = this.getAttribute('data-current-dir');
 					var filename = this.getAttribute('data-filename');
 					main.open( path+filename, function(res){} );
+				});
+
+				// ダウンロード
+				$propertyView.find('.remote-finder__property-view-btn-download').on('click', function(e){
+					e.stopPropagation();
+					var path = this.getAttribute('data-current-dir');
+					var filename = this.getAttribute('data-filename');
+					return downloadFile( this, filename );
 				});
 
 			}
@@ -154,6 +100,107 @@ module.exports = function($elm, main){
 		}
 
 		return;
+	}
+
+	/**
+	 * ファイルのプロパティ情報を描画する
+	 */
+	function drawFileProperties( itemName, $body ){
+		main.gpiBridge(
+			{
+				'api': 'getItemInfo',
+				'path': main.getCurrentDir() + itemName,
+				'options': {}
+			},
+			function(result){
+				var item = result.itemInfo;
+				// console.log(result);
+				var $preview = $('<div class="remote-finder__preview">');
+				switch(item.ext){
+					case 'html': case 'htm': case 'xhtml': case 'xml':
+					case 'php': case 'inc':
+					case 'rb':
+					case 'jsp':
+					case 'js': case 'json':
+					case 'css': case 'scss':
+					case 'md':
+					case 'mm':
+					case 'txt':
+					case 'svg':
+					case 'htaccess':
+					case 'gitkeep': case 'gitignore':
+						$preview.append( $('<pre>').append( $('<code>').text( decodeURIComponent(escape(atob(item.base64))) ) ) );
+						break;
+					case 'jpg': case 'jpeg': case 'jpe':
+					case 'png': case 'gif':
+						$preview.append( $('<img>').attr({
+							'src': 'data:'+item.mime+';base64,'+item.base64
+						}) );
+						break;
+					default:
+						$preview.append( $('<div class="remote-finder__preview-disabled">プレビューできない形式です</div>') );
+						break;
+				}
+				$body.append($preview);
+				var $table = $('<table>');
+				$table
+					.append( $('<tr>')
+						.append( $('<th>').text('Filename') )
+						.append( $('<td>').text(item.name) )
+					)
+					.append( $('<tr>')
+						.append( $('<th>').text('Extension') )
+						.append( $('<td>').text(item.ext) )
+					)
+					.append( $('<tr>')
+						.append( $('<th>').text('mime-type') )
+						.append( $('<td>').text(item.mime) )
+					)
+					.append( $('<tr>')
+						.append( $('<th>').text('File Size') )
+						.append( $('<td>').text(item.size + ' byte(s)') )
+					)
+					.append( $('<tr>')
+						.append( $('<th>').text('MD5') )
+						.append( $('<td>').text(item.md5) )
+					)
+				;
+				$body.append($table);
+			}
+		);
+	} // drawFileProperties()
+
+
+	/**
+	 * ファイルをダウンロードする
+	 */
+	function downloadFile( a, itemName ){
+		if( a.href && a.href != 'about:blank' ){
+			return true;
+		}
+
+		main.px2style.loading();
+
+		new Promise(function(rlv, rjt){
+			main.gpiBridge(
+				{
+					'api': 'getItemInfo',
+					'path': main.getCurrentDir() + itemName,
+					'options': {}
+				},
+				function(result){
+					// console.log('itemInfo:', result);
+					var item = result.itemInfo;
+					a.href = 'data:'+item.mime+';base64,'+item.base64;
+					setTimeout(function(){
+						main.px2style.closeLoading();
+						$(a).trigger('click');
+						rlv();
+					}, 100);
+				}
+			);
+		});
+		return false;
 	}
 
 }

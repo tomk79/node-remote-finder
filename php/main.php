@@ -30,7 +30,7 @@ class main{
 
 
 	/**
-	 * ファイルとフォルダの一覧を取得する
+	 * ファイルの詳細情報を取得する
 	 */
 	private function gpi_getItemInfo($path, $options){
 		$realpath = $this->getRealpath($path);
