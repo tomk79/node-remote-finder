@@ -3,7 +3,7 @@
  */
 module.exports = function(path, options, callback){
 	var fs = require('fs');
-	var posix = require('posix');
+	// var posix = require('posix'); // TODO: nw で問題が起きるためひとまず見送り
 	var mimeTypes = require('mime-types');
 	var utils79 = require('utils79');
 	var _this = this;

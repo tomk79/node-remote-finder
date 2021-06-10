@@ -26,7 +26,6 @@
     "fs-extra": "^7.0.1",
     "iterate79": "^1.0.0",
     "mime-types": "^2.1.26",
-    "posix": "^4.2.0",
     "px2style": "git+https://github.com/pickles2/px2style.git#develop",
     "utils79": "0.0.4"
   },
