@@ -37,9 +37,11 @@ module.exports = function(path, options, callback){
 	item.size = fileStat.size;
 	item.mode = (fileStat.mode & parseInt(777, 8)).toString(8);
 	item.uid = fileStat.uid;
-	item.uname = posix.getpwnam(fileStat.uid).name;
+	item.uname = fileStat.uid;
+	// item.uname = posix.getpwnam(fileStat.uid).name; // TODO: nw で問題が起きるためひとまず見送り
 	item.gid = fileStat.gid;
-	item.gname = posix.getgrnam(fileStat.gid).name;
+	item.gname = fileStat.gid;
+	// item.gname = posix.getgrnam(fileStat.gid).name; // TODO: nw で問題が起きるためひとまず見送り
 
 	if( item.type == 'file' ){
 		item.ext = null;
