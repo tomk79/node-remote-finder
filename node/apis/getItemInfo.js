@@ -3,6 +3,7 @@
  */
 module.exports = function(path, options, callback){
 	var fs = require('fs');
+	var posix = require('posix');
 	var mimeTypes = require('mime-types');
 	var utils79 = require('utils79');
 	var _this = this;
@@ -32,6 +33,14 @@ module.exports = function(path, options, callback){
 	}
 	item.writable = _this.isWritablePath(path);
 
+	var fileStat = fs.statSync(realpath);
+	item.size = fileStat.size;
+	item.mode = (fileStat.mode & parseInt(777, 8)).toString(8);
+	item.uid = fileStat.uid;
+	item.uname = posix.getpwnam(fileStat.uid).name;
+	item.gid = fileStat.gid;
+	item.gname = posix.getgrnam(fileStat.gid).name;
+
 	if( item.type == 'file' ){
 		item.ext = null;
 		if(item.name.match(/\.([a-zA-Z0-9\-\_]+)$/)){
@@ -39,7 +48,7 @@ module.exports = function(path, options, callback){
 			item.ext = item.ext.toLowerCase();
 		}
 		var bin = fs.readFileSync(realpath);
-		item.size = fs.statSync(realpath).size;
+
 		item.md5 = utils79.md5(bin);
 		item.mime = mimeTypes.lookup(realpath);
 

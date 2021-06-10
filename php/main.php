@@ -58,13 +58,25 @@ class main{
 		}
 		$item['writable'] = $this->isWritablePath($path);
 
+		$stat = stat( $realpath );
+		if( $stat ){
+			$item['size'] = $stat['size'];
+			$item['mode'] = substr(sprintf('%o', $stat['mode']), -3);
+			$user = posix_getpwuid($stat['uid']);
+			$item['uid'] = $stat['uid'];
+			$item['uname'] = $user['name'];
+			$group = posix_getgrgid($stat['gid']);
+			$item['gid'] = $stat['gid'];
+			$item['gname'] = $group['name'];
+		}
+
 		if($item['type'] == 'file'){
 			$item['ext'] = null;
 			if( preg_match('/\.([a-zA-Z0-9\-\_]+)$/', $item['name'], $matched) ){
 				$item['ext'] = $matched[1];
 				$item['ext'] = strtolower($item['ext']);
 			}
-			$item['size'] = filesize($realpath);
+
 			$item['md5'] = md5_file($realpath);
 			$item['mime'] = mime_content_type($realpath);
 
@@ -188,7 +200,18 @@ class main{
 				$item['ext'] = $matched[1];
 				$item['ext'] = strtolower($item['ext']);
 			}
-			$item['size'] = filesize($realpath.'/'.$item['name']);
+
+			$stat = stat( $realpath.'/'.$item['name'] );
+			if( $stat ){
+				$item['size'] = $stat['size'];
+				$item['mode'] = substr(sprintf('%o', $stat['mode']), -3);
+				$user = posix_getpwuid($stat['uid']);
+				$item['uid'] = $stat['uid'];
+				$item['uname'] = $user['name'];
+				$group = posix_getgrgid($stat['gid']);
+				$item['gid'] = $stat['gid'];
+				$item['gname'] = $group['name'];
+			}
 			array_push($rtn['list'], $item);
 		}
 

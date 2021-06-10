@@ -26,6 +26,8 @@ module.exports = function($elm, main){
 					'itemName': selectedItems[0],
 				}) );
 
+				drawDirectoryProperties( selectedItems[0], $propertyView.find('.remote-finder__property-view-main') );
+
 				// 開く
 				$propertyView.find('.remote-finder__property-view-btn-open').on('click', function(e){
 					e.stopPropagation();
@@ -122,7 +124,7 @@ module.exports = function($elm, main){
 				var $table = $('<table>');
 				$table
 					.append( $('<tr>')
-						.append( $('<th>').text('Filename') )
+						.append( $('<th>').text('File Name') )
 						.append( $('<td>').text(item.name) )
 					)
 					.append( $('<tr>')
@@ -142,10 +144,69 @@ module.exports = function($elm, main){
 						.append( $('<td>').text(item.md5 || '') )
 					)
 				;
+				if( item.uname && item.gname ){
+					$table
+						.append( $('<tr>')
+							.append( $('<th>').text('Owner') )
+							.append( $('<td>').text( ( item.uname || '---' ) + ' ' + ( item.gname || '---' ) ) )
+						)
+					;
+				}
+				if( item.mode ){
+					$table
+						.append( $('<tr>')
+							.append( $('<th>').text('Mode') )
+							.append( $('<td>').text(item.mode || '') )
+						)
+					;
+				}
 				$body.append($table);
 			}
 		);
 	} // drawFileProperties()
+
+
+	/**
+	 * ディレクトリのプロパティ情報を描画する
+	 */
+	function drawDirectoryProperties( itemName, $body ){
+		main.gpiBridge(
+			{
+				'api': 'getItemInfo',
+				'path': main.getCurrentDir() + itemName,
+				'options': {}
+			},
+			function(result){
+				var item = result.itemInfo;
+				// console.log(result);
+
+				var $table = $('<table>');
+				$table
+					.append( $('<tr>')
+						.append( $('<th>').text('Directory Name') )
+						.append( $('<td>').text(item.name) )
+					)
+				;
+				if( item.uname && item.gname ){
+					$table
+						.append( $('<tr>')
+							.append( $('<th>').text('Owner') )
+							.append( $('<td>').text( ( item.uname || '---' ) + ' ' + ( item.gname || '---' ) ) )
+						)
+					;
+				}
+				if( item.mode ){
+					$table
+						.append( $('<tr>')
+							.append( $('<th>').text('Mode') )
+							.append( $('<td>').text(item.mode || '') )
+						)
+					;
+				}
+				$body.append($table);
+			}
+		);
+	} // drawDirectoryProperties()
 
 
 	/**

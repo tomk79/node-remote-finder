@@ -3,6 +3,7 @@
  */
 module.exports = function(path, options, callback){
 	var fs = require('fs');
+	var posix = require('posix');
 	var utils79 = require('utils79');
 	var _this = this;
 	var realpath = this.getRealpath(path);
@@ -40,7 +41,15 @@ module.exports = function(path, options, callback){
 				item.ext = RegExp.$1;
 				item.ext = item.ext.toLowerCase();
 			}
-			item.size = fs.statSync(realpath+'/'+item.name).size;
+			var fileStat = fs.statSync(realpath+'/'+item.name);
+			item.size = fileStat.size;
+			item.mode = (fileStat.mode & parseInt(777, 8)).toString(8);
+
+			item.uid = fileStat.uid;
+			item.uname = posix.getpwnam(fileStat.uid).name;
+			item.gid = fileStat.gid;
+			item.gname = posix.getgrnam(fileStat.gid).name;
+
 			rtn.list.push(item);
 		}
 		callback(rtn);
