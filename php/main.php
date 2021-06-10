@@ -388,6 +388,7 @@ class main{
 			);
 		}
 
+		$this->fs->chmod_r( $realpath, 0777 );
 		$result = $this->fs->rm($realpath);
 		return array(
 			'result' => !!$result,

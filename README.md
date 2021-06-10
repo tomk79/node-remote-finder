@@ -153,6 +153,10 @@ remoteFinder.init('/', {}, function(){
 
 ## 更新履歴 - Change log
 
+### remote-finder v0.1.1 (リリース日未定)
+
+- ファイルやフォルダの削除時に、パーミッションの操作を追加。
+
 ### remote-finder v0.1.0 (2021年3月31日)
 
 - プロパティビューを追加し、操作性を改善した。
