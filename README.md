@@ -153,7 +153,7 @@ remoteFinder.init('/', {}, function(){
 
 ## 更新履歴 - Change log
 
-### remote-finder v0.1.1 (リリース日未定)
+### remote-finder v0.1.1 (2021年6月12日)
 
 - オーナーとモードを表示するようになった。
 - その他の細かい修正。
