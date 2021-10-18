@@ -153,6 +153,10 @@ remoteFinder.init('/', {}, function(){
 
 ## 更新履歴 - Change log
 
+### remote-finder v0.1.2 (リリース日未定)
+
+- ダークモードへの対応を強化した。
+
 ### remote-finder v0.1.1 (2021年6月12日)
 
 - オーナーとモードを表示するようになった。
