@@ -5,9 +5,9 @@ module.exports = function(elm, options){
 	let _this = this;
 	let $ = require('jquery');
 	this.jQuery = $;
-	let px2style = new (require('px2style'))();
+	require('px2style/dist/px2style');
+	var px2style = window.px2style;
 	this.px2style = px2style;
-	this.px2style.setConfig('additionalClassName', 'remote-finder');
 	let current_dir = '/';
 	let filter = '';
 	let $pathBar;

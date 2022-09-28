@@ -1,3 +1,5 @@
+@import "../node_modules/px2style/dist/px2style";
+
 .remote-finder{
 	display: flex;
 	flex-direction: column;
@@ -5,30 +7,6 @@
 	flex-wrap: nowrap;
 	overflow: hidden;
 	position: relative;
-
-	@import "../node_modules/px2style/src/px2style.css.scss";
-
-	a{
-		background-color: #fff;
-		color: #333;
-		text-decoration: none;
-		&:hover{
-			background-color: #eee;
-			color: #000;
-		}
-	}
-	button{
-		background-color: #fff;
-		color: #333;
-		border: 1px solid #666;
-		cursor: pointer;
-		padding: 0.5em 1em;
-		font-size: medium;
-		&:hover{
-			background-color: #eee;
-			color: #000;
-		}
-	}
 
 	&__menu{
 		margin: 0 !important;
@@ -162,6 +140,16 @@
 		position: relative;
 		z-index: 1000;
 		flex-grow: 10;
+
+		a{
+			background-color: #fff;
+			color: #333;
+			text-decoration: none;
+			&:hover{
+				background-color: #eee;
+				color: #000;
+			}
+		}
 
 		>li{
 			display: block;
@@ -374,6 +362,6 @@
 	}
 
 }
-.px2-darkmode .remote-finder {
-	@import "../node_modules/px2style/src/themes/darkmode/darkmode.css.scss";
+.px2-darkmode {
+	@import "../node_modules/px2style/dist/themes/darkmode";
 }
