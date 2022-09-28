@@ -2,11 +2,11 @@
 /**
  * test for tomk79/remote-finder
  */
-class mainTest extends PHPUnit_Framework_TestCase{
+class mainTest extends PHPUnit\Framework\TestCase{
 	private $fs;
 	private $remoteFinder;
 
-	public function setup(){
+	public function setup() : void{
 		mb_internal_encoding('UTF-8');
 		$this->remoteFinder = new tomk79\remoteFinder\main(array(
 			"default" => __DIR__.'/data/root1/'

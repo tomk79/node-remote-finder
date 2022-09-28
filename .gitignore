@@ -47,5 +47,8 @@ package-lock.json
 composer.lock
 vendor
 
+# phpunit
+.phpunit.result.cache
+
 # webpack/asset
 /images/
