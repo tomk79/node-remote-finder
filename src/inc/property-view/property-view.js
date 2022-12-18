@@ -112,7 +112,7 @@ module.exports = function($elm, main){
 			{
 				'api': 'getItemInfo',
 				'path': main.getCurrentDir() + itemName,
-				'options': {}
+				'options': {},
 			},
 			function(result){
 				var item = result.itemInfo;
@@ -174,7 +174,7 @@ module.exports = function($elm, main){
 			{
 				'api': 'getItemInfo',
 				'path': main.getCurrentDir() + itemName,
-				'options': {}
+				'options': {},
 			},
 			function(result){
 				var item = result.itemInfo;
@@ -261,7 +261,7 @@ module.exports = function($elm, main){
 			{
 				'api': 'getFileContent',
 				'path': main.getCurrentDir() + itemName,
-				'options': {}
+				'options': {},
 			},
 			function(result){
 				// console.log('content:', result);

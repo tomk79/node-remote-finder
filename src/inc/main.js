@@ -188,7 +188,7 @@ module.exports = function(elm, options){
 			gpiBridge(
 				{
 					'api': 'createNewFolder',
-					'path': current_dir+foldername
+					'path': current_dir+foldername,
 				},
 				function(result){
 					if(!result.result){
@@ -213,7 +213,7 @@ module.exports = function(elm, options){
 			gpiBridge(
 				{
 					'api': 'createNewFile',
-					'path': current_dir+filename
+					'path': current_dir+filename,
 				},
 				function(result){
 					if(!result.result){
@@ -239,8 +239,8 @@ module.exports = function(elm, options){
 					'api': 'copy',
 					'path': copyFrom,
 					'options': {
-						'to': copyTo
-					}
+						'to': copyTo,
+					},
 				},
 				function(result){
 					if(!result.result){
@@ -266,8 +266,8 @@ module.exports = function(elm, options){
 					'api': 'rename',
 					'path': renameFrom,
 					'options': {
-						'to': renameTo
-					}
+						'to': renameTo,
+					},
 				},
 				function(result){
 					if(!result.result){
@@ -289,7 +289,8 @@ module.exports = function(elm, options){
 			gpiBridge(
 				{
 					'api': 'remove',
-					'path': path_target
+					'path': path_target,
+					'options': {},
 				},
 				function(result){
 					if(!result.result){
@@ -325,7 +326,7 @@ module.exports = function(elm, options){
 			{
 				'api': 'getItemList',
 				'path': path,
-				'options': options
+				'options': {},
 			},
 			function(result){
 				if( !result.result ){

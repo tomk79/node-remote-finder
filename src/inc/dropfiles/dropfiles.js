@@ -155,8 +155,8 @@ module.exports = function($elm, main){
 							'path': main.getCurrentDir()+row.name,
 							'options': {
 								'allow_overwrite': allow_overwrite,
-								'base64': base64
-							}
+								'base64': base64,
+							},
 						},
 						function(result){
 							if(!result.result){
