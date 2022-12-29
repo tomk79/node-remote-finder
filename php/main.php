@@ -62,12 +62,20 @@ class main{
 		if( $stat ){
 			$item['size'] = $stat['size'];
 			$item['mode'] = substr(sprintf('%o', $stat['mode']), -3);
-			$user = posix_getpwuid($stat['uid']);
-			$item['uid'] = $stat['uid'];
-			$item['uname'] = $user['name'];
-			$group = posix_getgrgid($stat['gid']);
-			$item['gid'] = $stat['gid'];
-			$item['gname'] = $group['name'];
+			$item['uid'] = null;
+			$item['uname'] = null;
+			$item['gid'] = null;
+			$item['gname'] = null;
+			if( is_callable('posix_getpwuid') ){
+				$user = posix_getpwuid($stat['uid']);
+				$item['uid'] = $stat['uid'];
+				$item['uname'] = $user['name'];
+			}
+			if( is_callable('posix_getgrgid') ){
+				$group = posix_getgrgid($stat['gid']);
+				$item['gid'] = $stat['gid'];
+				$item['gname'] = $group['name'];
+			}
 		}
 
 		if($item['type'] == 'file'){
