@@ -153,6 +153,10 @@ remoteFinder.init('/', {}, function(){
 
 ## 更新履歴 - Change log
 
+### remote-finder v0.2.1 (リリース日未定)
+
+- スタイリングに関する修正。
+
 ### remote-finder v0.2.0 (2022年12月29日)
 
 - PHPの対象環境を `>=7.3.0` に変更。

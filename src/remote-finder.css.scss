@@ -1,6 +1,6 @@
 @import "../node_modules/px2style/dist/px2style";
 
-.remote-finder{
+.remote-finder {
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-start;
@@ -8,7 +8,7 @@
 	overflow: hidden;
 	position: relative;
 
-	&__menu{
+	&__menu {
 		margin: 0 !important;
 		padding: 0 !important;
 		display: flex;
@@ -19,7 +19,7 @@
 		position: relative;
 		z-index: 1000;
 
-		>li{
+		>li {
 			margin: 0;
 			padding: 0;
 			list-style-type: none;
@@ -28,7 +28,7 @@
 			&:last-child{
 				border-right: none;
 			}
-			>a{
+			>a {
 				display: block;
 				position: relative;
 				padding: 0.3em 0.5em;
@@ -37,8 +37,14 @@
 				text-overflow: ellipsis;
 				overflow: hidden;
 				white-space: nowrap;
+				background-color: #fff;
+				color: #333;
+				text-decoration: none;
+				&:hover {
+					background-color: #eee;
+				}
 			}
-			>input[type=text]{
+			>input[type=text] {
 				width: 100%;
 				height: 100%;
 				box-sizing: border-box;
@@ -51,7 +57,7 @@
 		}
 	}
 
-	&__path-bar{
+	&__path-bar {
 		margin: 0 !important;
 		padding: 0 !important;
 		display: flex;
@@ -64,7 +70,7 @@
 		position: relative;
 		z-index: 1000;
 
-		>li{
+		>li {
 			display: block;
 			margin: 0;
 			padding: 0;
@@ -72,10 +78,10 @@
 			border-right: none;
 			max-width: 100%;
 			position: relative;
-			&:last-child{
+			&:last-child {
 				border-right: none;
 			}
-			>a{
+			>a {
 				display: block;
 				position: relative;
 				padding: 0.3em 0.5em 0.3em 1em;
@@ -84,6 +90,9 @@
 				text-overflow: ellipsis;
 				// overflow: hidden;
 				white-space: nowrap;
+				background-color: #fff;
+				color: #333;
+				text-decoration: none;
 
 				&::before {
 					content : " ";
@@ -93,7 +102,7 @@
 					width : 15px;
 					height : 50%;
 					border-right : 1px solid #999;
-					background-color : #fff;
+					background-color: #fff;
 					transform : skew(30deg);
 				}
 				&::after {
@@ -104,18 +113,21 @@
 					width : 15px;
 					height : 50%;
 					border-right : 1px solid #999;
-					background-color : #fff;
+					background-color: #fff;
 					transform : skew(-30deg);
 				}
-				&:hover::before,
-				&:hover::after{
+				&:hover {
 					background-color: #eee;
-					color: #000;
+					&::before,
+					&::after {
+						background-color: #eee;
+						color: #000;
+					}
 				}
 
 			}
-			&:first-child{
-				> a{
+			&:first-child {
+				> a {
 					padding-left: 0.3em;
 				}
 			}
@@ -133,7 +145,7 @@
 
 	// --------------------------------------
 	// ファイルリスト
-	&__file-list{
+	&__file-list {
 		margin: 0 !important;
 		padding: 0 !important;
 		overflow: auto;
@@ -141,26 +153,26 @@
 		z-index: 1000;
 		flex-grow: 10;
 
-		a{
+		a {
 			background-color: #fff;
 			color: #333;
 			text-decoration: none;
-			&:hover{
+			&:hover {
 				background-color: #eee;
 				color: #000;
 			}
 		}
 
-		>li{
+		>li {
 			display: block;
 			margin: 0;
 			padding: 0;
 			list-style-type: none;
 			border-bottom: 1px solid #999;
-			&:last-child{
+			&:last-child {
 				border-bottom: none;
 			}
-			>a{
+			>a {
 				display: block;
 				position: relative;
 				padding: 0.3em 0.5em;
@@ -173,7 +185,7 @@
 		}
 	}
 
-	&__file-list a:hover &__file-list-submenu{
+	&__file-list a:hover &__file-list-submenu {
 		display: block;
 	}
 
@@ -247,44 +259,44 @@
 		vertical-align: middle;
 		margin-right: 0.5em;
 	}
-	&__ico-new-folder::before{
+	&__ico-new-folder::before {
 		// @include icons(url("images/new_folder.svg"));
 		@include icons(url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBmaWxsPSJub25lIiBkPSJNMCAwaDI0djI0SDBWMHoiLz48cGF0aCBkPSJNMjAgNmgtOGwtMi0ySDRjLTEuMTEgMC0xLjk5Ljg5LTEuOTkgMkwyIDE4YzAgMS4xMS44OSAyIDIgMmgxNmMxLjExIDAgMi0uODkgMi0yVjhjMC0xLjExLS44OS0yLTItMnptLTEgOGgtM3YzaC0ydi0zaC0zdi0yaDNWOWgydjNoM3YyeiIvPjwvc3ZnPg=="));
 	}
-	&__ico-new-file::before{
+	&__ico-new-file::before {
 		// @include icons(url("images/new_file.svg"));
 		@include icons(url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMCAwaDI0djI0SDB6IiBmaWxsPSJub25lIi8+PHBhdGggZD0iTTEyIDJDNi40OCAyIDIgNi40OCAyIDEyczQuNDggMTAgMTAgMTAgMTAtNC40OCAxMC0xMFMxNy41MiAyIDEyIDJ6bTUgMTFoLTR2NGgtMnYtNEg3di0yaDRWN2gydjRoNHYyeiIvPjwvc3ZnPg=="));
 	}
-	&__ico-folder::before{
+	&__ico-folder::before {
 		// @include icons(url("images/folder.svg"));
 		@include icons(url("data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDI0IDI0OyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+CjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+Cgkuc3Qwe2ZpbGw6bm9uZTt9Cgkuc3Qxe2ZpbGw6dXJsKCNTVkdJRF8xXyk7fQo8L3N0eWxlPgo8Zz48cGF0aCBkPSJNMTAsNEg0QzIuOSw0LDIsNC45LDIsNmwwLDEyYzAsMS4xLDAuOSwyLDIsMmgxNmMxLjEsMCwyLTAuOSwyLTJWOGMwLTEuMS0wLjktMi0yLTJoLThMMTAsNHoiLz48cGF0aCBjbGFzcz0ic3QwIiBkPSJNMCwwaDI0djI0SDBWMHoiLz48L2c+CjxnPjxsaW5lYXJHcmFkaWVudCBpZD0iU1ZHSURfMV8iIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIiB4MT0iMTEuOTczIiB5MT0iMTkuMTM4MSIgeDI9IjExLjk3MyIgeTI9IjQuNjM3OCI+PHN0b3AgIG9mZnNldD0iMCIgc3R5bGU9InN0b3AtY29sb3I6IzhEQTRGRiIvPjxzdG9wICBvZmZzZXQ9IjAuMjM3OCIgc3R5bGU9InN0b3AtY29sb3I6Izg5QjJGRiIvPjxzdG9wICBvZmZzZXQ9IjAuNzA1OSIgc3R5bGU9InN0b3AtY29sb3I6IzgyQzlGRiIvPjxzdG9wICBvZmZzZXQ9IjEiIHN0eWxlPSJzdG9wLWNvbG9yOiM3RkQyRkYiLz48L2xpbmVhckdyYWRpZW50PjxwYXRoIGNsYXNzPSJzdDEiIGQ9Ik05LjcsNC42SDQuM2MtMSwwLTEuNywwLjgtMS43LDEuOGwwLDExYzAsMSwwLjgsMS44LDEuNywxLjhoMTUuM2MxLDAsMS44LTAuOCwxLjgtMS44VjguNSBjMC0xLTAuOC0xLjgtMS44LTEuOGgtNy45TDkuNyw0LjZ6Ii8+PHBhdGggY2xhc3M9InN0MCIgZD0iTTAsMGgyNHYyNEgwVjB6Ii8+PC9nPgo8L3N2Zz4K"));
 	}
-	&__ico-file::before{
+	&__ico-file::before {
 		// @include icons(url("images/file.svg"));
 		@include icons(url("data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDI0IDI0OyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+CjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+Cgkuc3Qwe2ZpbGw6bm9uZTt9Cgkuc3Qxe2ZpbGw6I0ZGRkZGRjt9Cjwvc3R5bGU+CjxnPjxwYXRoIGQ9Ik02LDJDNC45LDIsNCwyLjksNCw0bDAsMTZjMCwxLjEsMC45LDIsMiwyaDEyYzEuMSwwLDItMC45LDItMlY4bC02LTZINnogTTEzLDlWMy41TDE4LjUsOUgxM3oiLz48cGF0aCBjbGFzcz0ic3QwIiBkPSJNMCwwaDI0djI0SDBWMHoiLz48L2c+CjxnPjxwYXRoIGNsYXNzPSJzdDAiIGQ9Ik0wLDBoMjR2MjRIMFYweiIvPjxwYXRoIGNsYXNzPSJzdDEiIGQ9Ik0xMS45LDNINi41QzUuNiwzLDQuOSwzLjcsNC45LDQuNmwwLDE1YzAsMC45LDAuNywxLjYsMS42LDEuNmgxMWMwLjksMCwxLjYtMC43LDEuNi0xLjZ2LTkuNGgtNy4yVjN6Ii8+PC9nPgo8L3N2Zz4K"));
 	}
-	&__ico-copy::before{
+	&__ico-copy::before {
 		// @include icons(url("images/copy.svg"));
 		@include icons(url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBmaWxsPSJub25lIiBkPSJNMCAwaDI0djI0SDB6Ii8+PHBhdGggZD0iTTE2IDFINGMtMS4xIDAtMiAuOS0yIDJ2MTRoMlYzaDEyVjF6bS0xIDRsNiA2djEwYzAgMS4xLS45IDItMiAySDcuOTlDNi44OSAyMyA2IDIyLjEgNiAyMWwuMDEtMTRjMC0xLjEuODktMiAxLjk5LTJoN3ptLTEgN2g1LjVMMTQgNi41VjEyeiIvPjwvc3ZnPg=="));
 	}
-	&__ico-rename::before{
+	&__ico-rename::before {
 		// @include icons(url("images/rename.svg"));
 		@include icons(url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMyAxNy4yNVYyMWgzLjc1TDE3LjgxIDkuOTRsLTMuNzUtMy43NUwzIDE3LjI1ek0yMC43MSA3LjA0Yy4zOS0uMzkuMzktMS4wMiAwLTEuNDFsLTIuMzQtMi4zNGMtLjM5LS4zOS0xLjAyLS4zOS0xLjQxIDBsLTEuODMgMS44MyAzLjc1IDMuNzUgMS44My0xLjgzeiIvPjxwYXRoIGQ9Ik0wIDBoMjR2MjRIMHoiIGZpbGw9Im5vbmUiLz48L3N2Zz4="));
 	}
-	&__ico-delete::before{
+	&__ico-delete::before {
 		// @include icons(url("images/delete.svg"));
 		@include icons(url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNNiAxOWMwIDEuMS45IDIgMiAyaDhjMS4xIDAgMi0uOSAyLTJWN0g2djEyek0xOSA0aC0zLjVsLTEtMWgtNWwtMSAxSDV2MmgxNFY0eiIvPjxwYXRoIGQ9Ik0wIDBoMjR2MjRIMHoiIGZpbGw9Im5vbmUiLz48L3N2Zz4="));
 	}
-	&__ico-readonly::after{
+	&__ico-readonly::after {
 		// @include icons(url("images/readonly.svg"));
 		@include icons(url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMCAwaDI0djI0SDB6IiBmaWxsPSJub25lIi8+PHBhdGggZD0iTTE4IDhoLTFWNmMwLTIuNzYtMi4yNC01LTUtNVM3IDMuMjQgNyA2djJINmMtMS4xIDAtMiAuOS0yIDJ2MTBjMCAxLjEuOSAyIDIgMmgxMmMxLjEgMCAyLS45IDItMlYxMGMwLTEuMS0uOS0yLTItMnptLTYgOWMtMS4xIDAtMi0uOS0yLTJzLjktMiAyLTIgMiAuOSAyIDItLjkgMi0yIDJ6bTMuMS05SDguOVY2YzAtMS43MSAxLjM5LTMuMSAzLjEtMy4xIDEuNzEgMCAzLjEgMS4zOSAzLjEgMy4xdjJ6Ii8+PC9zdmc+"));
 		margin-right: 0;
 		margin-left: 0.5em;
 	}
 
-	&__preview{
+	&__preview {
 		margin: 1em 0;
-		pre{
+		pre {
 			border: 1px solid #999;
 			border-radius: 5px;
 			overflow: auto;
@@ -292,14 +304,14 @@
 			height: 8em;
 			border:1px solid #ddd;
 			background-color: #f7f7f7;
-			code{
+			code {
 				display: block;
 				padding: 0;
 				margin: 0;
 				color: #d66;
 			}
 		}
-		img{
+		img {
 			max-width: 100%;
 			max-height: 300px;
 			display: block;
