@@ -155,6 +155,7 @@ remoteFinder.init('/', {}, function(){
 
 ### remote-finder v0.2.1 (リリース日未定)
 
+- ファイルやディレクトリのグループIDが取得できない場合に起きる不具合を修正。
 - スタイリングに関する修正。
 
 ### remote-finder v0.2.0 (2022年12月29日)

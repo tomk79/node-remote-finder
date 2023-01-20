@@ -217,11 +217,11 @@ class main{
 				$item['gname'] = null;
 				if( is_callable('posix_getpwuid') ){
 					$user = posix_getpwuid($stat['uid']);
-					$item['uname'] = $user['name'];
+					$item['uname'] = $user['name'] ?? null;
 				}
 				if( is_callable('posix_getgrgid') ){
 					$group = posix_getgrgid($stat['gid']);
-					$item['gname'] = $group['name'];
+					$item['gname'] = $group['name'] ?? null;
 				}
 			}
 			array_push($rtn['list'], $item);
