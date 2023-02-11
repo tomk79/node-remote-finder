@@ -153,7 +153,7 @@ remoteFinder.init('/', {}, function(){
 
 ## 更新履歴 - Change log
 
-### remote-finder v0.2.1 (リリース日未定)
+### remote-finder v0.2.1 (2023年2月11日)
 
 - ファイルやディレクトリのグループIDが取得できない場合に起きる不具合を修正。
 - スタイリングに関する修正。
