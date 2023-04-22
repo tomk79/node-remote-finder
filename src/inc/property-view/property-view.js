@@ -221,24 +221,37 @@ module.exports = function($elm, main){
 		}
 
 		switch(preview.ext){
-			case 'html': case 'htm': case 'xhtml': case 'xml':
-			case 'php': case 'inc':
-			case 'rb':
-			case 'jsp':
-			case 'js': case 'json':
-			case 'css': case 'scss':
+			case 'html': case 'htm':
+			case 'xhtml': case 'xhtm':
 			case 'md':
-			case 'mm':
 			case 'csv':
 			case 'txt':
+			case 'css': case 'scss':
+			case 'js':
+			case 'jsx':
+			case 'ts':
+			case 'twig':
+			case 'ini':
+			case 'yml':
+			case 'xml':
+			case 'rss': case 'rdf':
+			case 'mm':
 			case 'svg':
+			case 'json':
+			case 'env':
 			case 'htaccess':
-			case 'gitkeep': case 'gitignore':
+			case 'gitkeep': case 'gitignore': case 'gitattributes':
+			case 'jsp':
+			case 'php': case 'inc':
+			case 'cgi':
+			case 'rb':
+			case 'pl':
 				$previewElm.append( $('<pre>').append( $('<code>').text( decodeURIComponent(escape(atob(preview.base64))) ) ) );
 				break;
+			case 'png':
 			case 'jpg': case 'jpeg': case 'jpe':
-			case 'png': case 'gif':
 			case 'webp':
+			case 'gif':
 				$previewElm.append( $('<img>').attr({
 					'src': 'data:'+preview.mime+';base64,'+preview.base64
 				}) );
