@@ -116,7 +116,7 @@ module.exports = function($elm, main){
 			},
 			function(result){
 				var item = result.itemInfo;
-				// console.log(result);
+
 				var $preview = $('<div class="remote-finder__preview">');
 				drawPreview($preview, item.preview);
 				$body.append($preview);
@@ -178,7 +178,6 @@ module.exports = function($elm, main){
 			},
 			function(result){
 				var item = result.itemInfo;
-				// console.log(result);
 
 				var $table = $('<table>');
 				$table
@@ -227,6 +226,7 @@ module.exports = function($elm, main){
 			case 'css': case 'scss':
 			case 'md':
 			case 'mm':
+			case 'csv':
 			case 'txt':
 			case 'svg':
 			case 'htaccess':
@@ -235,6 +235,7 @@ module.exports = function($elm, main){
 				break;
 			case 'jpg': case 'jpeg': case 'jpe':
 			case 'png': case 'gif':
+			case 'webp':
 				$previewElm.append( $('<img>').attr({
 					'src': 'data:'+preview.mime+';base64,'+preview.base64
 				}) );
@@ -264,7 +265,6 @@ module.exports = function($elm, main){
 				'options': {},
 			},
 			function(result){
-				// console.log('content:', result);
 				if( !result.result ){
 					console.error('Failed to get file content:', result);
 					main.px2style.closeLoading();

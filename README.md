@@ -153,6 +153,10 @@ remoteFinder.init('/', {}, function(){
 
 ## 更新履歴 - Change log
 
+### remote-finder v0.2.2 (リリース日未定)
+
+- プレビュー可能な拡張子に、 `csv`、 `webp` を追加した。
+
 ### remote-finder v0.2.1 (2023年2月11日)
 
 - ファイルやディレクトリのグループIDが取得できない場合に起きる不具合を修正。
