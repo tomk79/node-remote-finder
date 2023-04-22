@@ -153,7 +153,7 @@ remoteFinder.init('/', {}, function(){
 
 ## 更新履歴 - Change log
 
-### remote-finder v0.2.2 (リリース日未定)
+### remote-finder v0.2.2 (2023年4月22日)
 
 - 親ディレクトリ `../` へ遷移する操作性に関する改善。
 - プレビュー可能な拡張子に、 `csv`、 `webp`、 `jsx`、 `ts` などを追加した。
