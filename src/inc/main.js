@@ -382,9 +382,12 @@ module.exports = function(elm, options){
 					var $a = document.createElement('a');
 					$a.textContent = '../';
 					$a.href = 'javascript:;';
+					$a.setAttribute('data-filename', '../');
 					$a.setAttribute('data-path', path);
 					$a.addEventListener('click', function(){
 						_this.clearSelectedItems();
+						var filename = this.getAttribute('data-filename');
+						_this.addSelectedItem(filename);
 					});
 					$a.addEventListener('dblclick', function(){
 						var tmp_path = this.getAttribute('data-path');

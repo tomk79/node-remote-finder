@@ -12,6 +12,8 @@
 			>開く</button></li>
 	</ul>
 </div>
+
+{% if itemName != '../' and itemName != './' %}
 <div class="px2-p">
 	<ul class="px2-vertical-list">
 		<li><button
@@ -39,3 +41,4 @@
 			>削除する</button></li>
 	</ul>
 </div>
+{% endif %}

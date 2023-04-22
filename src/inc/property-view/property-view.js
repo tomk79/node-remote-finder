@@ -11,7 +11,6 @@ module.exports = function($elm, main){
 	 * プロパティビューを更新する
 	 */
 	this.update = function( selectedItems ){
-		console.log('selectedItems:', selectedItems);
 		let $propertyView = $elm.find('.remote-finder__property-view-inner');
 		if( !selectedItems.length ){
 			$propertyView.html('');
@@ -33,7 +32,11 @@ module.exports = function($elm, main){
 					e.stopPropagation();
 					var path = this.getAttribute('data-current-dir');
 					var filename = this.getAttribute('data-filename');
-					main.setCurrentDir( path+filename+'/' );
+					var goto = path + filename;
+					if( filename == '../' ){
+						goto = path.replace(/[^\/]*\/$/, '');
+					}
+					main.setCurrentDir( goto );
 				});
 
 			}else{

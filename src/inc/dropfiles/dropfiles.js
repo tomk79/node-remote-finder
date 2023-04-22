@@ -12,33 +12,27 @@ module.exports = function($elm, main){
 		e.preventDefault();
 		e.stopPropagation();
 
-		// console.log('*** DragEnter');
-
 		let $html = $(templates.dropzone({}));
 		$elm.append($html);
 		$html.on('dragenter', function(e){
 			e.preventDefault();
 			e.stopPropagation();
-			// console.log('----- DragEnter');
 			return;
 		});
 		$html.on('dragover', function(e){
 			e.preventDefault();
 			e.stopPropagation();
-			// console.log('DragOver');
 			return;
 		});
 		$html.on('dragleave', function(e){
 			e.preventDefault();
 			e.stopPropagation();
-			// console.log('DragLeave');
 			$('.remote-finder__dropzone').remove();
 			return;
 		});
 		$html.on('drop', function(e){
 			e.preventDefault();
 			e.stopPropagation();
-			// console.log('Dropped');
 			$('.remote-finder__dropzone').remove();
 
 			var modalObj;
@@ -47,8 +41,6 @@ module.exports = function($elm, main){
 			if( !files.length ){
 				return;
 			}
-
-			// console.log( files );
 
 			let $body = $(templates.uploadDialog({
 				'files': files,
@@ -101,7 +93,6 @@ module.exports = function($elm, main){
 	 * ファイルをアップロードする
 	 */
 	function uploadFiles(files, allow_overwrite, $body, callback){
-		// console.log(files);
 		callback = callback || function(){};
 
 		$body.find('.remote-finder__upload-dialog-result').text('');
@@ -110,7 +101,6 @@ module.exports = function($elm, main){
 			try {
 				if( typeof(fileInfo) !== typeof({}) ){
 					// オブジェクト以外
-					// console.error('fileInfo is not an Object:', fileInfo);
 					callback(false);
 				}else if( !fileInfo.size && fileInfo.type === "" ){
 					// ディレクトリ
@@ -119,7 +109,6 @@ module.exports = function($elm, main){
 					// ファイル
 					var reader = new FileReader();
 					reader.onload = function(evt) {
-						// console.log(evt);
 						callback( evt );
 					}
 					reader.readAsDataURL(fileInfo);
@@ -136,11 +125,9 @@ module.exports = function($elm, main){
 				var $reportTd = $body.find('[data-filename="'+(row.name)+'"] .remote-finder__upload-dialog-result');
 
 				readSelectedLocalFile(row, function(loadedFileInfo){
-					// console.log('=-=-=-= loadedFileInfo:', loadedFileInfo);
 
 					if( loadedFileInfo === false ){
 						// 読み込みに失敗
-						// console.log('Failed to load file:', idx, row);
 						$reportTd.html( templates.resultNg({}) );
 						setTimeout(function(){
 							itAry1.next();
