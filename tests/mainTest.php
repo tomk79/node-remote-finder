@@ -81,7 +81,7 @@ class mainTest extends PHPUnit\Framework\TestCase{
 
 		$this->assertTrue($result->result);
 		$this->assertSame($result->message, 'OK');
-		$this->assertSame(count($result->list), 3);
+		$this->assertSame(count($result->list), 5);
 		$this->assertSame($result->list[0]->name, 'readonly');
 		$this->assertSame($result->list[1]->name, 'subdir1');
 
