@@ -1,0 +1,138 @@
+@import "../../node_modules/px2style/dist/themes/darkmode";
+
+.remote-finder {
+	&__menu {
+		border-bottom: 1px solid #999;
+
+		>li {
+			border-right: 1px solid #666;
+			>a {
+				background-color: #111;
+				color: #eee;
+				&:hover {
+					background-color: #222;
+				}
+			}
+			>input[type=text] {
+				background-color: #222;
+			}
+		}
+	}
+
+	&__path-bar {
+		border-bottom: 1px solid #999;
+
+		>li {
+			>a {
+				background-color: #111;
+				color: #eee;
+
+				&::before {
+					border-right : 1px solid #666;
+					background-color: #111;
+				}
+				&::after {
+					border-right : 1px solid #666;
+					background-color: #111;
+				}
+				&:hover {
+					background-color: #222;
+					&::before,
+					&::after {
+						background-color: #222;
+						color: #eee;
+					}
+				}
+
+			}
+		}
+	}
+
+	&__main {
+		background-color: #9992;
+	}
+
+	// --------------------------------------
+	// ファイルリスト
+	&__file-list {
+		a {
+			background-color: #222;
+			color: #eee;
+			&:hover {
+				background-color: #333;
+				color: #ddd;
+			}
+		}
+
+		>li {
+			border-bottom: 1px solid #444;
+		}
+	}
+
+	// 選択中のファイルとディレクトリ
+	& &__selected {
+		background-color: #00a0e6;
+		color: #fff;
+		&:hover {
+			background-color: #3dbbf1;
+			color: #fff;
+		}
+	}
+
+
+	// --------------------------------------
+	// プロパティビュー
+	&__property-view {
+		border-left: 1px solid #444;
+		background-color: #333;
+
+		table {
+			border-bottom: 1px solid #666;
+			tr {
+				th,
+				td {
+					border-top: 1px solid #666;
+				}
+			}
+		}
+	}
+
+
+	&__preview {
+		pre {
+			border: 1px solid #444;
+			background-color: #222;
+			code {
+				color: rgb(165, 92, 92);
+			}
+		}
+	}
+
+
+	// --------------------------------------
+	// プレビュー
+	&__preview-disabled {
+		border: 3px dashed #555;
+	}
+
+	// --------------------------------------
+	// ファイルのドロップ
+	&__dropzone {
+		background-color: #2229;
+
+		&-inner {
+			border: 5px dashed #555;
+		}
+	}
+
+	&__result-ok {
+		border: 1px solid #393;
+		background-color: #292;
+		color: #fff;
+	}
+	&__result-ng {
+		border: 1px solid #d33;
+		background-color: #922;
+		color: #fff;
+	}
+}

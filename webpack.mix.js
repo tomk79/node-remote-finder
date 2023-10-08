@@ -66,4 +66,5 @@ mix
 	// Remote Finder
 	.js('src/remote-finder.js', 'dist/remote-finder.js')
 	.sass('src/remote-finder.css.scss', 'dist/remote-finder.css')
+	.sass('src/themes/darkmode.css.scss', 'dist/themes/darkmode.css')
 ;
