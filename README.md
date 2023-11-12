@@ -153,7 +153,7 @@ remoteFinder.init('/', {}, function(){
 
 ## 更新履歴 - Change log
 
-### remote-finder v0.2.4 (リリース日未定)
+### remote-finder v0.2.4 (2023年11月13日)
 
 - ダークモード用のスタイルをバンドルした。
 
