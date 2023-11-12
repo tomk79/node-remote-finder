@@ -63,11 +63,9 @@ describe('Initialize Instance', function() {
 			'path': '/',
 			'api': 'getItemList'
 		}, function(result){
-			// console.log(result);
-
 			assert.ok(result.result);
 			assert.equal(result.message, 'OK');
-			assert.equal(result.list.length, 3);
+			assert.equal(result.list.length, 5);
 			assert.equal(result.list[0].name, 'readonly');
 			assert.equal(result.list[1].name, 'subdir1');
 
@@ -83,7 +81,6 @@ describe('Initialize Instance', function() {
 			'path': '/create_test/',
 			'api': 'createNewFolder'
 		}, function(result){
-			// console.log(result);
 			assert.ok(result.result);
 			assert.equal(result.message, 'OK');
 
@@ -91,8 +88,6 @@ describe('Initialize Instance', function() {
 				'path': '/create_test/create_test.txt',
 				'api': 'createNewFile'
 			}, function(result){
-				// console.log(result);
-
 				assert.ok(result.result);
 				assert.equal(result.message, 'OK');
 				assert.ok(utils79.is_file(__dirname+'/data/root1/create_test/create_test.txt'));
@@ -101,8 +96,6 @@ describe('Initialize Instance', function() {
 					'path': '/create_test/create_test_2.txt',
 					'api': 'createNewFile'
 				}, function(result){
-					// console.log(result);
-
 					assert.ok(result.result);
 					assert.equal(result.message, 'OK');
 					assert.ok(utils79.is_file(__dirname+'/data/root1/create_test/create_test_2.txt'));
@@ -121,7 +114,6 @@ describe('Initialize Instance', function() {
 			'path': '/create_test/create_test.txt',
 			'api': 'remove'
 		}, function(result){
-			// console.log(result);
 			assert.ok(result.result);
 			assert.equal(result.message, 'OK');
 
@@ -129,8 +121,6 @@ describe('Initialize Instance', function() {
 				'path': '/create_test/',
 				'api': 'remove'
 			}, function(result){
-				// console.log(result);
-
 				assert.ok(result.result);
 				assert.equal(result.message, 'OK');
 				assert.ok(!utils79.is_file(__dirname+'/data/root1/create_test/create_test.txt'));
