@@ -153,6 +153,11 @@ remoteFinder.init('/', {}, function(){
 
 ## 更新履歴 - Change log
 
+### remote-finder v0.3.0 (リリース日未定)
+
+- px2style を分離した。
+- ダークモードに関する細かい修正。
+
 ### remote-finder v0.2.4 (2023年11月13日)
 
 - ダークモード用のスタイルをバンドルした。
