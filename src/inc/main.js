@@ -5,7 +5,6 @@ module.exports = function(elm, options){
 	let _this = this;
 	let $ = require('jquery');
 	this.jQuery = $;
-	require('px2style/dist/px2style');
 	var px2style = window.px2style;
 	this.px2style = px2style;
 	let current_dir = '/';

@@ -24,11 +24,8 @@ var server = require('http').Server(app);
 
 app.use( require('body-parser')({"limit": "1024mb"}) );
 app.use( '/common/remote-finder/', express.static( path.resolve(__dirname, '../../../dist/') ) );
+app.use( '/common/px2style/', express.static( path.resolve(__dirname, '../../../node_modules/px2style/dist/') ) );
 app.use( '/apis/remote-finder', function(req, res, next){
-	// console.log(req);
-	// console.log(req.method);
-	// console.log(req.body);
-	// console.log(req.originalUrl);
 	remoteFinder.gpi(req.body, function(result){
 		res.status(200);
 		res.set('Content-Type', 'application/json');

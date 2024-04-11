@@ -1,5 +1,8 @@
 {
     "/dist/remote-finder.js": "/dist/remote-finder.js",
+    "/dist/remote-finder.bundled.js": "/dist/remote-finder.bundled.js",
+    "/dist/themes/darkmode.bundled.css": "/dist/themes/darkmode.bundled.css",
     "/dist/themes/darkmode.css": "/dist/themes/darkmode.css",
+    "/dist/remote-finder.bundled.css": "/dist/remote-finder.bundled.css",
     "/dist/remote-finder.css": "/dist/remote-finder.css"
 }
