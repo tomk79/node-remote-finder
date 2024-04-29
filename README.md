@@ -153,7 +153,7 @@ remoteFinder.init('/', {}, function(){
 
 ## 更新履歴 - Change log
 
-### remote-finder v0.3.0 (リリース日未定)
+### remote-finder v0.3.0 (2024年4月30日)
 
 - px2style を分離した。
 - px2style を統合した bundledビルドを追加。
