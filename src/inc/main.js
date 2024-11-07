@@ -147,8 +147,15 @@ module.exports = function(elm, options){
 	/**
 	 * サーバーサイドスクリプトに問い合わせる
 	 */
-	function gpiBridge(input, callback){
-		options.gpiBridge(input, callback);
+	function gpiBridge(input, callback, callbackOnError){
+		callback = callback || function(){};
+		callbackOnError = callbackOnError || function(){};
+
+		try {
+			options.gpiBridge(input, callback);
+		}catch(err){
+			callbackOnError(err);
+		}
 	}
 	this.gpiBridge = gpiBridge;
 

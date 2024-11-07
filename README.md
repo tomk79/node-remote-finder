@@ -129,18 +129,6 @@ var remoteFinder = window.remoteFinder = new RemoteFinder(
             callback();
             return;
         },
-        "mkdir": function(current_dir, callback){
-            var foldername = prompt('Folder name:');
-            if( !foldername ){ return; }
-            callback( foldername );
-            return;
-        },
-        "mkdir": function(current_dir, callback){
-            var foldername = prompt('Folder name:');
-            if( !foldername ){ return; }
-            callback( foldername );
-            return;
-        }
     }
 );
 // console.log(remoteFinder);
@@ -152,6 +140,10 @@ remoteFinder.init('/', {}, function(){
 
 
 ## 更新履歴 - Change log
+
+### remote-finder v0.3.1 (リリース日未定)
+
+- ファイルのダウンロードに失敗した場合に復帰できなくなる不具合を修正した。
 
 ### remote-finder v0.3.0 (2024年4月30日)
 

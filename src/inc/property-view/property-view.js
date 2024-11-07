@@ -166,7 +166,7 @@ module.exports = function($elm, main){
 				$body.append($table);
 			}
 		);
-	} // drawFileProperties()
+	}
 
 
 	/**
@@ -208,7 +208,7 @@ module.exports = function($elm, main){
 				$body.append($table);
 			}
 		);
-	} // drawDirectoryProperties()
+	}
 
 
 	/**
@@ -284,7 +284,7 @@ module.exports = function($elm, main){
 				if( !result.result ){
 					console.error('Failed to get file content:', result);
 					main.px2style.closeLoading();
-					alert('ファイルの取得に失敗しました。');
+					alert('ファイルのダウンロードに失敗しました。');
 					return;
 				}
 				var item = result.content;
@@ -292,6 +292,12 @@ module.exports = function($elm, main){
 				a.click();
 
 				main.px2style.closeLoading();
+				return;
+			},
+			function(err){
+				console.error(err);
+				main.px2style.closeLoading();
+				alert('ファイルのダウンロードに失敗しました。');
 				return;
 			}
 		);
