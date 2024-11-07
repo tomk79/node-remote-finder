@@ -54,6 +54,7 @@ module.exports = function(elm, options){
 		callback();
 		return;
 	};
+	options.generateDownloadLink = options.generateDownloadLink || false;
 
 	$elm.addClass('remote-finder');
 
@@ -158,6 +159,13 @@ module.exports = function(elm, options){
 		}
 	}
 	this.gpiBridge = gpiBridge;
+
+	/**
+	 * オプションを取得する
+	 */
+	this.getOptions = function(){
+		return options;
+	}
 
 	/**
 	 * ファイルを開く
@@ -375,8 +383,6 @@ module.exports = function(elm, options){
 					$pathBar.append($li);
 					tmpCurrentPath += breadcrumb[i] + '/';
 				}
-
-				// $elm.append($pathBar);
 
 				// --------------------------------------
 				// File list

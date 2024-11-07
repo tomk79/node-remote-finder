@@ -117,6 +117,11 @@ var remoteFinder = window.remoteFinder = new RemoteFinder(
             callback( filename );
             return;
         },
+        "copy": function(copyFrom, callback){
+            var copyTo = prompt('Copy from '+copyFrom+' to:', copyFrom);
+            callback( copyFrom, copyTo );
+            return;
+        },
         "rename": function(renameFrom, callback){
             var renameTo = prompt('Rename from '+renameFrom+' to:', renameFrom);
             callback( renameFrom, renameTo );
@@ -129,9 +134,11 @@ var remoteFinder = window.remoteFinder = new RemoteFinder(
             callback();
             return;
         },
+        "generateDownloadLink": function(targetFile, callback){
+            callback('?download=' + targetFile);
+        },
     }
 );
-// console.log(remoteFinder);
 remoteFinder.init('/', {}, function(){
     console.log('ready.');
 });
@@ -141,8 +148,9 @@ remoteFinder.init('/', {}, function(){
 
 ## 更新履歴 - Change log
 
-### remote-finder v0.3.1 (リリース日未定)
+### remote-finder v0.4.0 (リリース日未定)
 
+- `generateDownloadLink` オプションを追加した。
 - ファイルのダウンロードに失敗した場合に復帰できなくなる不具合を修正した。
 
 ### remote-finder v0.3.0 (2024年4月30日)

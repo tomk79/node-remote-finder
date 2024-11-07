@@ -272,35 +272,55 @@ module.exports = function($elm, main){
 			return true;
 		}
 
-		main.px2style.loading();
-
-		main.gpiBridge(
-			{
-				'api': 'getFileContent',
-				'path': main.getCurrentDir() + itemName,
-				'options': {},
-			},
-			function(result){
-				if( !result.result ){
-					console.error('Failed to get file content:', result);
-					main.px2style.closeLoading();
-					alert('ファイルのダウンロードに失敗しました。');
+		new Promise((resolve) => {
+			main.px2style.loading();
+			resolve();
+		}).then(() => {
+			return new Promise((resolve, reject) => {
+				const generateDownloadLink = main.getOptions().generateDownloadLink;
+				if( generateDownloadLink ){
+					generateDownloadLink(main.getCurrentDir() + itemName, function(downloadLink){
+						resolve(downloadLink);
+					});
 					return;
+				}else{
+					main.gpiBridge(
+						{
+							'api': 'getFileContent',
+							'path': main.getCurrentDir() + itemName,
+							'options': {},
+						},
+						function(result){
+							if( !result.result ){
+								reject(err);
+								return;
+							}
+							var item = result.content;
+							const downloadLink = 'data:'+item.mime+';base64,'+item.base64;
+							resolve(downloadLink);
+							return;
+						},
+						function(err){
+							reject(err);
+							return;
+						}
+					);
 				}
-				var item = result.content;
-				a.href = 'data:'+item.mime+';base64,'+item.base64;
+
+			});
+		}).then((downloadLink) => {
+			return new Promise((resolve, reject) => {
+				a.href = downloadLink;
 				a.click();
 
 				main.px2style.closeLoading();
-				return;
-			},
-			function(err){
-				console.error(err);
-				main.px2style.closeLoading();
-				alert('ファイルのダウンロードに失敗しました。');
-				return;
-			}
-		);
+				resolve();
+			});
+		}).catch((err) => {
+			console.error('Failed to get file content:', err);
+			main.px2style.closeLoading();
+			alert('ファイルのダウンロードに失敗しました。');
+		});
 
 		return false;
 	}
