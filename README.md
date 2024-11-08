@@ -69,6 +69,28 @@ echo json_encode($value);
 exit;
 ```
 
+
+(optional) ダウンロードのエンドポイントを追加する方法は次の通り。
+
+```php
+<?php
+require_once(__DIR__.'/../../../vendor/autoload.php');
+$remoteFinder = new tomk79\remoteFinder\main(array(
+	'default' => __DIR__.'/../../data/root1/'
+), array(
+	'paths_invisible' => array(
+		'/invisibles/*',
+		'*.hide'
+	),
+	'paths_readonly' => array(
+		'/readonly/*',
+	),
+));
+$remoteFinder->download( $_REQUEST['path'] );
+exit;
+```
+
+
 ### Client Side
 
 ```html
@@ -135,7 +157,7 @@ var remoteFinder = window.remoteFinder = new RemoteFinder(
             return;
         },
         "generateDownloadLink": function(targetFile, callback){
-            callback('?download=' + targetFile);
+            callback('./download?path=' + targetFile);
         },
     }
 );
@@ -152,6 +174,7 @@ remoteFinder.init('/', {}, function(){
 
 - `generateDownloadLink` オプションを追加した。
 - ファイルのダウンロードに失敗した場合に復帰できなくなる不具合を修正した。
+- PHP版バックエンドに `$remoteFinder->download()` を追加した。
 
 ### remote-finder v0.3.0 (2024年4月30日)
 

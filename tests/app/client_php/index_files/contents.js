@@ -34,10 +34,10 @@
 				alert('ファイル ' + fileinfo.path + ' を開きました。');
 				callback(true);
 			},
-			"generateDownloadLink": false,
-			// "generateDownloadLink": function(targetFile, callback){
-			// 	callback('?download=' + targetFile);
-			// },
+			// "generateDownloadLink": false,
+			"generateDownloadLink": function(targetFile, callback){
+				callback('./download.php?path=' + targetFile);
+			},
 		}
 	);
 

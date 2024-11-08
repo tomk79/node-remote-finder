@@ -34,7 +34,7 @@ class main{
 	 */
 	private function gpi_getItemInfo($path, $options){
 		$realpath = $this->getRealpath($path);
-		// var_dump($realpath);
+
 		$rtn = array(
 			'result' => true,
 			'message' => "OK",
@@ -125,7 +125,7 @@ class main{
 	 */
 	private function gpi_getFileContent($path, $options){
 		$realpath = $this->getRealpath($path);
-		// var_dump($realpath);
+
 		$rtn = array(
 			'result' => true,
 			'message' => "OK",
@@ -173,7 +173,7 @@ class main{
 	 */
 	private function gpi_getItemList($path, $options){
 		$realpath = $this->getRealpath($path);
-		// var_dump($realpath);
+
 		$rtn = array(
 			'result' => true,
 			'message' => "OK",
@@ -526,5 +526,41 @@ class main{
 				'Unknown Error.',
 			);
 		}
+	}
+
+	/**
+	 * ファイルをダウンロードさせる
+	 *
+	 * このメソッドは、指定されたファイルの直接ダウンロードを実行します。
+	 * ファイルを出力した後、スクリプトは終了します。
+	 *
+	 * @param string $path ファイルのパス
+	 * @return void
+	 */
+	public function download($path){
+		$realpath = $this->getRealpath($path);
+
+		header('Content-Type: application/octet-stream');
+		header('X-Content-Type-Options: nosniff');
+
+		if( !$this->isVisiblePath($path) ){
+			header('Content-Type: application/octet-stream');
+			echo 'Content not found.'."\n";
+			exit();
+		}
+		if( !is_file($realpath) || !is_readable($realpath) ){
+			header('Content-Type: application/octet-stream');
+			echo 'Content not found.'."\n";
+			exit();
+		}
+
+		header('Content-Length: '.filesize($realpath));
+		header('Content-Disposition: attachment; filename="'.basename($realpath).'"');
+		header('Connection: close');
+
+		while(ob_get_level()){ob_end_clean();}
+
+		readfile($realpath);
+		exit();
 	}
 }
