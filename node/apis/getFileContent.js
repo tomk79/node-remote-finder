@@ -16,10 +16,13 @@ module.exports = function(path, options, callback){
 
 	var item = {};
 	item.name = utils79.basename(realpath);
+	item.type = null;
+	item.size = 0;
 	if(utils79.is_dir(realpath)){
 		item.type = 'dir';
 	}else if(utils79.is_file(realpath)){
 		item.type = 'file';
+		item.size = fs.statSync(realpath).size;
 	}
 
 	if( !_this.isVisiblePath(path) ){
@@ -38,13 +41,21 @@ module.exports = function(path, options, callback){
 		});
 		return;
 	}
+	if(item.size > (30 * 1000 * 1000)){
+		callback({
+			result: false,
+			message: "Item is too large ("+(item.size)+"bytes)",
+			content: false,
+		});
+		return;
+	}
+
 	item.ext = null;
 	if(item.name.match(/\.([a-zA-Z0-9\-\_]+)$/)){
 		item.ext = RegExp.$1;
 		item.ext = item.ext.toLowerCase();
 	}
 	var bin = fs.readFileSync(realpath);
-	item.size = fs.statSync(realpath).size;
 	item.md5 = utils79.md5(bin);
 	item.base64 = utils79.base64_encode(bin);
 	item.mime = mimeTypes.lookup(realpath);

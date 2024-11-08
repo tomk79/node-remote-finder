@@ -292,7 +292,7 @@ module.exports = function($elm, main){
 						},
 						function(result){
 							if( !result.result ){
-								reject(err);
+								reject(result.message);
 								return;
 							}
 							var item = result.content;
@@ -319,7 +319,7 @@ module.exports = function($elm, main){
 		}).catch((err) => {
 			console.error('Failed to get file content:', err);
 			main.px2style.closeLoading();
-			alert('ファイルのダウンロードに失敗しました。');
+			alert('ファイルのダウンロードに失敗しました。ファイルサイズが大きすぎる可能性があります。');
 		});
 
 		return false;

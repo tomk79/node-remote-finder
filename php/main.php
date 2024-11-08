@@ -134,10 +134,13 @@ class main{
 
 		$item = array();
 		$item['name'] = basename($path);
+		$item['type'] = null;
+		$item['size'] = 0;
 		if(is_dir($realpath)){
 			$item['type'] = 'dir';
 		}elseif(is_file($realpath)){
 			$item['type'] = 'file';
+			$item['size'] = filesize($realpath);
 		}
 
 		if( !$this->isVisiblePath($path) ){
@@ -154,12 +157,19 @@ class main{
 				'content' => false,
 			);
 		}
+		if($item['size'] > (30 * 1000 * 1000)){
+			return array(
+				'result' => false,
+				'message' => "Item is too large (".intval($item['size'])."bytes)",
+				'content' => false,
+			);
+		}
+
 		$item['ext'] = null;
 		if( preg_match('/\.([a-zA-Z0-9\-\_]+)$/', $item['name'], $matched) ){
 			$item['ext'] = $matched[1];
 			$item['ext'] = strtolower($item['ext']);
 		}
-		$item['size'] = filesize($realpath);
 		$item['md5'] = md5_file($realpath);
 		$item['base64'] = base64_encode(file_get_contents($realpath));
 		$item['mime'] = mime_content_type($realpath);

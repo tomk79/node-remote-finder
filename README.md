@@ -175,6 +175,7 @@ remoteFinder.init('/', {}, function(){
 - `generateDownloadLink` オプションを追加した。
 - ファイルのダウンロードに失敗した場合に復帰できなくなる不具合を修正した。
 - PHP版バックエンドに `$remoteFinder->download()` を追加した。
+- `generateDownloadLink` オプションを指定しない従来のダウンロード機能で、30MB以上のファイルをダウンロードできないようになった。
 
 ### remote-finder v0.3.0 (2024年4月30日)
 
