@@ -36,7 +36,7 @@
 			},
 			// "generateDownloadLink": false,
 			"generateDownloadLink": function(targetFile, callback){
-				callback('./download.php?path=' + targetFile);
+				callback('./download.php?path=' + encodeURIComponent(targetFile));
 			},
 		}
 	);

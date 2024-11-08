@@ -157,7 +157,7 @@ var remoteFinder = window.remoteFinder = new RemoteFinder(
             return;
         },
         "generateDownloadLink": function(targetFile, callback){
-            callback('./download?path=' + targetFile);
+            callback('./download?path=' + encodeURIComponent(targetFile));
         },
     }
 );
