@@ -170,7 +170,7 @@ remoteFinder.init('/', {}, function(){
 
 ## 更新履歴 - Change log
 
-### remote-finder v0.4.0 (リリース日未定)
+### remote-finder v0.4.0 (2024年12月25日)
 
 - `generateDownloadLink` オプションを追加した。
 - ファイルのダウンロードに失敗した場合に復帰できなくなる不具合を修正した。
