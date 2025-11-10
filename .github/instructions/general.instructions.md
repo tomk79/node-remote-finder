@@ -131,6 +131,11 @@ composer start
 composer open-in-browser
 ```
 
+#### ブラウザで確認する
+
+- 開発環境のプレビューURL: http://127.0.0.1:8088/tests/app/client_php/
+- ダークモード: http://127.0.0.1:8088/tests/app/client_php/?appearance=darkmode
+
 ## コーディング規約
 
 ### ファイル命名
@@ -142,6 +147,9 @@ composer open-in-browser
 - 各APIは独立したモジュールとして実装
 - `module.exports` でエクスポート
 - プロトタイプベースで機能を拡張
+
+### CSS
+- BEM命名規則
 
 ### コールバックパターン
 - Node.jsスタイルのコールバック（エラーファースト）

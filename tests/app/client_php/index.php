@@ -19,14 +19,16 @@
 		}
 		</style>
 
+<?php if($_GET['appearance']??'' == 'darkmode'){ ?>
 		<!-- darkmode -->
-		<!-- <style>
+		<style>
 		body{
 			color: #ddd;
 			background-color: #333;
 		}
 		</style>
-		<link rel="stylesheet" href="../../../dist/themes/darkmode.css" /> -->
+		<link rel="stylesheet" href="../../../dist/themes/darkmode.css" />
+<?php } ?>
 	</head>
 	<body class="_px2-darkmode">
 

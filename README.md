@@ -170,6 +170,10 @@ remoteFinder.init('/', {}, function(){
 
 ## 更新履歴 - Change log
 
+### remote-finder v0.5.0 (リリース日未定)
+
+- アイコン表示の改善。
+
 ### remote-finder v0.4.0 (2024年12月25日)
 
 - `generateDownloadLink` オプションを追加した。
