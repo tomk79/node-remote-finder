@@ -15,6 +15,7 @@ module.exports = function(elm, options){
 	let $elm = $(elm);
 	const dropzone = new (require('./dropfiles/dropfiles.js'))($elm, this);
 	const propertyView = new (require('./property-view/property-view.js'))($elm, this);
+	const readonlySvg = require('!!raw-loader!../images/readonly.svg').default;
 
 	let templates = {
 		'main': require('./templates/main.twig'),
@@ -452,7 +453,15 @@ module.exports = function(elm, options){
 					}
 
 					if( !result.list[idx].writable ){
-						$a.classList.add('remote-finder__ico-readonly');
+						// 読み取り専用アイコンをインポートして挿入
+						var $readonlyIcon = document.createElement('span');
+						$readonlyIcon.style.display = 'inline-block';
+						$readonlyIcon.style.width = '1em';
+						$readonlyIcon.style.height = '1em';
+						$readonlyIcon.style.verticalAlign = 'middle';
+						$readonlyIcon.style.marginLeft = '0.5em';
+						$readonlyIcon.innerHTML = readonlySvg;
+						$a.append($readonlyIcon);
 					}
 
 					$li.append($a);
