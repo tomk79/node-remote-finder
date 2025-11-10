@@ -9,6 +9,7 @@ module.exports = function($elm, remoteFinder){
 	let modalObj = null;
 	let $textarea = null;
 	let isModified = false;
+    const utils79 = require('utils79');
 
 	const templates = {
 		'editor': require('./templates/editor.twig'),
@@ -34,17 +35,17 @@ module.exports = function($elm, remoteFinder){
 					return;
 				}
 
-				// Base64デコードしてコンテンツを取得
-				let content = '';
-				if( result.content && result.content.base64 ){
-					try {
-						content = atob(result.content.base64);
-					} catch(e) {
-						alert('Failed to decode file content: ' + e.message);
-						callback(false);
-						return;
-					}
+			// Base64デコードしてコンテンツを取得
+			let content = '';
+			if( result.content && result.content.base64 ){
+				try {
+                    content = atob(result.content.base64);
+				} catch(e) {
+					alert('Failed to decode file content: ' + e.message);
+					callback(false);
+					return;
 				}
+			}
 
 				originalContent = content;
 				_this.render(path, content);
@@ -133,7 +134,8 @@ module.exports = function($elm, remoteFinder){
 				api: 'saveFile',
 				path: currentPath,
 				options: {
-					body: content
+					base64: base64Content = utils79.base64_encode(content),
+                    allow_overwrite: true,
 				}
 			},
 			function(result){
