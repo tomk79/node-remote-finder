@@ -34,8 +34,20 @@ module.exports = function($elm, remoteFinder){
 					return;
 				}
 
-				originalContent = result.body;
-				_this.render(path, result.body);
+				// Base64デコードしてコンテンツを取得
+				let content = '';
+				if( result.content && result.content.base64 ){
+					try {
+						content = atob(result.content.base64);
+					} catch(e) {
+						alert('Failed to decode file content: ' + e.message);
+						callback(false);
+						return;
+					}
+				}
+
+				originalContent = content;
+				_this.render(path, content);
 				callback(true);
 			}
 		);
@@ -48,9 +60,9 @@ module.exports = function($elm, remoteFinder){
 		const filename = path.split('/').pop();
 
 		// モーダルのボディコンテンツを生成
-		const modalBodyHtml = templates.editor({
+		const $modalBodyHtml = $(templates.editor({
 			filename: filename
-		});
+		}));
 
 		// 保存ボタン
 		const $saveButton = $('<button class="px2-btn px2-btn--primary">').text('保存');
@@ -58,60 +70,40 @@ module.exports = function($elm, remoteFinder){
 			_this.save();
 		});
 
-		// キャンセルボタン
-		const $cancelButton = $('<button class="px2-btn px2-btn--secondary">').text('保存せずに閉じる');
-		$cancelButton.on('click', function(){
-			if( isModified ){
-				if( !confirm('変更が保存されていません。保存せずに閉じますか？') ){
-					return;
-				}
-			}
-			modalObj.close();
-		});
-
 		// px2style.modal()でモーダルを開く
 		modalObj = remoteFinder.px2style.modal({
 			"title": filename,
 			"type": "modal",
-			"body": modalBodyHtml,
+			"body": $modalBodyHtml,
 			"width": 800,
 			"height": 600,
 			"contentFill": true,
 			"buttons": [$saveButton],
-			"buttonsSecondary": [$cancelButton],
 			"target": $elm[0],
 			"onclose": function(){
 				_this.cleanup();
 			},
-			"onbgclick": function(){
-				if( isModified ){
-					if( !confirm('変更が保存されていません。保存せずに閉じますか？') ){
-						return false;
-					}
-				}
-			}
 		}, function(modal){
 			// モーダルが開いた後の処理
-			$textarea = $(modal.getBody()).find('.remote-finder__editor-modal__textarea');
-			$textarea.val(content);
-			isModified = false;
+			$textarea = $($modalBodyHtml).find('.remote-finder__editor-modal__textarea');
+			
+			// テキストエリアが見つからない場合は、モーダル全体から検索
+			if( $textarea.length === 0 ){
+				$textarea = $('.remote-finder__editor-modal__textarea');
+			}
+			
+			// コンテンツをセット
+			if( $textarea.length > 0 ){
+				$textarea.val(content);
+				isModified = false;
 
-			// テキストエリアの変更を監視
-			$textarea.on('input', function(){
-				isModified = ($textarea.val() !== originalContent);
-			});
-
-			// ESCキーで閉じる
-			$(document).on('keydown.remoteFinder-editor', function(e){
-				if( e.key === 'Escape' ){
-					if( isModified ){
-						if( !confirm('変更が保存されていません。保存せずに閉じますか？') ){
-							return;
-						}
-					}
-					modalObj.close();
-				}
-			});
+				// テキストエリアの変更を監視
+				$textarea.on('input', function(){
+					isModified = ($textarea.val() !== originalContent);
+				});
+			} else {
+				console.error('Textarea element not found in editor modal');
+			}
 		});
 	};
 
