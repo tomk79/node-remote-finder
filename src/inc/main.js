@@ -15,6 +15,7 @@ module.exports = function(elm, options){
 	let $elm = $(elm);
 	const dropzone = new (require('./dropfiles/dropfiles.js'))($elm, this);
 	const propertyView = new (require('./property-view/property-view.js'))($elm, this);
+	const editor = new (require('./editor/editor.js'))($elm, this);
 	const readonlySvg = require('!!raw-loader!../images/readonly.svg').default;
 	const newFolderSvg = require('!!raw-loader!../images/new_folder.svg').default;
 	const newFileSvg = require('!!raw-loader!../images/new_file.svg').default;
@@ -25,8 +26,29 @@ module.exports = function(elm, options){
 
 	options = options || {};
 	options.gpiBridge = options.gpiBridge || function(){};
+	
+	// テキストファイルとして開けるかどうかを判定
+	const isTextFile = function(ext){
+		if( !ext ){ return false; }
+		const textExtensions = [
+			'txt', 'md', 'markdown', 'json', 'xml', 'html', 'htm', 'css', 'scss', 'sass', 'less',
+			'js', 'jsx', 'ts', 'tsx', 'vue', 'php', 'py', 'rb', 'java', 'c', 'cpp', 'h', 'hpp',
+			'go', 'rs', 'swift', 'kt', 'sh', 'bash', 'zsh', 'yml', 'yaml', 'toml', 'ini', 'conf',
+			'csv', 'tsv', 'log', 'sql', 'pl', 'r', 'lua', 'vim', 'dockerfile', 'makefile'
+		];
+		return textExtensions.includes(ext.toLowerCase());
+	};
+
 	options.open = options.open || function(pathinfo, callback){
-		callback();
+		// テキストファイルの場合はエディタで開く
+		if( isTextFile(pathinfo.ext) ){
+			editor.open(pathinfo.path, function(opened){
+				callback(opened);
+			});
+			return;
+		}
+		// テキストファイル以外はデフォルト処理（何もしない）
+		callback(false);
 	};
 	options.mkdir = options.mkdir || function(current_dir, callback){
 		var foldername = prompt('Folder name:');
@@ -60,6 +82,9 @@ module.exports = function(elm, options){
 	options.generateDownloadLink = options.generateDownloadLink || false;
 
 	$elm.addClass('remote-finder');
+
+	// gpiBridgeを公開（エディタなどのサブモジュールから利用できるように）
+	this.gpiBridge = options.gpiBridge;
 
 
 	/**

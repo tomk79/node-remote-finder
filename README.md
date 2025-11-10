@@ -172,6 +172,7 @@ remoteFinder.init('/', {}, function(){
 
 ### remote-finder v0.5.0 (リリース日未定)
 
+- テキストエディタ機能を追加した。
 - アイコン表示の改善。
 
 ### remote-finder v0.4.0 (2024年12月25日)

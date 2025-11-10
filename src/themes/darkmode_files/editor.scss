@@ -1,0 +1,60 @@
+/**
+ * Editor styles for darkmode
+ */
+.remote-finder__editor-modal {
+	&__dialog {
+		background-color: #2b2b2b;
+	}
+
+	&__header {
+		background-color: #1e1e1e;
+		border-bottom-color: #3c3c3c;
+	}
+
+	&__title {
+		color: #e0e0e0;
+	}
+
+	&__close-button {
+		color: #a0a0a0;
+
+		&:hover {
+			background-color: #3c3c3c;
+			color: #e0e0e0;
+		}
+	}
+
+	&__textarea {
+		background-color: #1e1e1e;
+		color: #e0e0e0;
+		border-color: #3c3c3c;
+
+		&:focus {
+			border-color: #4a90e2;
+			box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.3);
+		}
+	}
+
+	&__footer {
+		background-color: #1e1e1e;
+		border-top-color: #3c3c3c;
+	}
+
+	&__save-button {
+		background-color: #4a90e2;
+		color: #ffffff;
+
+		&:hover {
+			background-color: #357abd;
+		}
+	}
+
+	&__cancel-button {
+		background-color: #3c3c3c;
+		color: #e0e0e0;
+
+		&:hover {
+			background-color: #4c4c4c;
+		}
+	}
+}

@@ -29,11 +29,11 @@
 					callback(response);
 				});
 			},
-			"open": function(fileinfo, callback){
-				console.log(fileinfo);
-				alert('ファイル ' + fileinfo.path + ' を開きました。');
-				callback(true);
-			},
+			// "open": function(fileinfo, callback){
+			// 	console.log(fileinfo);
+			// 	alert('ファイル ' + fileinfo.path + ' を開きました。');
+			// 	callback(true);
+			// },
 			// "generateDownloadLink": false,
 			"generateDownloadLink": function(targetFile, callback){
 				callback('./download.php?path=' + encodeURIComponent(targetFile));
