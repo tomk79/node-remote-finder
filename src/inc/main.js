@@ -16,6 +16,8 @@ module.exports = function(elm, options){
 	const dropzone = new (require('./dropfiles/dropfiles.js'))($elm, this);
 	const propertyView = new (require('./property-view/property-view.js'))($elm, this);
 	const readonlySvg = require('!!raw-loader!../images/readonly.svg').default;
+	const newFolderSvg = require('!!raw-loader!../images/new_folder.svg').default;
+	const newFileSvg = require('!!raw-loader!../images/new_file.svg').default;
 
 	let templates = {
 		'main': require('./templates/main.twig'),
@@ -76,7 +78,7 @@ module.exports = function(elm, options){
 		// create new folder
 		var $li = document.createElement('li');
 		var $a = document.createElement('a');
-		$a.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="vertical-align: middle; margin-right: 4px;"><path fill="none" d="M0 0h24v24H0V0z"/><path fill="currentColor" d="M20 6h-8l-2-2H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-1 8h-3v3h-2v-3h-3v-2h3V9h2v3h3v2z"/></svg>New Folder';
+		$a.innerHTML = newFolderSvg + 'New Folder';
 		$a.href = 'javascript:;';
 		$a.addEventListener('click', function(){
 			_this.mkdir(current_dir, function(){
@@ -87,7 +89,7 @@ module.exports = function(elm, options){
 		$ulMenu.append($li);		// create new file
 		var $li = document.createElement('li');
 		var $a = document.createElement('a');
-		$a.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="vertical-align: middle; margin-right: 4px;"><path d="M0 0h24v24H0z" fill="none"/><path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>New File';
+		$a.innerHTML = newFileSvg + 'New File';
 		$a.href = 'javascript:;';
 		$a.addEventListener('click', function(){
 			_this.mkfile(current_dir, function(){
