@@ -6,7 +6,7 @@ module.exports = function($elm, remoteFinder){
 	let _this = this;
 	let currentPath = null;
 	let originalContent = null;
-	let $modal = null;
+	let modalObj = null;
 	let $textarea = null;
 	let isModified = false;
 
@@ -47,77 +47,87 @@ module.exports = function($elm, remoteFinder){
 	this.render = function(path, content){
 		const filename = path.split('/').pop();
 
-		// モーダルを生成
-		const modalHtml = templates.editor({
+		// モーダルのボディコンテンツを生成
+		const modalBodyHtml = templates.editor({
 			filename: filename
-		});
-		$modal = $(modalHtml);
-		$elm.append($modal);
-
-		// テキストエリアに内容をセット
-		$textarea = $modal.find('.remote-finder__editor-modal__textarea');
-		$textarea.val(content);
-		isModified = false;
-
-		// イベントリスナーを設定
-		_this.attachEventListeners();
-
-		// モーダルを表示
-		setTimeout(function(){
-			$modal.addClass('remote-finder__editor-modal--visible');
-		}, 10);
-	};
-
-	/**
-	 * イベントリスナーを設定
-	 */
-	this.attachEventListeners = function(){
-		// テキストエリアの変更を監視
-		$textarea.on('input', function(){
-			isModified = ($textarea.val() !== originalContent);
 		});
 
 		// 保存ボタン
-		$modal.find('.remote-finder__editor-modal__save-button').on('click', function(){
+		const $saveButton = $('<button class="px2-btn px2-btn--primary">').text('保存');
+		$saveButton.on('click', function(){
 			_this.save();
 		});
 
-		// 保存せずに閉じるボタン
-		$modal.find('.remote-finder__editor-modal__cancel-button').on('click', function(){
-			_this.close(false);
-		});
-
-		// 閉じるボタン（×）
-		$modal.find('.remote-finder__editor-modal__close-button').on('click', function(){
+		// キャンセルボタン
+		const $cancelButton = $('<button class="px2-btn px2-btn--secondary">').text('保存せずに閉じる');
+		$cancelButton.on('click', function(){
 			if( isModified ){
 				if( !confirm('変更が保存されていません。保存せずに閉じますか？') ){
 					return;
 				}
 			}
-			_this.close(false);
+			modalObj.close();
 		});
 
-		// オーバーレイクリックで閉じる
-		$modal.find('.remote-finder__editor-modal__overlay').on('click', function(){
-			if( isModified ){
-				if( !confirm('変更が保存されていません。保存せずに閉じますか？') ){
-					return;
-				}
-			}
-			_this.close(false);
-		});
-
-		// ESCキーで閉じる
-		$(document).on('keydown.remoteFinder-editor', function(e){
-			if( e.key === 'Escape' ){
+		// px2style.modal()でモーダルを開く
+		modalObj = remoteFinder.px2style.modal({
+			"title": filename,
+			"type": "modal",
+			"body": modalBodyHtml,
+			"width": 800,
+			"height": 600,
+			"contentFill": true,
+			"buttons": [$saveButton],
+			"buttonsSecondary": [$cancelButton],
+			"target": $elm[0],
+			"onclose": function(){
+				_this.cleanup();
+			},
+			"onbgclick": function(){
 				if( isModified ){
 					if( !confirm('変更が保存されていません。保存せずに閉じますか？') ){
-						return;
+						return false;
 					}
 				}
-				_this.close(false);
 			}
+		}, function(modal){
+			// モーダルが開いた後の処理
+			$textarea = $(modal.getBody()).find('.remote-finder__editor-modal__textarea');
+			$textarea.val(content);
+			isModified = false;
+
+			// テキストエリアの変更を監視
+			$textarea.on('input', function(){
+				isModified = ($textarea.val() !== originalContent);
+			});
+
+			// ESCキーで閉じる
+			$(document).on('keydown.remoteFinder-editor', function(e){
+				if( e.key === 'Escape' ){
+					if( isModified ){
+						if( !confirm('変更が保存されていません。保存せずに閉じますか？') ){
+							return;
+						}
+					}
+					modalObj.close();
+				}
+			});
 		});
+	};
+
+	/**
+	 * クリーンアップ処理
+	 */
+	this.cleanup = function(){
+		// イベントリスナーを解除
+		$(document).off('keydown.remoteFinder-editor');
+
+		// 変数をクリア
+		modalObj = null;
+		$textarea = null;
+		currentPath = null;
+		originalContent = null;
+		isModified = false;
 	};
 
 	/**
@@ -143,28 +153,11 @@ module.exports = function($elm, remoteFinder){
 				originalContent = content;
 				isModified = false;
 				alert('ファイルを保存しました。');
-				_this.close(true);
+				if( modalObj ){
+					modalObj.close();
+				}
 			}
 		);
-	};
-
-	/**
-	 * エディタを閉じる
-	 */
-	this.close = function(saved){
-		// イベントリスナーを解除
-		$(document).off('keydown.remoteFinder-editor');
-
-		// モーダルを非表示にしてから削除
-		$modal.removeClass('remote-finder__editor-modal--visible');
-		setTimeout(function(){
-			$modal.remove();
-			$modal = null;
-			$textarea = null;
-			currentPath = null;
-			originalContent = null;
-			isModified = false;
-		}, 300);
 	};
 
 	return this;
