@@ -65,6 +65,11 @@ module.exports = function($elm, main){
 						// 開く
 						$propertyView.find('.remote-finder__property-view-btn-open').on('click', function(e){
 							e.stopPropagation();
+							// ロックされているファイルは開けない
+							if( !itemInfo.writable ){
+								alert(main.lb.get('ui_label.alert_readonly_file'));
+								return;
+							}
 							var path = this.getAttribute('data-current-dir');
 							var filename = this.getAttribute('data-filename');
 							main.open( path+filename, function(res){} );
