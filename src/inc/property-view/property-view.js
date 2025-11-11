@@ -18,85 +18,99 @@ module.exports = function($elm, main){
 		}
 
 		if( selectedItems.length == 1 ){
-			if( selectedItems[0].match(/\/$/) ){
-				// ディレクトリ
-				$propertyView.html( templates.dir({
-					'lb': main.lb,
-					'currentDir': main.getCurrentDir(),
-					'itemName': selectedItems[0],
-				}) );
+			// 先にアイテム情報を取得
+			main.gpiBridge(
+				{
+					'api': 'getItemInfo',
+					'path': main.getCurrentDir() + selectedItems[0],
+					'options': {},
+				},
+				function(result){
+					var itemInfo = result.itemInfo;
 
-				drawDirectoryProperties( selectedItems[0], $propertyView.find('.remote-finder__property-view-main') );
+					if( selectedItems[0].match(/\/$/) ){
+						// ディレクトリ
+						$propertyView.html( templates.dir({
+							'lb': main.lb,
+							'currentDir': main.getCurrentDir(),
+							'itemName': selectedItems[0],
+							'itemInfo': itemInfo,
+						}) );
 
-				// 開く
-				$propertyView.find('.remote-finder__property-view-btn-open').on('click', function(e){
-					e.stopPropagation();
-					var path = this.getAttribute('data-current-dir');
-					var filename = this.getAttribute('data-filename');
-					var goto = path + filename;
-					if( filename == '../' ){
-						goto = path.replace(/[^\/]*\/$/, '');
+						drawDirectoryProperties( itemInfo, $propertyView.find('.remote-finder__property-view-main') );
+
+						// 開く
+						$propertyView.find('.remote-finder__property-view-btn-open').on('click', function(e){
+							e.stopPropagation();
+							var path = this.getAttribute('data-current-dir');
+							var filename = this.getAttribute('data-filename');
+							var goto = path + filename;
+							if( filename == '../' ){
+								goto = path.replace(/[^\/]*\/$/, '');
+							}
+							main.setCurrentDir( goto );
+						});
+
+					}else{
+						// ファイル
+						$propertyView.html( templates.file({
+							'lb': main.lb,
+							'currentDir': main.getCurrentDir(),
+							'itemName': selectedItems[0],
+							'itemInfo': itemInfo,
+						}) );
+
+						drawFileProperties( itemInfo, $propertyView.find('.remote-finder__property-view-main') );
+
+						// 開く
+						$propertyView.find('.remote-finder__property-view-btn-open').on('click', function(e){
+							e.stopPropagation();
+							var path = this.getAttribute('data-current-dir');
+							var filename = this.getAttribute('data-filename');
+							main.open( path+filename, function(res){} );
+						});
+
+						// ダウンロード
+						$propertyView.find('.remote-finder__property-view-btn-download').on('click', function(e){
+							e.stopPropagation();
+							var path = this.getAttribute('data-current-dir');
+							var filename = this.getAttribute('data-filename');
+							return downloadFile( this, filename );
+						});
+
 					}
-					main.setCurrentDir( goto );
-				});
 
-			}else{
-				// ファイル
-				$propertyView.html( templates.file({
-					'lb': main.lb,
-					'currentDir': main.getCurrentDir(),
-					'itemName': selectedItems[0],
-				}) );
+					// Dir/File共通: コピー
+					$propertyView.find('.remote-finder__property-view-btn-copy').on('click', function(e){
+						e.stopPropagation();
+						var path = this.getAttribute('data-current-dir');
+						var filename = this.getAttribute('data-filename');
+						main.copy(path+filename, function(){
+							main.setCurrentDir( path );
+						});
+					});
 
-				drawFileProperties( selectedItems[0], $propertyView.find('.remote-finder__property-view-main') );
+					// Dir/File共通: 改名
+					$propertyView.find('.remote-finder__property-view-btn-rename').on('click', function(e){
+						e.stopPropagation();
+						var path = this.getAttribute('data-current-dir');
+						var filename = this.getAttribute('data-filename');
+						main.rename(path+filename, function(){
+							main.setCurrentDir( path );
+						});
+					});
 
-				// 開く
-				$propertyView.find('.remote-finder__property-view-btn-open').on('click', function(e){
-					e.stopPropagation();
-					var path = this.getAttribute('data-current-dir');
-					var filename = this.getAttribute('data-filename');
-					main.open( path+filename, function(res){} );
-				});
-
-				// ダウンロード
-				$propertyView.find('.remote-finder__property-view-btn-download').on('click', function(e){
-					e.stopPropagation();
-					var path = this.getAttribute('data-current-dir');
-					var filename = this.getAttribute('data-filename');
-					return downloadFile( this, filename );
-				});
-
-			}
-
-			// Dir/File共通: コピー
-			$propertyView.find('.remote-finder__property-view-btn-copy').on('click', function(e){
-				e.stopPropagation();
-				var path = this.getAttribute('data-current-dir');
-				var filename = this.getAttribute('data-filename');
-				main.copy(path+filename, function(){
-					main.setCurrentDir( path );
-				});
-			});
-
-			// Dir/File共通: 改名
-			$propertyView.find('.remote-finder__property-view-btn-rename').on('click', function(e){
-				e.stopPropagation();
-				var path = this.getAttribute('data-current-dir');
-				var filename = this.getAttribute('data-filename');
-				main.rename(path+filename, function(){
-					main.setCurrentDir( path );
-				});
-			});
-
-			// Dir/File共通: 削除
-			$propertyView.find('.remote-finder__property-view-btn-delete').on('click', function(e){
-				e.stopPropagation();
-				var path = this.getAttribute('data-current-dir');
-				var filename = this.getAttribute('data-filename');
-				main.remove(path+filename, function(){
-					main.setCurrentDir( path );
-				});
-			});
+					// Dir/File共通: 削除
+					$propertyView.find('.remote-finder__property-view-btn-delete').on('click', function(e){
+						e.stopPropagation();
+						var path = this.getAttribute('data-current-dir');
+						var filename = this.getAttribute('data-filename');
+						main.remove(path+filename, function(){
+							main.setCurrentDir( path );
+						});
+					});
+				}
+			);
 
 		}else{
 			// 複数選択
@@ -113,104 +127,82 @@ module.exports = function($elm, main){
 	/**
 	 * ファイルのプロパティ情報を描画する
 	 */
-	function drawFileProperties( itemName, $body ){
-		main.gpiBridge(
-			{
-				'api': 'getItemInfo',
-				'path': main.getCurrentDir() + itemName,
-				'options': {},
-			},
-			function(result){
-				var item = result.itemInfo;
+	function drawFileProperties( item, $body ){
+		var $preview = $('<div class="remote-finder__preview">');
+		drawPreview($preview, item.preview);
+		$body.append($preview);
 
-				var $preview = $('<div class="remote-finder__preview">');
-				drawPreview($preview, item.preview);
-				$body.append($preview);
-
-				var $table = $('<table>');
-				$table
-					.append( $('<tr>')
-						.append( $('<th>').text('File Name') )
-						.append( $('<td>').text(item.name) )
-					)
-					.append( $('<tr>')
-						.append( $('<th>').text('Extension') )
-						.append( $('<td>').text(item.ext || '') )
-					)
-					.append( $('<tr>')
-						.append( $('<th>').text('mime-type') )
-						.append( $('<td>').text(item.mime || '') )
-					)
-					.append( $('<tr>')
-						.append( $('<th>').text('File Size') )
-						.append( $('<td>').text(item.size + ' byte(s)') )
-					)
-					.append( $('<tr>')
-						.append( $('<th>').text('MD5') )
-						.append( $('<td>').text(item.md5 || '') )
-					)
-				;
-				if( item.uname && item.gname ){
-					$table
-						.append( $('<tr>')
-							.append( $('<th>').text('Owner') )
-							.append( $('<td>').text( ( item.uname || '---' ) + ' ' + ( item.gname || '---' ) ) )
-						)
-					;
-				}
-				if( item.mode ){
-					$table
-						.append( $('<tr>')
-							.append( $('<th>').text('Mode') )
-							.append( $('<td>').text(item.mode || '') )
-						)
-					;
-				}
-				$body.append($table);
-			}
-		);
+		var $table = $('<table>');
+		$table
+			.append( $('<tr>')
+				.append( $('<th>').text('File Name') )
+				.append( $('<td>').text(item.name) )
+			)
+			.append( $('<tr>')
+				.append( $('<th>').text('Extension') )
+				.append( $('<td>').text(item.ext || '') )
+			)
+			.append( $('<tr>')
+				.append( $('<th>').text('mime-type') )
+				.append( $('<td>').text(item.mime || '') )
+			)
+			.append( $('<tr>')
+				.append( $('<th>').text('File Size') )
+				.append( $('<td>').text(item.size + ' byte(s)') )
+			)
+			.append( $('<tr>')
+				.append( $('<th>').text('MD5') )
+				.append( $('<td>').text(item.md5 || '') )
+			)
+		;
+		if( item.uname && item.gname ){
+			$table
+				.append( $('<tr>')
+					.append( $('<th>').text('Owner') )
+					.append( $('<td>').text( ( item.uname || '---' ) + ' ' + ( item.gname || '---' ) ) )
+				)
+			;
+		}
+		if( item.mode ){
+			$table
+				.append( $('<tr>')
+					.append( $('<th>').text('Mode') )
+					.append( $('<td>').text(item.mode || '') )
+				)
+			;
+		}
+		$body.append($table);
 	}
 
 
 	/**
 	 * ディレクトリのプロパティ情報を描画する
 	 */
-	function drawDirectoryProperties( itemName, $body ){
-		main.gpiBridge(
-			{
-				'api': 'getItemInfo',
-				'path': main.getCurrentDir() + itemName,
-				'options': {},
-			},
-			function(result){
-				var item = result.itemInfo;
-
-				var $table = $('<table>');
-				$table
-					.append( $('<tr>')
-						.append( $('<th>').text('Directory Name') )
-						.append( $('<td>').text(item.name) )
-					)
-				;
-				if( item.uname && item.gname ){
-					$table
-						.append( $('<tr>')
-							.append( $('<th>').text('Owner') )
-							.append( $('<td>').text( ( item.uname || '---' ) + ' ' + ( item.gname || '---' ) ) )
-						)
-					;
-				}
-				if( item.mode ){
-					$table
-						.append( $('<tr>')
-							.append( $('<th>').text('Mode') )
-							.append( $('<td>').text(item.mode || '') )
-						)
-					;
-				}
-				$body.append($table);
-			}
-		);
+	function drawDirectoryProperties( item, $body ){
+		var $table = $('<table>');
+		$table
+			.append( $('<tr>')
+				.append( $('<th>').text('Directory Name') )
+				.append( $('<td>').text(item.name) )
+			)
+		;
+		if( item.uname && item.gname ){
+			$table
+				.append( $('<tr>')
+					.append( $('<th>').text('Owner') )
+					.append( $('<td>').text( ( item.uname || '---' ) + ' ' + ( item.gname || '---' ) ) )
+				)
+			;
+		}
+		if( item.mode ){
+			$table
+				.append( $('<tr>')
+					.append( $('<th>').text('Mode') )
+					.append( $('<td>').text(item.mode || '') )
+				)
+			;
+		}
+		$body.append($table);
 	}
 
 
