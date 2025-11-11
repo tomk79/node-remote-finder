@@ -1,8 +1,12 @@
 {
     "/dist/remote-finder.js": "/dist/remote-finder.js",
     "/dist/remote-finder.bundled.js": "/dist/remote-finder.bundled.js",
+    "/dist/themes/default.css": "/dist/themes/default.css",
+    "/dist/themes/auto.bundled.css": "/dist/themes/auto.bundled.css",
+    "/dist/themes/auto.css": "/dist/themes/auto.css",
+    "/dist/remote-finder.bundled.css": "/dist/remote-finder.bundled.css",
+    "/dist/remote-finder.css": "/dist/remote-finder.css",
     "/dist/themes/darkmode.bundled.css": "/dist/themes/darkmode.bundled.css",
     "/dist/themes/darkmode.css": "/dist/themes/darkmode.css",
-    "/dist/remote-finder.bundled.css": "/dist/remote-finder.bundled.css",
-    "/dist/remote-finder.css": "/dist/remote-finder.css"
+    "/dist/themes/default.bundled.css": "/dist/themes/default.bundled.css"
 }

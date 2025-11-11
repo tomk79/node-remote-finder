@@ -41,6 +41,12 @@
 				&:hover {
 					background-color: #eee;
 				}
+				svg {
+					vertical-align: middle;
+					margin-right: 8px;
+					width: 18px;
+					height: 18px;
+				}
 			}
 			>input[type=text] {
 				background-color: #fff;
