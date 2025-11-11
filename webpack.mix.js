@@ -68,10 +68,10 @@ mix
 	.js('src/remote-finder.bundled.js', 'dist/')
 	.sass('src/remote-finder.scss', 'dist/')
 	.sass('src/remote-finder.bundled.scss', 'dist/')
-	.sass('src/themes/auto.scss', 'dist/themes/')
-	.sass('src/themes/auto.bundled.scss', 'dist/themes/')
 	.sass('src/themes/default.scss', 'dist/themes/')
 	.sass('src/themes/default.bundled.scss', 'dist/themes/')
+	.sass('src/themes/lightmode.scss', 'dist/themes/')
+	.sass('src/themes/lightmode.bundled.scss', 'dist/themes/')
 	.sass('src/themes/darkmode.scss', 'dist/themes/')
 	.sass('src/themes/darkmode.bundled.scss', 'dist/themes/')
 ;

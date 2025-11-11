@@ -6,7 +6,13 @@
 
 		<!-- px2style -->
 		<link rel="stylesheet" href="../../../node_modules/px2style/dist/px2style.css" />
+<?php if(($_GET['appearance']??'') == 'lightmode'){ ?>
 		<link rel="stylesheet" href="../../../node_modules/px2style/dist/themes/default.css" />
+<?php }elseif(($_GET['appearance']??'') == 'darkmode'){ ?>
+		<link rel="stylesheet" href="../../../node_modules/px2style/dist/themes/darkmode.css" />
+<?php }else{ ?>
+		<link rel="stylesheet" href="../../../node_modules/px2style/dist/themes/auto.css" />
+<?php } ?>
 
 		<!-- remote-finder.css -->
 		<link rel="stylesheet" href="../../../dist/remote-finder.css" />
@@ -20,7 +26,16 @@
 		}
 		</style>
 
-<?php if($_GET['appearance']??'' == 'darkmode'){ ?>
+<?php if(($_GET['appearance']??'') == 'lightmode'){ ?>
+		<!-- lightmode -->
+		<style>
+		body{
+			color: #333;
+			background-color: #eee;
+		}
+		</style>
+		<link rel="stylesheet" href="../../../dist/themes/lightmode.css" />
+<?php }elseif(($_GET['appearance']??'') == 'darkmode'){ ?>
 		<!-- darkmode -->
 		<style>
 		body{
@@ -29,6 +44,23 @@
 		}
 		</style>
 		<link rel="stylesheet" href="../../../dist/themes/darkmode.css" />
+<?php }else{ ?>
+		<!-- lightmode -->
+		<style>
+		@media (prefers-color-scheme: light) {
+			body{
+				color: #333;
+				background-color: #eee;
+			}
+		}
+		@media (prefers-color-scheme: dark) {
+			body{
+				color: #ddd;
+				background-color: #333;
+			}
+		}
+		</style>
+		<link rel="stylesheet" href="../../../dist/themes/default.css" />
 <?php } ?>
 	</head>
 	<body class="_px2-darkmode">
