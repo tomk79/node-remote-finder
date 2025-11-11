@@ -107,6 +107,11 @@ module.exports = function(elm, options){
 	 * Finderを初期化します。
 	 */
 	this.init = async function( path, callback ){
+		// remote-finder v0.5.0 で、第二引数 `options` は廃止されました。
+		// 後方互換性のため、3つめの引数がある場合はそれをcallbackとして読み替え
+		if( arguments.length >= 3 ){
+			callback = arguments[2];
+		}
 
 		return new Promise( (resolve, reject) => {
 			_this.lb = new LangBank(languageCsv, ()=>{
