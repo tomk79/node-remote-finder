@@ -31,12 +31,21 @@ module.exports = function(elm, options){
 	const isTextFile = function(ext){
 		if( !ext ){ return false; }
 		const textExtensions = [
-			'txt', 'md', 'markdown', 'json', 'xml', 'html', 'htm', 'css', 'scss', 'sass', 'less',
+			'txt', 'md', 'markdown', 'json', 'xml', 'html', 'htm', 'svg', 'css', 'scss', 'sass', 'less',
 			'js', 'jsx', 'ts', 'tsx', 'vue', 'php', 'py', 'rb', 'java', 'c', 'cpp', 'h', 'hpp',
 			'go', 'rs', 'swift', 'kt', 'sh', 'bash', 'zsh', 'yml', 'yaml', 'toml', 'ini', 'conf',
-			'csv', 'tsv', 'log', 'sql', 'pl', 'r', 'lua', 'vim', 'dockerfile', 'makefile'
+			'csv', 'tsv', 'log', 'sql', 'pl', 'r', 'lua', 'vim', 'dockerfile', 'makefile', 'env',
 		];
 		return textExtensions.includes(ext.toLowerCase());
+	};
+
+	// イメージファイルかどうかを判定
+	const isImageFile = function(ext){
+		if( !ext ){ return false; }
+		const imageExtensions = [
+			'jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp', 'ico', 'svg',
+		];
+		return imageExtensions.includes(ext.toLowerCase());
 	};
 
 	// エンコード: テキスト → Base64
@@ -74,8 +83,11 @@ module.exports = function(elm, options){
 			});
 			return;
 		}
-		// テキストファイル以外はデフォルト処理（何もしない）
-		callback(false);
+
+		// テキストファイル以外の場合はプレビューを表示
+		_this.openPreview(pathinfo, function(opened){
+			callback(opened);
+		});
 	};
 	options.mkdir = options.mkdir || function(current_dir, callback){
 		var foldername = prompt('Folder name:');
@@ -241,6 +253,61 @@ module.exports = function(elm, options){
 			callback(isCompeted);
 		});
 	}
+
+	/**
+	 * ファイルのプレビューを開く
+	 */
+	this.openPreview = function(pathinfo, callback){
+		callback = callback || function(){};
+
+		// ファイル内容を取得
+		_this.gpiBridge(
+			{
+				api: 'getFileContent',
+				path: pathinfo.path,
+			},
+			function(result){
+				if( !result.result ){
+					alert('Failed to load file: ' + result.message);
+					callback(false);
+					return;
+				}
+
+				const filename = pathinfo.path.split('/').pop();
+				let $previewContent;
+
+				// イメージファイルの場合
+				if( isImageFile(pathinfo.ext) ){
+					const base64Content = result.content && result.content.base64 ? result.content.base64 : '';
+					const mimeType = result.mime || 'image/' + pathinfo.ext;
+					
+					$previewContent = $('<div class="remote-finder__preview-modal__content" style="text-align: center; padding: 20px;">').html(
+						'<img src="data:' + mimeType + ';base64,' + base64Content + '" style="max-width: 100%; max-height: 100%; object-fit: contain;" />'
+					);
+				} else {
+					// その他のファイルタイプの場合
+					$previewContent = $('<div class="remote-finder__preview-modal__content" style="padding: 20px; text-align: center;">').html(
+						'<p>このファイルタイプはプレビューできません。</p>' +
+						'<p>ファイル形式: ' + (pathinfo.ext ? '.' + pathinfo.ext : '不明') + '</p>'
+					);
+				}
+
+				// px2style.modal()でモーダルを開く
+				const modalObj = px2style.modal({
+					"title": filename,
+					"type": "modal",
+					"body": $previewContent,
+					"width": 800,
+					"height": 600,
+					"contentFill": true,
+					"buttons": [],
+					"target": $elm[0],
+				}, function(modal){
+					callback(true);
+				});
+			}
+		);
+	};
 
 	/**
 	 * フォルダを作成する
