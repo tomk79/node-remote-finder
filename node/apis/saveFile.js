@@ -30,7 +30,11 @@ module.exports = function(path, options, callback){
 
 	var bin = '';
 	try {
-		bin = new Buffer(options.base64, 'base64');
+		if(options.content){
+			bin = options.content;
+		}else if(options.base64){
+			bin = new Buffer(options.base64, 'base64');
+		}
 	} catch (e) {
 		bin = '';
 	}

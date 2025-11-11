@@ -321,7 +321,9 @@ class main{
 		}
 
 		$bin = '';
-		if( property_exists($options, 'base64') && $options->base64 ){
+		if( property_exists($options, 'content') && $options->content ){
+			$bin = $options->content;
+		}elseif( property_exists($options, 'base64') && $options->base64 ){
 			$bin = base64_decode($options->base64);
 		}
 

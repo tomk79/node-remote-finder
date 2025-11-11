@@ -9,7 +9,6 @@ module.exports = function($elm, remoteFinder){
 	let modalObj = null;
 	let $textarea = null;
 	let isModified = false;
-    const utils79 = require('utils79');
 
 	const templates = {
 		'editor': require('./templates/editor.twig'),
@@ -134,7 +133,7 @@ module.exports = function($elm, remoteFinder){
 				api: 'saveFile',
 				path: currentPath,
 				options: {
-					base64: base64Content = utils79.base64_encode(content),
+					content: content,
                     allow_overwrite: true,
 				}
 			},
