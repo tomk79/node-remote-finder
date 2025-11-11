@@ -38,7 +38,7 @@ module.exports = function($elm, remoteFinder){
 			let content = '';
 			if( result.content && result.content.base64 ){
 				try {
-                    content = atob(result.content.base64);
+                    content = remoteFinder.base64_decode(result.content.base64);
 				} catch(e) {
 					alert('Failed to decode file content: ' + e.message);
 					callback(false);
@@ -145,7 +145,7 @@ module.exports = function($elm, remoteFinder){
 
 				originalContent = content;
 				isModified = false;
-				alert('ファイルを保存しました。');
+
 				if( modalObj ){
 					modalObj.close();
 				}

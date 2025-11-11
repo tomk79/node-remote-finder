@@ -6,6 +6,7 @@
 
 		<!-- px2style -->
 		<link rel="stylesheet" href="../../../node_modules/px2style/dist/px2style.css" />
+		<link rel="stylesheet" href="../../../node_modules/px2style/dist/themes/default.css" />
 
 		<!-- remote-finder.css -->
 		<link rel="stylesheet" href="../../../dist/remote-finder.css" />

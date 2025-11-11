@@ -246,7 +246,7 @@ module.exports = function($elm, main){
 			case 'cgi':
 			case 'rb':
 			case 'pl':
-				$previewElm.append( $('<pre>').append( $('<code>').text( decodeURIComponent(escape(atob(preview.base64))) ) ) );
+				$previewElm.append( $('<pre>').append( $('<code>').text( main.base64_decode(preview.base64) ) ) );
 				break;
 			case 'png':
 			case 'jpg': case 'jpeg': case 'jpe':

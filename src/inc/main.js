@@ -39,6 +39,33 @@ module.exports = function(elm, options){
 		return textExtensions.includes(ext.toLowerCase());
 	};
 
+	// エンコード: テキスト → Base64
+	this.base64_encode = function(str) {
+		const encoder = new TextEncoder();
+		const uint8Array = encoder.encode(str);
+		
+		// Uint8Arrayをバイナリ文字列に変換
+		let binaryString = '';
+		uint8Array.forEach(byte => {
+			binaryString += String.fromCharCode(byte);
+		});
+		
+		return btoa(binaryString);
+	}
+
+	// デコード: Base64 → テキスト
+	this.base64_decode = function(str) {
+		const binaryString = atob(str);
+		const bytes = new Uint8Array(binaryString.length);
+		
+		for (let i = 0; i < binaryString.length; i++) {
+			bytes[i] = binaryString.charCodeAt(i);
+		}
+		
+		const decoder = new TextDecoder();
+		return decoder.decode(bytes);
+	}
+
 	options.open = options.open || function(pathinfo, callback){
 		// テキストファイルの場合はエディタで開く
 		if( isTextFile(pathinfo.ext) ){
