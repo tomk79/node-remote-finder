@@ -543,6 +543,7 @@ module.exports = function(elm, options){
 					$a.href = 'javascript:;';
 					$a.setAttribute('data-filename', result.list[idx].name);
 					$a.setAttribute('data-path', path + result.list[idx].name);
+					$a.setAttribute('data-writable', result.list[idx].writable ? 'true' : 'false');
 					if(result.list[idx].type == 'dir'){
 						// ディレクトリ
 						$a.textContent += '/';
@@ -567,6 +568,11 @@ module.exports = function(elm, options){
 							_this.addSelectedItem(filename);
 						});
 						$a.addEventListener('dblclick', function(e){
+							var writable = this.getAttribute('data-writable');
+							if( writable === 'false' ){
+								alert(_this.lb.get('ui_label.alert_readonly_file'));
+								return;
+							}
 							var path = this.getAttribute('data-path');
 							var filename = this.getAttribute('data-filename');
 							_this.open( path, function(res){} );
