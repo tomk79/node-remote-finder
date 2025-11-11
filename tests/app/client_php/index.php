@@ -46,6 +46,9 @@
 <script src="../../../dist/remote-finder.js"></script>
 
 <!-- contents.js -->
+<script>
+	window.lang = <?= json_encode($_GET['lang']??'en'); ?>;
+</script>
 <script src="./index_files/contents.js"></script>
 
 	</body>

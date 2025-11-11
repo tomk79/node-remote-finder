@@ -100,6 +100,7 @@ exit;
 var remoteFinder = window.remoteFinder = new RemoteFinder(
     document.getElementById('finder1'),
     {
+        "lang": "ja",
         "gpiBridge": function(input, callback){ // required
             fetch("/apis/remote-finder", {
                 method: "post",
@@ -161,7 +162,7 @@ var remoteFinder = window.remoteFinder = new RemoteFinder(
         },
     }
 );
-remoteFinder.init('/', {}, function(){
+remoteFinder.init('/', function(){
     console.log('ready.');
 });
 </script>
@@ -173,6 +174,8 @@ remoteFinder.init('/', {}, function(){
 ### remote-finder v0.5.0 (リリース日未定)
 
 - テキストエディタ機能を追加した。
+- `init()` の第2引数を廃止した。
+- 多言語対応を追加した。
 - アイコン表示の改善。
 - アピアランス対応の強化。
 

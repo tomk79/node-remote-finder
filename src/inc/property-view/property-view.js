@@ -21,6 +21,7 @@ module.exports = function($elm, main){
 			if( selectedItems[0].match(/\/$/) ){
 				// ディレクトリ
 				$propertyView.html( templates.dir({
+					'lb': main.lb,
 					'currentDir': main.getCurrentDir(),
 					'itemName': selectedItems[0],
 				}) );
@@ -42,6 +43,7 @@ module.exports = function($elm, main){
 			}else{
 				// ファイル
 				$propertyView.html( templates.file({
+					'lb': main.lb,
 					'currentDir': main.getCurrentDir(),
 					'itemName': selectedItems[0],
 				}) );
@@ -99,6 +101,7 @@ module.exports = function($elm, main){
 		}else{
 			// 複数選択
 			$propertyView.html( templates.multi({
+				'lb': main.lb,
 				'currentDir': main.getCurrentDir(),
 				'items': selectedItems,
 			}) );

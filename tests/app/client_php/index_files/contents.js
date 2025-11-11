@@ -2,6 +2,7 @@
 	var remoteFinder = window.remoteFinder = new RemoteFinder(
 		document.getElementById('finder1'),
 		{
+			"lang": window.lang || 'en',
 			"gpiBridge": function(input, callback){
 				// Native (HTML5 Fetch API)
 				console.log(input);
@@ -41,7 +42,7 @@
 		}
 	);
 
-	remoteFinder.init('/', {}, function(){
+	remoteFinder.init('/', function(){
 		console.log('ready.');
 	});
 })();

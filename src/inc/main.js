@@ -19,12 +19,15 @@ module.exports = function(elm, options){
 	const readonlySvg = require('!!raw-loader!../images/readonly.svg').default;
 	const newFolderSvg = require('!!raw-loader!../images/new_folder.svg').default;
 	const newFileSvg = require('!!raw-loader!../images/new_file.svg').default;
+	const LangBank = require('langbank');
+	const languageCsv = require('../data/language.csv');
 
 	let templates = {
 		'main': require('./templates/main.twig'),
 	};
 
 	options = options || {};
+	options.lang = options.lang || 'en';
 	options.gpiBridge = options.gpiBridge || function(){};
 	
 	// テキストファイルとして開けるかどうかを判定
@@ -47,33 +50,6 @@ module.exports = function(elm, options){
 		];
 		return imageExtensions.includes(ext.toLowerCase());
 	};
-
-	// エンコード: テキスト → Base64
-	this.base64_encode = function(str) {
-		const encoder = new TextEncoder();
-		const uint8Array = encoder.encode(str);
-		
-		// Uint8Arrayをバイナリ文字列に変換
-		let binaryString = '';
-		uint8Array.forEach(byte => {
-			binaryString += String.fromCharCode(byte);
-		});
-		
-		return btoa(binaryString);
-	}
-
-	// デコード: Base64 → テキスト
-	this.base64_decode = function(str) {
-		const binaryString = atob(str);
-		const bytes = new Uint8Array(binaryString.length);
-		
-		for (let i = 0; i < binaryString.length; i++) {
-			bytes[i] = binaryString.charCodeAt(i);
-		}
-		
-		const decoder = new TextDecoder();
-		return decoder.decode(bytes);
-	}
 
 	options.open = options.open || function(pathinfo, callback){
 		// テキストファイルの場合はエディタで開く
@@ -125,87 +101,106 @@ module.exports = function(elm, options){
 	// gpiBridgeを公開（エディタなどのサブモジュールから利用できるように）
 	this.gpiBridge = options.gpiBridge;
 
+	this.lb = null;
 
 	/**
 	 * Finderを初期化します。
 	 */
-	this.init = function( path, options, callback ){
-		current_dir = path;
-		callback = callback || function(){};
+	this.init = async function( path, callback ){
 
-		$elm.html( templates.main({}) );
-
-		// --------------------------------------
-		// MENU
-		var $ulMenu = $elm.find('ul.remote-finder__menu');
-
-		// create new folder
-		var $li = document.createElement('li');
-		var $a = document.createElement('a');
-		$a.innerHTML = newFolderSvg + 'New Folder';
-		$a.href = 'javascript:;';
-		$a.addEventListener('click', function(){
-			_this.mkdir(current_dir, function(){
-				_this.setCurrentDir( current_dir );
+		return new Promise( (resolve, reject) => {
+			_this.lb = new LangBank(languageCsv, ()=>{
+				const lang = options.lang || 'en';
+				_this.lb.setLang( lang );
+				resolve();
 			});
-		});
-		$li.append($a);
-		$ulMenu.append($li);		// create new file
-		var $li = document.createElement('li');
-		var $a = document.createElement('a');
-		$a.innerHTML = newFileSvg + 'New File';
-		$a.href = 'javascript:;';
-		$a.addEventListener('click', function(){
-			_this.mkfile(current_dir, function(){
-				_this.setCurrentDir( current_dir );
+		}).then(() => {
+			return new Promise( (resolve, reject) => {
+				current_dir = path;
+				callback = callback || function(){};
+
+				$elm.html( templates.main({}) );
+
+				// --------------------------------------
+				// MENU
+				var $ulMenu = $elm.find('ul.remote-finder__menu');
+
+				// create new folder
+				var $li = document.createElement('li');
+				var $a = document.createElement('a');
+				$a.innerHTML = newFolderSvg + 'New Folder';
+				$a.href = 'javascript:;';
+				$a.addEventListener('click', function(){
+					_this.mkdir(current_dir, function(){
+						_this.setCurrentDir( current_dir );
+					});
+				});
+				$li.append($a);
+				$ulMenu.append($li);		// create new file
+				var $li = document.createElement('li');
+				var $a = document.createElement('a');
+				$a.innerHTML = newFileSvg + 'New File';
+				$a.href = 'javascript:;';
+				$a.addEventListener('click', function(){
+					_this.mkfile(current_dir, function(){
+						_this.setCurrentDir( current_dir );
+					});
+				});
+				$li.append($a);
+				$ulMenu.append($li);
+
+				// file name filter
+				var $li = document.createElement('li');
+				var $input = document.createElement('input');
+				$input.placeholder = 'Filter...';
+				$input.type = 'text';
+				$input.value = filter;
+				$input.addEventListener('change', function(){
+					filter = this.value;
+					_this.setCurrentDir( current_dir );
+				});
+				$li.append($input);
+				$ulMenu.append($li);
+
+				// $elm.append($ulMenu);
+
+				// --------------------------------------
+				// Path Bar
+				$pathBar = $elm.find('ul.remote-finder__path-bar');
+
+				// $elm.append($pathBar);
+
+				// --------------------------------------
+				// File list
+				$fileList = $elm.find('ul.remote-finder__file-list');
+
+				// $elm.append($fileList);
+
+				$elm
+					.on('dragenter', dropzone.onDragEnter)
+					.on('dragover', function(e){
+						let event = e.originalEvent;
+						event.preventDefault();
+						event.stopPropagation();
+					})
+					.on('drop', function(e){
+						let event = e.originalEvent;
+						event.preventDefault();
+						event.stopPropagation();
+					})
+				;
+
+				resolve();
 			});
+		}).then(() => {
+			return new Promise( (resolve, reject) => {
+				this.setCurrentDir(path, function(){
+					resolve();
+				});
+			});
+		}).finally(() => {
+			callback();
 		});
-		$li.append($a);
-		$ulMenu.append($li);
-
-		// file name filter
-		var $li = document.createElement('li');
-		var $input = document.createElement('input');
-		$input.placeholder = 'Filter...';
-		$input.type = 'text';
-		$input.value = filter;
-		$input.addEventListener('change', function(){
-			filter = this.value;
-			_this.setCurrentDir( current_dir );
-		});
-		$li.append($input);
-		$ulMenu.append($li);
-
-		// $elm.append($ulMenu);
-
-		// --------------------------------------
-		// Path Bar
-		$pathBar = $elm.find('ul.remote-finder__path-bar');
-
-		// $elm.append($pathBar);
-
-		// --------------------------------------
-		// File list
-		$fileList = $elm.find('ul.remote-finder__file-list');
-
-		// $elm.append($fileList);
-
-		this.setCurrentDir(path, callback);
-
-		$elm
-			.on('dragenter', dropzone.onDragEnter)
-			.on('dragover', function(e){
-				let event = e.originalEvent;
-				event.preventDefault();
-				event.stopPropagation();
-			})
-			.on('drop', function(e){
-				let event = e.originalEvent;
-				event.preventDefault();
-				event.stopPropagation();
-			})
-		;
-
 	}
 
 	/**
@@ -657,4 +652,34 @@ module.exports = function(elm, options){
 		return templates[templateName](data);
 	}
 
+	/**
+	 * エンコード: テキスト → Base64
+	 */
+	this.base64_encode = function(str) {
+		const encoder = new TextEncoder();
+		const uint8Array = encoder.encode(str);
+		
+		// Uint8Arrayをバイナリ文字列に変換
+		let binaryString = '';
+		uint8Array.forEach(byte => {
+			binaryString += String.fromCharCode(byte);
+		});
+		
+		return btoa(binaryString);
+	}
+
+	/**
+	 * デコード: Base64 → テキスト
+	 */ 
+	this.base64_decode = function(str) {
+		const binaryString = atob(str);
+		const bytes = new Uint8Array(binaryString.length);
+		
+		for (let i = 0; i < binaryString.length; i++) {
+			bytes[i] = binaryString.charCodeAt(i);
+		}
+		
+		const decoder = new TextDecoder();
+		return decoder.decode(bytes);
+	}
 }

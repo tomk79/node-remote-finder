@@ -1,0 +1,19 @@
+,en,ja,zh,zh-TW
+ui_label.ok,OK,OK,OK,OK
+ui_label.save,Save,保存する,保存,保存
+ui_label.cancel,Cancel,キャンセル,取消,取消
+ui_label.open,Open,開く,,
+ui_label.close,Close,閉じる,关闭,關閉
+ui_label.create,Create,作成する,,
+ui_label.delete,"Delete",削除する,,
+ui_label.edit,"Edit","編集する",,
+ui_label.finished,Finished,完了,,
+ui_label.prev,Prev,前へ,,
+ui_label.next,Next,次へ,,
+ui_label.back,Back,戻る,,
+ui_label.download,"Download","ダウンロード",,
+ui_label.duplicate,"Duplicate","複製する",,
+ui_label.rename,"Rename","改名する",,
+ui_message.welcome,"Welcome to the Pickles 2 Clover CMS!","ようこそ、Pickles 2 Clover CMS へ！",,
+ui_message.this_page_does_not_exist,"This page does not exist.","このページは存在しません。",,
+error_message.invalid,"There is a problem with the input content.","入力内容に不備があります。",,
