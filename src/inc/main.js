@@ -98,9 +98,6 @@ module.exports = function(elm, options){
 
 	$elm.addClass('remote-finder');
 
-	// gpiBridgeを公開（エディタなどのサブモジュールから利用できるように）
-	this.gpiBridge = options.gpiBridge;
-
 	this.lb = null;
 
 	/**
