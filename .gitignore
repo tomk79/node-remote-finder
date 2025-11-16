@@ -35,7 +35,7 @@ build/Release
 # Dependency directories
 node_modules
 jspm_packages
-package-lock.json
+# package-lock.json
 
 # Optional npm cache directory
 .npm
@@ -44,7 +44,7 @@ package-lock.json
 .node_repl_history
 
 # composer
-composer.lock
+# composer.lock
 vendor
 
 # phpunit
