@@ -171,7 +171,7 @@ remoteFinder.init('/', function(){
 
 ## 更新履歴 - Change log
 
-### remote-finder v0.5.0 (リリース日未定)
+### remote-finder v0.5.0 (2025年11月16日)
 
 - テキストエディタ機能を追加した。
 - `init()` の第2引数を廃止した。
