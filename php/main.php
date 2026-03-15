@@ -513,6 +513,8 @@ class main{
 	 */
 	public function gpi($input){
 		try{
+			$input = json_decode( json_encode($input) );
+
 			if( preg_match('/[^a-zA-Z0-9]/s', $input->api) ){
 				return array(
 					'result' => false,

@@ -171,6 +171,10 @@ remoteFinder.init('/', function(){
 
 ## 更新履歴 - Change log
 
+### remote-finder v0.5.1 (リリース日未定)
+
+- GPIの入力値が array の場合にエラーが起きる不具合を修正した。
+
 ### remote-finder v0.5.0 (2025年11月16日)
 
 - テキストエディタ機能を追加した。
