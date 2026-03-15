@@ -29,7 +29,7 @@
   "homepage": "https://github.com/tomk79/node-remote-finder#readme",
   "dependencies": {
     "es6-promise": "^4.1.0",
-    "file-type": "^14.1.3",
+    "file-type": "^16.5.4",
     "fs-extra": "^7.0.1",
     "iterate79": "^1.0.0",
     "mime-types": "^2.1.26",
